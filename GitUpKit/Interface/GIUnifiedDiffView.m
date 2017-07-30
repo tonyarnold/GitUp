@@ -425,41 +425,44 @@ typedef struct {
   }
 }
 
-- (void)getSelectedText:(NSString**)text oldLines:(NSIndexSet**)oldLines newLines:(NSIndexSet**)newLines {
-  if (text) {
+- (void)getSelectedText:(NSString**)textPtr oldLines:(NSIndexSet**)oldLinesPtr newLines:(NSIndexSet**)newLinesPtr {
+  if (textPtr) {
     if (_selectedText.length > 0) {
       XLOG_DEBUG_CHECK(!_selectedLines.count);
-      *text = [(NSString*)CFAttributedStringGetString(_string) substringWithRange:NSMakeRange(_selectedText.location, _selectedText.length)];
+      *textPtr = [(NSString*)CFAttributedStringGetString(_string) substringWithRange:NSMakeRange(_selectedText.location, _selectedText.length)];
     }
     if (_selectedLines.count) {
       XLOG_DEBUG_CHECK(!_selectedText.length);
-      *text = [[NSMutableString alloc] init];
+      NSMutableString* text = [[NSMutableString alloc] init];
       [_selectedLines enumerateIndexesUsingBlock:^(NSUInteger index, BOOL* stop) {
         const LineInfo* info = &_lineInfoList[index];
         if ((NSUInteger)info->change != NSNotFound) {
-          [(NSMutableString*)*text appendString:[(NSString*)CFAttributedStringGetString(_string) substringWithRange:NSMakeRange(info->range.location, info->range.length)]];
+          [text appendString:[(NSString*)CFAttributedStringGetString(_string) substringWithRange:NSMakeRange(info->range.location, info->range.length)]];
         }
       }];
+      *textPtr = text;
     }
   }
-  if (oldLines) {
-    *oldLines = [NSMutableIndexSet indexSet];
-  }
-  if (newLines) {
-    *newLines = [NSMutableIndexSet indexSet];
-  }
-  if (oldLines || newLines) {
+  if (oldLinesPtr || newLinesPtr) {
+    NSMutableIndexSet* oldLines = [NSMutableIndexSet indexSet];
+    NSMutableIndexSet* newLines = [NSMutableIndexSet indexSet];
     [_selectedLines enumerateIndexesUsingBlock:^(NSUInteger index, BOOL* stop) {
       const LineInfo* info = &_lineInfoList[index];
       if ((NSUInteger)info->change != NSNotFound) {
         if (oldLines && (info->oldLineNumber != NSNotFound)) {
-          [(NSMutableIndexSet*)*oldLines addIndex:info->oldLineNumber];
+          [oldLines addIndex:info->oldLineNumber];
         }
         if (newLines && (info->newLineNumber != NSNotFound)) {
-          [(NSMutableIndexSet*)*newLines addIndex:info->newLineNumber];
+          [newLines addIndex:info->newLineNumber];
         }
       }
     }];
+    if (oldLinesPtr) {
+      *oldLinesPtr = oldLines;
+    }
+    if (newLinesPtr) {
+      *newLinesPtr = newLines;
+    }
   }
 }
 

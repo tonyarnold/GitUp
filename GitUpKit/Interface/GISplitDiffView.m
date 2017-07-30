@@ -514,7 +514,7 @@ typedef NS_ENUM(NSUInteger, SelectionMode) {
   }
 }
 
-- (void)getSelectedText:(NSString**)text oldLines:(NSIndexSet**)oldLines newLines:(NSIndexSet**)newLines {
+- (void)getSelectedText:(NSString**)text oldLines:(NSIndexSet**)oldLinesPtr newLines:(NSIndexSet**)newLinesPtr {
   if (text) {
     if (_selectedText.length > 0) {
       XLOG_DEBUG_CHECK(!_selectedLines.count);
@@ -559,20 +559,22 @@ typedef NS_ENUM(NSUInteger, SelectionMode) {
       }
     }
   }
-  if (oldLines) {
-    *oldLines = [NSMutableIndexSet indexSet];
-  }
-  if (newLines) {
-    *newLines = [NSMutableIndexSet indexSet];
-  }
-  if (oldLines || newLines) {
+  if (oldLinesPtr || newLinesPtr) {
+    NSMutableIndexSet* oldLines = [NSMutableIndexSet indexSet];
+    NSMutableIndexSet* newLines = [NSMutableIndexSet indexSet];
     [_selectedLines enumerateIndexesUsingBlock:^(NSUInteger index, BOOL* stop) {
       if (_rightSelection) {
-        [(NSMutableIndexSet*)*newLines addIndex:index];
+        [newLines addIndex:index];
       } else {
-        [(NSMutableIndexSet*)*oldLines addIndex:index];
+        [oldLines addIndex:index];
       }
     }];
+    if (oldLinesPtr) {
+      *oldLinesPtr = oldLines;
+    }
+    if (newLinesPtr) {
+      *newLinesPtr = newLines;
+    }
   }
 }
 
