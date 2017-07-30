@@ -898,14 +898,14 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
                                    return NO;
                                  }
                                  GCCommit* oldHeadCommit;
-                                 if (![repository lookupHEADCurrentCommit:&oldHeadCommit branch:NULL error:error]) {
+                                 if (![repository lookupHEADCurrentCommit:&oldHeadCommit branch:NULL error:outError]) {
                                    return NO;
                                  }
                                  if (![repository applyReferenceTransform:transform error:outError]) {
                                    return NO;
                                  }
                                  GCCommit* newHeadCommit;
-                                 if (![repository lookupHEADCurrentCommit:&newHeadCommit branch:NULL error:error]) {
+                                 if (![repository lookupHEADCurrentCommit:&newHeadCommit branch:NULL error:outError]) {
                                    return NO;
                                  }
                                  if (newHeadCommit && (!oldHeadCommit || ![newHeadCommit isEqualToCommit:oldHeadCommit])) {
@@ -941,7 +941,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
                                   error:error
                              usingBlock:^BOOL(GCLiveRepository* repository, NSError** outError) {
 
-                               newCommit = [repository createCommitByAmendingHEADWithMessage:message error:error];
+                               newCommit = [repository createCommitByAmendingHEADWithMessage:message error:outError];
                                return newCommit ? YES : NO;
 
                              }]) {
