@@ -100,7 +100,7 @@ static inline GCFileDiffChange _FileDiffChangeFromStatus(git_delta_t status) {
 }
 
 - (void)enumerateUsingBeginHunkHandler:(NS_NOESCAPE GCDiffBeginHunkHandler)beginHunkHandler
-                           lineHandler:(NS_NOESCAPE GCDiffLineHandler)lineHandler
+                           lineHandler:(void (NS_NOESCAPE ^)(GCLineDiffChange change, NSUInteger oldLineNumber, NSUInteger newLineNumber, const char* contentBytes, NSUInteger contentLength))lineHandler
                         endHunkHandler:(NS_NOESCAPE GCDiffEndHunkHandler)endHunkHandler {
   for (size_t i = 0, iMax = git_patch_num_hunks(_private); i < iMax; ++i) {
     if (beginHunkHandler) {
