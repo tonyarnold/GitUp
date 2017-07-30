@@ -182,7 +182,7 @@ static void _ArrayApplierFunction(const void* value, void* context) {
   block(value);
 }
 
-void GCArrayApplyBlock(CFArrayRef array, void (^block)(const void* value)) {
+void GCArrayApplyBlock(CFArrayRef array, void (NS_NOESCAPE ^block)(const void* value)) {
   CFArrayApplyFunction(array, CFRangeMake(0, CFArrayGetCount(array)), _ArrayApplierFunction, (void*)block);
 }
 
@@ -191,7 +191,7 @@ static void _SetApplierFunction(const void* value, void* context) {
   block(value);
 }
 
-void GCSetApplyBlock(CFSetRef set, void (^block)(const void* value)) {
+void GCSetApplyBlock(CFSetRef set, void (NS_NOESCAPE ^block)(const void* value)) {
   CFSetApplyFunction(set, _SetApplierFunction, (void*)block);
 }
 
@@ -200,7 +200,7 @@ static void _DictionaryApplierFunction(const void* key, const void* value, void*
   block(key, value);
 }
 
-void GCDictionaryApplyBlock(CFDictionaryRef dict, void (^block)(const void* key, const void* value)) {
+void GCDictionaryApplyBlock(CFDictionaryRef dict, void (NS_NOESCAPE ^block)(const void* key, const void* value)) {
   CFDictionaryApplyFunction(dict, _DictionaryApplierFunction, (void*)block);
 }
 

@@ -97,7 +97,7 @@
   return YES;
 }
 
-- (BOOL)enumerateReferencesWithOptions:(GCReferenceEnumerationOptions)options error:(NSError**)error usingBlock:(BOOL (^)(git_reference* reference))block {
+- (BOOL)enumerateReferencesWithOptions:(GCReferenceEnumerationOptions)options error:(NSError**)error usingBlock:(BOOL (NS_NOESCAPE ^)(git_reference* reference))block {
   BOOL success = NO;
   git_reference_iterator* iterator = NULL;
 

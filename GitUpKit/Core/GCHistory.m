@@ -421,7 +421,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
   [super dealloc];
 }
 
-- (BOOL)iterateWithCommitBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block {
+- (BOOL)iterateWithCommitBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block {
   if (_done) {
     XLOG_DEBUG_UNREACHABLE();  // We were already done iterating before!
     return NO;
@@ -603,7 +603,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
 
 @implementation GCHistory (GCHistoryWalker)
 
-- (void)walkAncestorsOfCommits:(NSArray*)commits usingBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block {
+- (void)walkAncestorsOfCommits:(NSArray*)commits usingBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block {
   GCHistoryWalker* walker = [[GCHistoryWalker alloc] initWithHistory:self commits:commits followParents:YES entireHistory:NO];
   while ([walker iterateWithCommitBlock:block]) {
     ;
@@ -611,7 +611,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
   [walker release];
 }
 
-- (void)walkDescendantsOfCommits:(NSArray*)commits usingBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block {
+- (void)walkDescendantsOfCommits:(NSArray*)commits usingBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block {
   GCHistoryWalker* walker = [[GCHistoryWalker alloc] initWithHistory:self commits:commits followParents:NO entireHistory:NO];
   while ([walker iterateWithCommitBlock:block]) {
     ;
@@ -619,7 +619,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
   [walker release];
 }
 
-- (void)walkAllCommitsFromLeavesUsingBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block {
+- (void)walkAllCommitsFromLeavesUsingBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block {
   GCHistoryWalker* walker = [[GCHistoryWalker alloc] initWithHistory:self commits:_leaves followParents:YES entireHistory:YES];
   while ([walker iterateWithCommitBlock:block]) {
     ;
@@ -627,7 +627,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
   [walker release];
 }
 
-- (void)walkAllCommitsFromRootsUsingBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block {
+- (void)walkAllCommitsFromRootsUsingBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block {
   GCHistoryWalker* walker = [[GCHistoryWalker alloc] initWithHistory:self commits:_roots followParents:NO entireHistory:YES];
   while ([walker iterateWithCommitBlock:block]) {
     ;

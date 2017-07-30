@@ -76,15 +76,15 @@ typedef NS_ENUM(NSUInteger, GCHistorySorting) {
 @end
 
 @interface GCHistoryWalker : NSObject
-- (BOOL)iterateWithCommitBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block;  // Returns NO if over or if stopped
+- (BOOL)iterateWithCommitBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block;  // Returns NO if over or if stopped
 @end
 
 @interface GCHistory (GCHistoryWalker)
-- (void)walkAncestorsOfCommits:(NSArray*)commits usingBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block;  // Commits are walked so that parents are guaranteed not to be called before all their children have been called (however the order between siblings is undefined)
-- (void)walkDescendantsOfCommits:(NSArray*)commits usingBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block;  // Commits are walked so that children are guaranteed not to be called before all their parents have been called (however the order between siblings is undefined)
+- (void)walkAncestorsOfCommits:(NSArray*)commits usingBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block;  // Commits are walked so that parents are guaranteed not to be called before all their children have been called (however the order between siblings is undefined)
+- (void)walkDescendantsOfCommits:(NSArray*)commits usingBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block;  // Commits are walked so that children are guaranteed not to be called before all their parents have been called (however the order between siblings is undefined)
 
-- (void)walkAllCommitsFromLeavesUsingBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block;  // Convenience wrapper for walking all ancestors from the history leaves
-- (void)walkAllCommitsFromRootsUsingBlock:(void (^)(GCHistoryCommit* commit, BOOL* stop))block;  // Convenience wrapper for walking all descendants from the history roots
+- (void)walkAllCommitsFromLeavesUsingBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block;  // Convenience wrapper for walking all ancestors from the history leaves
+- (void)walkAllCommitsFromRootsUsingBlock:(void (NS_NOESCAPE ^)(GCHistoryCommit* commit, BOOL* stop))block;  // Convenience wrapper for walking all descendants from the history roots
 
 - (GCHistoryWalker*)walkerForAncestorsOfCommits:(NSArray*)commits;  // Low-level API - DO NOT update the history while iterating the walker
 - (GCHistoryWalker*)walkerForDescendantsOfCommits:(NSArray*)commits;  // Low-level API - DO NOT update the history while iterating the walker
