@@ -119,9 +119,9 @@ typedef void (^GCDiffEndHunkHandler)();
 
 @interface GCDiffPatch : NSObject
 @property(nonatomic, readonly, getter=isEmpty) BOOL empty;
-- (void)enumerateUsingBeginHunkHandler:(GCDiffBeginHunkHandler)beginHunkHandler
-                           lineHandler:(GCDiffLineHandler)lineHandler
-                        endHunkHandler:(GCDiffEndHunkHandler)endHunkHandler;
+- (void)enumerateUsingBeginHunkHandler:(NS_NOESCAPE GCDiffBeginHunkHandler)beginHunkHandler
+                           lineHandler:(NS_NOESCAPE GCDiffLineHandler)lineHandler
+                        endHunkHandler:(NS_NOESCAPE GCDiffEndHunkHandler)endHunkHandler;
 @end
 
 @interface GCRepository (GCDiff)

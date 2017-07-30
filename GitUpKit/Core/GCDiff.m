@@ -99,9 +99,9 @@ static inline GCFileDiffChange _FileDiffChangeFromStatus(git_delta_t status) {
   return (git_patch_num_hunks(_private) == 0);
 }
 
-- (void)enumerateUsingBeginHunkHandler:(GCDiffBeginHunkHandler)beginHunkHandler
-                           lineHandler:(GCDiffLineHandler)lineHandler
-                        endHunkHandler:(GCDiffEndHunkHandler)endHunkHandler {
+- (void)enumerateUsingBeginHunkHandler:(NS_NOESCAPE GCDiffBeginHunkHandler)beginHunkHandler
+                           lineHandler:(NS_NOESCAPE GCDiffLineHandler)lineHandler
+                        endHunkHandler:(NS_NOESCAPE GCDiffEndHunkHandler)endHunkHandler {
   for (size_t i = 0, iMax = git_patch_num_hunks(_private); i < iMax; ++i) {
     if (beginHunkHandler) {
       const git_diff_hunk* hunk;
