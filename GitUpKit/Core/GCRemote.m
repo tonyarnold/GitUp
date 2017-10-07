@@ -240,10 +240,12 @@ cleanup:
 // Inspired from git_remote_prune()
 - (BOOL)checkForChangesInRemote:(GCRemote*)remote
                     withOptions:(GCRemoteCheckOptions)options
-                addedReferences:(NSDictionary**)addedReferences
-             modifiedReferences:(NSDictionary**)modifiedReferences
-              deletedReferences:(NSDictionary**)deletedReferences
+                addedReferences:(NSDictionary**)addedReferencesPtr
+             modifiedReferences:(NSDictionary**)modifiedReferencesPtr
+              deletedReferences:(NSDictionary**)deletedReferencesPtr
                           error:(NSError**)error {
+  NSParameterAssert(addedReferencesPtr && modifiedReferencesPtr && deletedReferencesPtr);
+
   BOOL success = NO;
   CFDictionaryKeyCallBacks keyCallbacks = {0, GCCStringCopyCallBack, GCFreeReleaseCallBack, NULL, GCCStringEqualCallBack, GCCStringHashCallBack};
   CFDictionaryValueCallBacks valueCallbacks = {0, GCOIDCopyCallBack, GCFreeReleaseCallBack, NULL, GCOIDEqualCallBack};
@@ -300,24 +302,19 @@ cleanup:
   }
 
   // Compare lists
-  if (addedReferences) {
-    *addedReferences = [[NSMutableDictionary alloc] init];
-  }
-  if (modifiedReferences) {
-    *modifiedReferences = [[NSMutableDictionary alloc] init];
-  }
-  if (deletedReferences) {
-    *deletedReferences = [[NSMutableDictionary alloc] init];
-  }
+  NSMutableDictionary* addedReferences = [[NSMutableDictionary alloc] init];
+  NSMutableDictionary* modifiedReferences = [[NSMutableDictionary alloc] init];
+  NSMutableDictionary* deletedReferences = [[NSMutableDictionary alloc] init];
+
   GCDictionaryApplyBlock(remoteReferences, ^(const void* key, const void* value) {
     const char* name = key;
     const git_oid* remoteOID = value;
     const git_oid* localOID = CFDictionaryGetValue(localReferences, name);
     if (!localOID) {
-      [(NSMutableDictionary*)*addedReferences setObject:GCGitOIDToSHA1(remoteOID) forKey:[NSString stringWithUTF8String:name]];  // Reference is in remote but not in repository
+      [addedReferences setObject:GCGitOIDToSHA1(remoteOID) forKey:[NSString stringWithUTF8String:name]];  // Reference is in remote but not in repository
     } else {
       if (git_oid_cmp(localOID, remoteOID)) {
-        [(NSMutableDictionary*)*modifiedReferences setObject:GCGitOIDToSHA1(remoteOID) forKey:[NSString stringWithUTF8String:name]];  // Reference is in remote and repository but with different targets
+        [modifiedReferences setObject:GCGitOIDToSHA1(remoteOID) forKey:[NSString stringWithUTF8String:name]];  // Reference is in remote and repository but with different targets
       }
       CFDictionaryRemoveValue(localReferences, name);
     }
@@ -325,8 +322,13 @@ cleanup:
   GCDictionaryApplyBlock(localReferences, ^(const void* key, const void* value) {
     const char* name = key;
     const git_oid* localOID = value;
-    [(NSMutableDictionary*)*deletedReferences setObject:GCGitOIDToSHA1(localOID) forKey:[NSString stringWithUTF8String:name]];  // Reference is not in remote anymore but still in repository
+    [deletedReferences setObject:GCGitOIDToSHA1(localOID) forKey:[NSString stringWithUTF8String:name]];  // Reference is not in remote anymore but still in repository
   });
+
+  *addedReferencesPtr = [addedReferences copy];
+  *modifiedReferencesPtr = [modifiedReferences copy];
+  *deletedReferencesPtr = [deletedReferences copy];
+
   success = YES;
 
 cleanup:
