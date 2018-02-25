@@ -1,4 +1,4 @@
-//  Copyright (C) 2015-2017 Pierre-Olivier Latour <info@pol-online.net>
+//  Copyright (C) 2015-2018 Pierre-Olivier Latour <info@pol-online.net>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -334,7 +334,7 @@ static int _ReferenceForEachCallback(const char* refname, void* payload) {
     CFAbsoluteTime time = CFAbsoluteTimeGetCurrent();
     GCTask* task = [[GCTask alloc] initWithExecutablePath:path];
     task.currentDirectoryPath = self.workingDirectoryPath;  // TODO: Is this the right working directory?
-    task.additionalEnvironment = @{ @"PATH" : cachedPATH };
+    task.additionalEnvironment = @{@"PATH" : cachedPATH};
     int status;
     NSData* stdoutData;
     NSData* stderrData;

@@ -1,4 +1,4 @@
-//  Copyright (C) 2015-2018 Pierre-Olivier Latour <info@pol-online.net>
+//  Copyright (C) 2018 Rob Mayoff <gitup@rob.dqd.com>.
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -13,15 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
-@class GCHistoryCommit, GILine, GILayer;
+@interface ToolbarItemWrapperView : NSView
 
-@interface GINode : NSObject
-@property(nonatomic, readonly) GILayer* layer;  // NOT RETAINED
-@property(nonatomic, readonly) GILine* primaryLine;  // NOT RETAINED
-@property(nonatomic, readonly) GCHistoryCommit* commit;
-@property(nonatomic, readonly, getter=isDummy) BOOL dummy;
-@property(nonatomic, readonly) NSUInteger parentCount;
-- (GINode*)parentAtIndex:(NSUInteger)index;  // NOT RETAINED
 @end

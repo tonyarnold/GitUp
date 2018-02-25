@@ -1,4 +1,4 @@
-//  Copyright (C) 2015-2017 Pierre-Olivier Latour <info@pol-online.net>
+//  Copyright (C) 2015-2018 Pierre-Olivier Latour <info@pol-online.net>
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -117,7 +117,6 @@
     kUserDefaultsKey_CheckInterval : @(15 * 60),
     kUserDefaultsKey_FirstLaunch : @(YES),
     kUserDefaultsKey_DiffWhitespaceMode : @(kGCLiveRepositoryDiffWhitespaceMode_Normal),
-    kUserDefaultsKey_EnableVisualEffects : @(NO),
     kUserDefaultsKey_ShowWelcomeWindow : @(YES),
   };
   [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
@@ -353,6 +352,11 @@
   // Initialize Google Analytics
   [[GARawTracker sharedTracker] startWithTrackingID:@"UA-83409580-1"];
 #endif
+
+  [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
+                                                     andSelector:@selector(_getUrl:withReplyEvent:)
+                                                   forEventClass:kInternetEventClass
+                                                      andEventID:kAEGetURL];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification*)notification {
@@ -415,6 +419,7 @@
     CFRunLoopSourceRef source = CFMessagePortCreateRunLoopSource(kCFAllocatorDefault, _messagePort, 0);
     if (source) {
       CFRunLoopAddSource(CFRunLoopGetMain(), source, kCFRunLoopDefaultMode);  // Don't use kCFRunLoopCommonModes on purpose
+      CFRelease(source);
     } else {
       XLOG_DEBUG_UNREACHABLE();
     }
@@ -427,6 +432,16 @@
   // Enable sudden termination
   [[NSProcessInfo processInfo] enableSuddenTermination];
 #endif
+}
+
+- (void)_getUrl:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
+  NSURL* url = [NSURL URLWithString:[event paramDescriptorForKeyword:keyDirectObject].stringValue];
+  BOOL isGitHubMacScheme = [url.scheme rangeOfString:@"github-mac" options:NSCaseInsensitiveSearch].location != NSNotFound;
+  BOOL isOpenRepoHost = [url.host rangeOfString:@"openRepo" options:NSCaseInsensitiveSearch].location != NSNotFound;
+  NSString* path = url.path.length ? [url.path substringFromIndex:1] : nil;
+  if (isGitHubMacScheme && isOpenRepoHost && path) {
+    [self _cloneRepositoryFromURLString:path];
+  }
 }
 
 - (BOOL)applicationShouldOpenUntitledFile:(NSApplication*)sender {
@@ -485,7 +500,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   NSString* command = [input objectForKey:kToolDictionaryKey_Command];
   NSString* repository = [[input objectForKey:kToolDictionaryKey_Repository] stringByStandardizingPath];
   if (!command.length || !repository.length) {
-    return @{ kToolDictionaryKey_Error : @"Invalid command" };
+    return @{kToolDictionaryKey_Error : @"Invalid command"};
   }
   if ([command isEqualToString:@kToolCommand_Open]) {
     [self _openRepositoryWithURL:[NSURL fileURLWithPath:repository] withCloneMode:kCloneMode_None windowModeID:NSNotFound];
@@ -496,7 +511,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   } else if ([command isEqualToString:@kToolCommand_Stash]) {
     [self _openRepositoryWithURL:[NSURL fileURLWithPath:repository] withCloneMode:kCloneMode_None windowModeID:kWindowModeID_Stashes];
   } else {
-    return @{ kToolDictionaryKey_Error : [NSString stringWithFormat:@"Unknown command '%@'", command] };
+    return @{kToolDictionaryKey_Error : [NSString stringWithFormat:@"Unknown command '%@'", command]};
   }
   return @{};
 }
@@ -599,8 +614,8 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   }
 }
 
-- (IBAction)cloneRepository:(id)sender {
-  _cloneURLTextField.stringValue = @"";
+- (void)_cloneRepositoryFromURLString:(NSString*)urlString {
+  _cloneURLTextField.stringValue = urlString;
   _cloneRecursiveButton.state = NSOnState;
   if ([NSApp runModalForWindow:_cloneWindow] && _cloneURLTextField.stringValue.length) {
     NSURL* url = GCURLFromGitURL(_cloneURLTextField.stringValue);
@@ -637,6 +652,10 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
       [NSApp presentError:MAKE_ERROR(@"Invalid Git repository URL")];
     }
   }
+}
+
+- (IBAction)cloneRepository:(id)sender {
+  [self _cloneRepositoryFromURLString:@""];
 }
 
 - (IBAction)dimissModal:(id)sender {
