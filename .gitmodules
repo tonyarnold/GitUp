@@ -6,7 +6,7 @@
 	url = https://github.com/git-up/libgit2.git
 [submodule "Libraries"]
 	path = GitUpKit/Third-Party/Libraries
-	url = https://github.com/git-up/Libraries.git
+	url = https://github.com/douglashill/GitUpLibraries.git
 [submodule "GitUp/Third-Party/GARawTracker"]
 	path = GitUp/Third-Party/GARawTracker
 	url = https://github.com/swisspol/GARawTracker.git
