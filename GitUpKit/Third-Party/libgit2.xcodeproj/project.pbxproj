@@ -1134,7 +1134,7 @@
 		E217485D1B911B5200BE234A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					E2174BD41B91240400BE234A = {
@@ -1481,7 +1481,7 @@
 					GIT_ARCH_64,
 				);
 				HEADER_SEARCH_PATHS = (
-					"Libraries/libssh2/$(PLATFORM_NAME)/include",
+					"libssh2/$(PLATFORM_NAME)/include",
 					libgit2/src,
 					libgit2/include,
 					"libgit2/deps/http-parser",
@@ -1524,7 +1524,7 @@
 					GIT_ARCH_64,
 				);
 				HEADER_SEARCH_PATHS = (
-					"Libraries/libssh2/$(PLATFORM_NAME)/include",
+					"libssh2/$(PLATFORM_NAME)/include",
 					libgit2/src,
 					libgit2/include,
 					"libgit2/deps/http-parser",
