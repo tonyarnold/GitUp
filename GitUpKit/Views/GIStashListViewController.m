@@ -110,7 +110,7 @@
 
   if (_stashes.count == 0) {
     _emptyLabel.hidden = NO;
-    [self tableViewSelectionDidChange:nil];  // Work around a bug where -tableViewSelectionDidChange is not called when emptying the table
+    [self updateForTableViewSelectionChange];  // Work around a bug where -tableViewSelectionDidChange is not called when emptying the table
   } else {
     _emptyLabel.hidden = YES;
   }
@@ -146,6 +146,10 @@
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification*)notification {
+  [self updateForTableViewSelectionChange];
+}
+
+- (void)updateForTableViewSelectionChange {
   NSInteger row = _tableView.selectedRow;
   if (row >= 0) {
     GCStash* stash = _stashes[row];

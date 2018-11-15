@@ -57,7 +57,6 @@ static inline git_config_level_t _ConfigLevelToLevel(GCConfigLevel level) {
       return GIT_CONFIG_LEVEL_LOCAL;
   }
   XLOG_DEBUG_UNREACHABLE();
-  return 0;
 }
 
 @implementation GCConfigOption
