@@ -14,3 +14,5 @@ CLANG_ENABLE_OBJC_ARC = YES
 ENABLE_STRICT_OBJC_MSGSEND = YES
 CLANG_WARN__DUPLICATE_METHOD_MATCH = YES
 CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES
+
+WARNING_CFLAGS = -Weverything -Wno-objc-missing-property-synthesis -Wno-pointer-arith -Wno-reserved-id-macro -Wno-direct-ivar-access -Wno-cstring-format-directive -Wno-documentation-unknown-command -Wno-implicit-retain-self -Wno-explicit-ownership-type -Wno-double-promotion -Wno-documentation-unknown-command -Wno-objc-messaging-id -Wno-gnu-statement-expression -Wno-nullable-to-nonnull-conversion -Wno-cast-qual -Wno-gnu-binary-literal -Wno-switch-enum -Wno-cast-align -Wno-language-extension-token -Wno-padded
