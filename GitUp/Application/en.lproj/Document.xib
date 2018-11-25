@@ -73,7 +73,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="1000" height="500"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView hidden="YES" id="Zjf-1c-7Wk" customClass="GIColorView">
+                    <customView hidden="YES" appearanceType="aqua" id="Zjf-1c-7Wk" customClass="GIColorView">
                         <rect key="frame" x="0.0" y="450" width="1000" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <subviews>
