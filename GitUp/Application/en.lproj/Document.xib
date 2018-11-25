@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -556,7 +556,7 @@ Adjust settings in Show menu</string>
                         <action selector="selectPreviousCommit:" target="-2" id="cHX-Hx-4Op"/>
                     </connections>
                 </button>
-                <segmentedControl toolTip="Select view" verticalHuggingPriority="750" misplaced="YES" id="RvM-Rz-Je8">
+                <segmentedControl toolTip="Select view" verticalHuggingPriority="750" id="RvM-Rz-Je8">
                     <rect key="frame" x="3" y="3" width="110" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="vbd-3d-MTF">
@@ -580,7 +580,7 @@ Adjust settings in Show menu</string>
             </subviews>
             <point key="canvasLocation" x="469" y="496"/>
         </customView>
-        <customView misplaced="YES" id="kfr-yg-mn6" userLabel="Right View" customClass="ToolbarItemWrapperView">
+        <customView id="kfr-yg-mn6" userLabel="Right View" customClass="ToolbarItemWrapperView">
             <rect key="frame" x="0.0" y="0.0" width="260" height="32"/>
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
