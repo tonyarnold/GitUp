@@ -109,7 +109,7 @@
   if (_results.count) {
     _tableView.hidden = NO;
     _emptyTextField.hidden = YES;
-    [self tableViewSelectionDidChange:nil];  // Work around a bug where -tableViewSelectionDidChange is not called when emptying the table
+    [self updateForTableViewSelectionChange];  // Work around a bug where -tableViewSelectionDidChange is not called when emptying the table
   } else {
     _tableView.hidden = YES;  // Hide table to prevent it to become first responder
     _emptyTextField.hidden = NO;
@@ -239,6 +239,10 @@
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification*)notification {
+  [self updateForTableViewSelectionChange];
+}
+
+- (void)updateForTableViewSelectionChange {
   if ([_delegate respondsToSelector:@selector(commitListViewControllerDidChangeSelection:)]) {
     [_delegate commitListViewControllerDidChangeSelection:self];
   }

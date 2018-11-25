@@ -52,10 +52,6 @@
 
 #define kMaxProgressRefreshRate 10.0  // Hz
 
-@interface NSWindow (OSX_10_10)
-- (void)setTitleVisibility:(NSWindowTitleVisibility)visibility;
-@end
-
 @interface Document () <NSToolbarDelegate, NSTextFieldDelegate, GCLiveRepositoryDelegate,
                         GIWindowControllerDelegate, GIMapViewControllerDelegate, GISnapshotListViewControllerDelegate, GIUnifiedReflogViewControllerDelegate,
                         GICommitListViewControllerDelegate, GICommitRewriterViewControllerDelegate, GICommitSplitterViewControllerDelegate,
@@ -88,7 +84,7 @@ static inline WindowModeID _WindowModeIDFromString(NSString* mode) {
     return kWindowModeID_Stashes;
   }
   XLOG_DEBUG_UNREACHABLE();
-  return nil;
+  __builtin_unreachable();
 }
 
 @implementation Document {
@@ -108,7 +104,6 @@ static inline WindowModeID _WindowModeIDFromString(NSString* mode) {
   GIStashListViewController* _stashListViewController;
   GIConfigViewController* _configViewController;
   GCLiveRepository* _repository;
-  BOOL _unifiedToolbar;
   NSNumberFormatter* _numberFormatter;
   NSDateFormatter* _dateFormatter;
   CALayer* _fixedSnapshotLayer;
@@ -158,7 +153,6 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
 
 - (instancetype)init {
   if ((self = [super init])) {
-    _unifiedToolbar = [NSWindow instancesRespondToSelector:@selector(setTitleVisibility:)];  // OS X 10.10 and later
     _numberFormatter = [[NSNumberFormatter alloc] init];
     _numberFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US"];
     _numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
@@ -283,7 +277,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
   }
   _mainWindow.backgroundColor = [NSColor whiteColor];
   [_mainWindow setToolbar:_toolbar];
-  if (_unifiedToolbar) {
+  if (@available(macOS 10.10, *)) {
     [_mainWindow setTitleVisibility:NSWindowTitleHidden];
   }
   _contentView.wantsLayer = YES;
@@ -1158,7 +1152,7 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
 }
 
 - (NSArray*)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar {
-  if (_unifiedToolbar) {
+  if (@available(macOS 10.10, *)) {
     return @[ kToolbarItem_Left, kToolbarItem_Title, kToolbarItem_Right ];
   }
   return @[ kToolbarItem_Left, NSToolbarFlexibleSpaceItemIdentifier, kToolbarItem_Right ];
