@@ -54,7 +54,6 @@ CGFloat GIFontSize(void) {
 }
 
 static const void* _associatedObjectCommitKey = &_associatedObjectCommitKey;
-static NSColor* _separatorColor = nil;
 
 @implementation NSMutableAttributedString (GIAppKit)
 
@@ -328,10 +327,6 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
 
 @implementation GITableCellView
 
-+ (void)initialize {
-  _separatorColor = [NSColor separatorColor];
-}
-
 - (void)saveTextFieldColors {
   for (NSView* view in self.subviews) {
     if ([view isKindOfClass:[NSTextField class]]) {
@@ -364,7 +359,7 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
   NSRect bounds = self.bounds;
   CGContextRef context = [[NSGraphicsContext currentContext] CGContext];
 
-  [_separatorColor setStroke];
+  [[NSColor separatorColor] setStroke];
   CGContextMoveToPoint(context, 0, 0.5);
   CGContextAddLineToPoint(context, bounds.size.width, 0.5);
   CGContextStrokePath(context);
