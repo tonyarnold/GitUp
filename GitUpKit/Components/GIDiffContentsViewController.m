@@ -22,6 +22,7 @@
 #import "GIInterface.h"
 #import "GIViewController+Utilities.h"
 #import "GCRepository+Index.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 
 // Units ems: a multiple of the font point size, so the width threshold is 100 * 10 = 1000 for a 10 point font.
@@ -222,12 +223,13 @@ static NSColor* _DimColor(NSColor* color) {
   _renamedBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(133.0 / 255.0) green:(96.0 / 255.0) blue:(168.0 / 255.0) alpha:1.0]);
   _untrackedBackgroundColor = [NSColor colorWithDeviceRed:0.75 green:0.75 blue:0.75 alpha:1.0];
 
-  _conflictImage = [[NSBundle bundleForClass:[GIDiffContentsViewController class]] imageForResource:@"icon_file_conflict"];
-  _addedImage = [[NSBundle bundleForClass:[GIDiffContentsViewController class]] imageForResource:@"icon_file_a"];
-  _modifiedImage = [[NSBundle bundleForClass:[GIDiffContentsViewController class]] imageForResource:@"icon_file_m"];
-  _deletedImage = [[NSBundle bundleForClass:[GIDiffContentsViewController class]] imageForResource:@"icon_file_d"];
-  _renamedImage = [[NSBundle bundleForClass:[GIDiffContentsViewController class]] imageForResource:@"icon_file_r"];
-  _untrackedImage = [[NSBundle bundleForClass:[GIDiffContentsViewController class]] imageForResource:@"icon_file_u"];
+  NSBundle* bundle = GitUpKitBundle();
+  _conflictImage = [bundle imageForResource:@"icon_file_conflict"];
+  _addedImage = [bundle imageForResource:@"icon_file_a"];
+  _modifiedImage = [bundle imageForResource:@"icon_file_m"];
+  _deletedImage = [bundle imageForResource:@"icon_file_d"];
+  _renamedImage = [bundle imageForResource:@"icon_file_r"];
+  _untrackedImage = [bundle imageForResource:@"icon_file_u"];
 }
 
 - (instancetype)initWithRepository:(GCLiveRepository*)repository {

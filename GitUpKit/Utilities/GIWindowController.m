@@ -23,7 +23,7 @@
 #import "GIModalView.h"
 #import "GIColorView.h"
 #import "GIConstants.h"
-
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 #import "GIGraphView.h"
 
@@ -180,7 +180,7 @@ static void _TimerCallBack(CFRunLoopTimerRef timer, void* info) {
 
 - (instancetype)initWithWindow:(NSWindow*)window {
   if ((self = [super initWithWindow:window])) {
-    [[NSBundle bundleForClass:[GIWindowController class]] loadNibNamed:@"GIWindowController" owner:self topLevelObjects:NULL];
+    [GitUpKitBundle() loadNibNamed:@"GIWindowController" owner:self topLevelObjects:NULL];
     XLOG_DEBUG_CHECK(_overlayView);
 
     _area = [[NSTrackingArea alloc] initWithRect:NSZeroRect options:(NSTrackingInVisibleRect | NSTrackingActiveAlways | NSTrackingMouseEnteredAndExited) owner:self userInfo:nil];

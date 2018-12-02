@@ -19,6 +19,7 @@
 
 #import "GIPrivate.h"
 #import "GIAppKit.h"
+#import "GitUpKitBundle.h"
 
 #define kTextLineHeightPadding 3
 #define kTextLineDescentAdjustment 1
@@ -49,7 +50,7 @@ const char* GIDiffViewMissingNewlinePlaceholder = "🚫\n";
     return;
   }
 
-  NSBundle *bundle = [NSBundle bundleForClass:[GIDiffView class]];
+  let bundle = GitUpKitBundle();
   GIDiffViewDeletedBackgroundColor = [NSColor colorNamed:@"GIDiffViewDeletedBackgroundColor" bundle:bundle];
   GIDiffViewDeletedHighlightColor = [NSColor colorNamed:@"GIDiffViewDeletedHighlightColor" bundle:bundle];
   GIDiffViewAddedBackgroundColor = [NSColor colorNamed:@"GIDiffViewAddedBackgroundColor" bundle:bundle];

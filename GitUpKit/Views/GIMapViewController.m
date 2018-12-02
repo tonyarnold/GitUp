@@ -23,6 +23,7 @@
 #import "GIInterface.h"
 #import "GCRepository+Utilities.h"
 #import "GCHistory+Rewrite.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 
 #define kPersistentViewStateKeyNamespace @"GIMapViewController_"
@@ -78,7 +79,7 @@ static NSColor* _patternColor = nil;
     return;
   }
 
-  _patternColor = [NSColor colorWithPatternImage:[[NSBundle bundleForClass:[GIMapViewController class]] imageForResource:@"background_pattern"]];
+  _patternColor = [NSColor colorWithPatternImage:[GitUpKitBundle() imageForResource:@"background_pattern"]];
 }
 
 - (instancetype)initWithRepository:(GCLiveRepository*)repository {
