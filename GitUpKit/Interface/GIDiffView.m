@@ -45,7 +45,11 @@ const char* GIDiffViewMissingNewlinePlaceholder = "🚫\n";
 @implementation GIDiffView
 
 + (void)initialize {
-  NSBundle *bundle = [NSBundle bundleForClass:self.class];
+  if (self != [GIDiffView class]) {
+    return;
+  }
+
+  NSBundle *bundle = [NSBundle bundleForClass:[GIDiffView class]];
   GIDiffViewDeletedBackgroundColor = [NSColor colorNamed:@"GIDiffViewDeletedBackgroundColor" bundle:bundle];
   GIDiffViewDeletedHighlightColor = [NSColor colorNamed:@"GIDiffViewDeletedHighlightColor" bundle:bundle];
   GIDiffViewAddedBackgroundColor = [NSColor colorNamed:@"GIDiffViewAddedBackgroundColor" bundle:bundle];
