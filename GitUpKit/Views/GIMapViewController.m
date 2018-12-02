@@ -74,6 +74,10 @@ static NSColor* _patternColor = nil;
 }
 
 + (void)initialize {
+  if (self != [GIMapViewController class]) {
+    return;
+  }
+
   _patternColor = [NSColor colorWithPatternImage:[[NSBundle bundleForClass:[GIMapViewController class]] imageForResource:@"background_pattern"]];
 }
 

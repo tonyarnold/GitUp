@@ -136,6 +136,10 @@ static NSImage* _untrackedImage = nil;
 }
 
 + (void)initialize {
+  if (self != [GIDiffFilesViewController class]) {
+    return;
+  }
+
   _conflictImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_conflict"];
   _addedImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_a"];
   _modifiedImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_m"];

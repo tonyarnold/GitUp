@@ -131,6 +131,10 @@ static inline WindowModeID _WindowModeIDFromString(NSString* mode) {
 }
 
 + (void)initialize {
+  if (self != [Document class]) {
+    return;
+  }
+
   [[NSImage imageNamed:@"icon_nav_map"] setTemplate:YES];
   [[NSImage imageNamed:@"icon_nav_commit"] setTemplate:YES];
   [[NSImage imageNamed:@"icon_nav_stash"] setTemplate:YES];
