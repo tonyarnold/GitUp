@@ -23,7 +23,7 @@
 #import "GIModalView.h"
 #import "GIColorView.h"
 #import "GIConstants.h"
-#import "NSBundle+GitUpKit.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 #import "GIGraphView.h"
 

@@ -12,11 +12,11 @@
 		749786941B85AAB10065BD55 /* GCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 74EDB5D11B84D4C400F00E79 /* GCOrderedSet.m */; };
 		74EDB5D61B84E06500F00E79 /* GCOrderedSet-Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74EDB5D51B84E06500F00E79 /* GCOrderedSet-Tests.m */; };
 		74EDB5D71B8517F500F00E79 /* GCOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 74EDB5D11B84D4C400F00E79 /* GCOrderedSet.m */; };
-		A52D6A1B21B430AD0083CBC3 /* NSBundle+GitUpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = A52D6A1921B430AD0083CBC3 /* NSBundle+GitUpKit.h */; };
-		A52D6A1C21B430AD0083CBC3 /* NSBundle+GitUpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = A52D6A1921B430AD0083CBC3 /* NSBundle+GitUpKit.h */; };
-		A52D6A1D21B430AD0083CBC3 /* NSBundle+GitUpKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* NSBundle+GitUpKit.m */; };
-		A52D6A1E21B430AD0083CBC3 /* NSBundle+GitUpKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* NSBundle+GitUpKit.m */; };
-		A52D6A1F21B431450083CBC3 /* NSBundle+GitUpKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* NSBundle+GitUpKit.m */; };
+		A52D6A1B21B430AD0083CBC3 /* GitUpKitBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = A52D6A1921B430AD0083CBC3 /* GitUpKitBundle.h */; };
+		A52D6A1C21B430AD0083CBC3 /* GitUpKitBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = A52D6A1921B430AD0083CBC3 /* GitUpKitBundle.h */; };
+		A52D6A1D21B430AD0083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
+		A52D6A1E21B430AD0083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
+		A52D6A1F21B431450083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
 		E200A3BA1B02DDA100C4E39D /* GCPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = E200A3B81B02DDA100C4E39D /* GCPrivate.m */; };
 		E20EB08C19FC75CA0031A075 /* GCRepository+Reset.m in Sources */ = {isa = PBXBuildFile; fileRef = E20EB08A19FC75CA0031A075 /* GCRepository+Reset.m */; };
 		E20EB09019FC76160031A075 /* GCRepository+Status.m in Sources */ = {isa = PBXBuildFile; fileRef = E20EB08E19FC76160031A075 /* GCRepository+Status.m */; };
@@ -420,8 +420,8 @@
 		74EDB5D01B84D4C400F00E79 /* GCOrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCOrderedSet.h; sourceTree = "<group>"; };
 		74EDB5D11B84D4C400F00E79 /* GCOrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCOrderedSet.m; sourceTree = "<group>"; };
 		74EDB5D51B84E06500F00E79 /* GCOrderedSet-Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GCOrderedSet-Tests.m"; sourceTree = "<group>"; };
-		A52D6A1921B430AD0083CBC3 /* NSBundle+GitUpKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+GitUpKit.h"; sourceTree = "<group>"; };
-		A52D6A1A21B430AD0083CBC3 /* NSBundle+GitUpKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+GitUpKit.m"; sourceTree = "<group>"; };
+		A52D6A1921B430AD0083CBC3 /* GitUpKitBundle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GitUpKitBundle.h; sourceTree = "<group>"; };
+		A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GitUpKitBundle.m; sourceTree = "<group>"; };
 		E200A3B81B02DDA100C4E39D /* GCPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCPrivate.m; sourceTree = "<group>"; };
 		E20EB08919FC75CA0031A075 /* GCRepository+Reset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GCRepository+Reset.h"; sourceTree = "<group>"; };
 		E20EB08A19FC75CA0031A075 /* GCRepository+Reset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GCRepository+Reset.m"; sourceTree = "<group>"; };
@@ -745,8 +745,8 @@
 			isa = PBXGroup;
 			children = (
 				E22941E11AC11E79000A83AF /* Utilities.xcassets */,
-				A52D6A1921B430AD0083CBC3 /* NSBundle+GitUpKit.h */,
-				A52D6A1A21B430AD0083CBC3 /* NSBundle+GitUpKit.m */,
+				A52D6A1921B430AD0083CBC3 /* GitUpKitBundle.h */,
+				A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */,
 				E22941D31AC11E31000A83AF /* GIAppKit.h */,
 				E22941D41AC11E31000A83AF /* GIAppKit.m */,
 				E22942251AC12E5C000A83AF /* GIColorView.h */,
@@ -1045,7 +1045,7 @@
 				E21753421B91626B00BE234A /* GCBranch.h in Headers */,
 				E21753431B91626B00BE234A /* GCCommit.h in Headers */,
 				E21753441B91626B00BE234A /* GCCommitDatabase.h in Headers */,
-				A52D6A1C21B430AD0083CBC3 /* NSBundle+GitUpKit.h in Headers */,
+				A52D6A1C21B430AD0083CBC3 /* GitUpKitBundle.h in Headers */,
 				E21753451B91626B00BE234A /* GCCore.h in Headers */,
 				E21753461B91626B00BE234A /* GCDiff.h in Headers */,
 				E21753471B91626B00BE234A /* GCError.h in Headers */,
@@ -1164,7 +1164,7 @@
 				E267E24E1B84DC7D00BAB377 /* GICommitRewriterViewController.h in Headers */,
 				E267E24F1B84DC7D00BAB377 /* GICommitSplitterViewController.h in Headers */,
 				E267E2501B84DC7D00BAB377 /* GICommitViewController.h in Headers */,
-				A52D6A1B21B430AD0083CBC3 /* NSBundle+GitUpKit.h in Headers */,
+				A52D6A1B21B430AD0083CBC3 /* GitUpKitBundle.h in Headers */,
 				E267E2511B84DC7D00BAB377 /* GIConfigViewController.h in Headers */,
 				E267E2521B84DC7D00BAB377 /* GIConflictResolverViewController.h in Headers */,
 				E267E2531B84DC7D00BAB377 /* GIDiffViewController.h in Headers */,
@@ -1422,7 +1422,7 @@
 				E21753951B91684300BE234A /* XLFunctions.m in Sources */,
 				E21753961B91684300BE234A /* XLLogger.m in Sources */,
 				E21753971B91684300BE234A /* XLLogRecord.m in Sources */,
-				A52D6A1E21B430AD0083CBC3 /* NSBundle+GitUpKit.m in Sources */,
+				A52D6A1E21B430AD0083CBC3 /* GitUpKitBundle.m in Sources */,
 				E21753981B91684300BE234A /* XLStandardLogger.m in Sources */,
 				E21753991B91684300BE234A /* XLDatabaseLogger.m in Sources */,
 			);
@@ -1477,7 +1477,7 @@
 				E267E2291B84DBF800BAB377 /* GIAppKit.m in Sources */,
 				E267E22A1B84DBF800BAB377 /* GIColorView.m in Sources */,
 				E267E22B1B84DBF800BAB377 /* GILinkButton.m in Sources */,
-				A52D6A1D21B430AD0083CBC3 /* NSBundle+GitUpKit.m in Sources */,
+				A52D6A1D21B430AD0083CBC3 /* GitUpKitBundle.m in Sources */,
 				E267E22C1B84DBF800BAB377 /* GIModalView.m in Sources */,
 				E267E22D1B84DBF800BAB377 /* GIViewController.m in Sources */,
 				E267E22E1B84DBF800BAB377 /* GIViewController+Utilities.m in Sources */,
@@ -1551,7 +1551,7 @@
 				E259C2E51A6624DC0079616B /* GCCommit-Tests.m in Sources */,
 				E299D00C1A71F0E9005035F7 /* GCSQLiteRepository.m in Sources */,
 				E2C338F619F85C8600063D95 /* GCStash.m in Sources */,
-				A52D6A1F21B431450083CBC3 /* NSBundle+GitUpKit.m in Sources */,
+				A52D6A1F21B431450083CBC3 /* GitUpKitBundle.m in Sources */,
 				E2F5C2831A81C53A00C30739 /* GCRepository+Reflog-Tests.m in Sources */,
 				E2B1BF341A85923800A999DF /* GIFunctions.m in Sources */,
 				E259C2E11A64FE4C0079616B /* GCRepository+Status-Tests.m in Sources */,

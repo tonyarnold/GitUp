@@ -23,7 +23,7 @@
 #import "GIInterface.h"
 #import "GCRepository+Utilities.h"
 #import "GCHistory+Rewrite.h"
-#import "NSBundle+GitUpKit.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 
 #define kPersistentViewStateKeyNamespace @"GIMapViewController_"

@@ -22,7 +22,7 @@
 #import "GIInterface.h"
 #import "GIViewController+Utilities.h"
 #import "GCRepository+Index.h"
-#import "NSBundle+GitUpKit.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 
 // Units ems: a multiple of the font point size, so the width threshold is 100 * 10 = 1000 for a 10 point font.

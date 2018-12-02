@@ -19,7 +19,7 @@
 
 #import "GIConfigViewController.h"
 #import "GIWindowController.h"
-#import "NSBundle+GitUpKit.h"
+#import "GitUpKitBundle.h"
 
 #import "GIInterface.h"
 #import "XLFacilityMacros.h"

@@ -19,7 +19,7 @@
 
 #import "GIPrivate.h"
 #import "GIAppKit.h"
-#import "NSBundle+GitUpKit.h"
+#import "GitUpKitBundle.h"
 
 #define kTextLineHeightPadding 3
 #define kTextLineDescentAdjustment 1

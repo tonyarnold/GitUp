@@ -1,6 +1,6 @@
 // Douglas Hill, December 2018
 
-#import "NSBundle+GitUpKit.h"
+#import "GitUpKitBundle.h"
 #import "GIBranch.h"
 
 NS_ASSUME_NONNULL_BEGIN

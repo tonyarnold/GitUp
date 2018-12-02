@@ -21,7 +21,7 @@
 
 #import "GIAppKit.h"
 #import "GIConstants.h"
-#import "NSBundle+GitUpKit.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 #import "GCMacros.h"
 

@@ -20,7 +20,7 @@
 #import "GIDiffFilesViewController.h"
 
 #import "GIInterface.h"
-#import "NSBundle+GitUpKit.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 
 #define kPasteboardType @"GIDiffDelta"  // Raw unretained pointer which is OK since pasteboard is use within process only
