@@ -15,6 +15,8 @@
 
 #import <stdlib.h>
 
+#define let __auto_type const
+
 #pragma mark - GCItemList
 
 typedef struct {
