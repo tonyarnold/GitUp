@@ -50,7 +50,7 @@ const char* GIDiffViewMissingNewlinePlaceholder = "🚫\n";
     return;
   }
 
-  let bundle = [NSBundle gitUpKitBundle];
+  let bundle = GitUpKitBundle();
   GIDiffViewDeletedBackgroundColor = [NSColor colorNamed:@"GIDiffViewDeletedBackgroundColor" bundle:bundle];
   GIDiffViewDeletedHighlightColor = [NSColor colorNamed:@"GIDiffViewDeletedHighlightColor" bundle:bundle];
   GIDiffViewAddedBackgroundColor = [NSColor colorNamed:@"GIDiffViewAddedBackgroundColor" bundle:bundle];

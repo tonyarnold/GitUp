@@ -141,7 +141,7 @@ static NSImage* _untrackedImage = nil;
     return;
   }
 
-  let bundle = [NSBundle gitUpKitBundle];
+  let bundle = GitUpKitBundle();
   _conflictImage = [bundle imageForResource:@"icon_file_conflict"];
   _addedImage = [bundle imageForResource:@"icon_file_a"];
   _modifiedImage = [bundle imageForResource:@"icon_file_m"];

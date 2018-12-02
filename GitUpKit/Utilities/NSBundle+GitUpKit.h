@@ -4,10 +4,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSBundle (GitUpKit)
-
-@property (class, readonly) NSBundle *gitUpKitBundle;
-
-@end
+NSBundle* GitUpKitBundle(void);
 
 NS_ASSUME_NONNULL_END

@@ -79,7 +79,7 @@ static NSColor* _patternColor = nil;
     return;
   }
 
-  _patternColor = [NSColor colorWithPatternImage:[[NSBundle gitUpKitBundle] imageForResource:@"background_pattern"]];
+  _patternColor = [NSColor colorWithPatternImage:[GitUpKitBundle() imageForResource:@"background_pattern"]];
 }
 
 - (instancetype)initWithRepository:(GCLiveRepository*)repository {

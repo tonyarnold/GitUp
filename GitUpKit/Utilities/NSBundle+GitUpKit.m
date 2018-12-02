@@ -5,13 +5,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation NSBundle (GitUpKit)
-
-- (NSBundle *)gitUpKitBundle {
+NSBundle* GitUpKitBundle(void) {
   // There’s nothing special about this class. Any hardcoded class in the bundle will do.
   return [NSBundle bundleForClass:[GIBranch class]];
 }
-
-@end
 
 NS_ASSUME_NONNULL_END

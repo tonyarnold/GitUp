@@ -68,7 +68,7 @@ static NSMutableDictionary* _patternHelp = nil;
 #endif
   _directHelp = [[NSMutableDictionary alloc] init];
   _patternHelp = [[NSMutableDictionary alloc] init];
-  NSString* string = [[NSString alloc] initWithContentsOfFile:[[NSBundle gitUpKitBundle] pathForResource:@"GIConfigViewController-Help" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
+  NSString* string = [[NSString alloc] initWithContentsOfFile:[GitUpKitBundle() pathForResource:@"GIConfigViewController-Help" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
   XLOG_DEBUG_CHECK(string);
   string = [string stringByReplacingOccurrencesOfString:@"linkgit:" withString:@""];  // TODO: Handle links
   for (NSString* section in [string componentsSeparatedByString:@"\n\n\n"]) {
@@ -213,7 +213,7 @@ static NSMutableDictionary* _patternHelp = nil;
 
 - (void)tableView:(NSTableView*)tableView didAddRowView:(NSTableRowView*)rowView forRow:(NSInteger)row {
   GCConfigOption* option = _config[row];
-  NSBundle *bundle = [NSBundle gitUpKitBundle];
+  NSBundle *bundle = GitUpKitBundle();
   if ([_set countForObject:option.variable] > 1) {
     rowView.backgroundColor = [NSColor colorNamed:@"GIConfigViewConflictColor" bundle:bundle];
   } else if (option.level != kGCConfigLevel_Local) {

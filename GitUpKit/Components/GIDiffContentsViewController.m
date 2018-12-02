@@ -223,7 +223,7 @@ static NSColor* _DimColor(NSColor* color) {
   _renamedBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(133.0 / 255.0) green:(96.0 / 255.0) blue:(168.0 / 255.0) alpha:1.0]);
   _untrackedBackgroundColor = [NSColor colorWithDeviceRed:0.75 green:0.75 blue:0.75 alpha:1.0];
 
-  NSBundle* bundle = [NSBundle gitUpKitBundle];
+  NSBundle* bundle = GitUpKitBundle();
   _conflictImage = [bundle imageForResource:@"icon_file_conflict"];
   _addedImage = [bundle imageForResource:@"icon_file_a"];
   _modifiedImage = [bundle imageForResource:@"icon_file_m"];

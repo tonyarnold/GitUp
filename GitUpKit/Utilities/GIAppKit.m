@@ -73,7 +73,7 @@ static const void* _associatedObjectCommitKey = &_associatedObjectCommitKey;
 @implementation NSAlert (GIAppKit)
 
 - (void)setType:(GIAlertType)type {
-  let bundle = [NSBundle gitUpKitBundle];
+  let bundle = GitUpKitBundle();
   switch (type) {
     case kGIAlertType_Note:
       self.icon = [bundle imageForResource:@"icon_alert_note"];
