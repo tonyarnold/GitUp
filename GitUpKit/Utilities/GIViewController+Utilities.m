@@ -45,6 +45,10 @@ static NSString* _diffTemporaryDirectoryPath = nil;
 @implementation GIViewController (Utilities)
 
 + (void)initialize {
+  if (self != [GIViewController class]) {
+    return;
+  }
+
   NSDictionary* defaults = @{
     GIViewController_DiffTool : GIViewControllerTool_FileMerge,
     GIViewController_MergeTool : GIViewControllerTool_FileMerge

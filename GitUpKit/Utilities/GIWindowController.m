@@ -163,6 +163,10 @@ static NSColor* _warningColor = nil;
 @dynamic window;  // Prevent synthetizing a property overriding the superclass methods
 
 + (void)initialize {
+  if (self != [GIWindowController class]) {
+    return;
+  }
+
   _helpColor = [NSColor colorWithDeviceRed:(0.0 / 255.0) green:(104.0 / 255.0) blue:(217.0 / 255.0) alpha:0.9];
   _informationalColor = [NSColor colorWithDeviceRed:(75.0 / 255.0) green:(75.0 / 255.0) blue:(75.0 / 255.0) alpha:0.9];
   _warningColor = [NSColor colorWithDeviceRed:(204.0 / 255.0) green:(82.0 / 255.0) blue:(82.0 / 255.0) alpha:0.9];

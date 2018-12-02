@@ -56,6 +56,10 @@ static NSMutableDictionary* _patternHelp = nil;
 }
 
 + (void)initialize {
+  if (self != [GIConfigViewController class]) {
+    return;
+  }
+
 #if DEBUG
   NSMutableCharacterSet* set = [NSMutableCharacterSet alphanumericCharacterSet];
   [set addCharactersInString:@"._-"];

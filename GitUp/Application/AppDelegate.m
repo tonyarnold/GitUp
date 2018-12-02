@@ -90,6 +90,10 @@
 }
 
 + (void)initialize {
+  if (self != [AppDelegate class]) {
+    return;
+  }
+  
   NSDictionary* defaults = @{
     GIMapViewControllerStateKey_ShowVirtualTips : @(YES),
     GIMapViewControllerStateKey_ShowTagLabels : @(YES),
