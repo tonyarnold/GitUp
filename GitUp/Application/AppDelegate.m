@@ -369,7 +369,9 @@
   // First launch has completed
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKey_FirstLaunch];
 
-  // Create tool message port
+#warning tool message port is disabled
+  // Create tool message port (failing with permission denied)
+  /*
   CFMessagePortContext context = {0, (__bridge void*)self, NULL, NULL, NULL};
   _messagePort = CFMessagePortCreateLocal(kCFAllocatorDefault, CFSTR(kToolPortName), _MessagePortCallBack, &context, NULL);
   if (_messagePort) {
@@ -384,6 +386,7 @@
     XLOG_ERROR(@"Failed creating message port for tool");
     XLOG_DEBUG_UNREACHABLE();
   }
+   */
 
 #if __ENABLE_SUDDEN_TERMINATION__
   // Enable sudden termination
