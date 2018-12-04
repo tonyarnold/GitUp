@@ -531,6 +531,10 @@ static const void* _associatedObjectDataKey = &_associatedObjectDataKey;
 
 #pragma mark - Drawing
 
+static CGColorRef nodeColor(void) {
+  return NSColor.whiteColor.CGColor;
+}
+
 - (BOOL)isOpaque {
   return YES;
 }
@@ -543,12 +547,12 @@ static void _DrawNode(GINode* node, CGContextRef context, CGFloat x, CGFloat y) 
     CGColorRef color = onBranchMainLine ? node.primaryLine.color.CGColor : [[NSColor darkGrayColor] CGColor];
     CGFloat diameter = onBranchMainLine ? kMainLineNodeLargeDiameter : kSubNodeDiameter;
     diameter -= 1;  // TODO: Why is this needed?
-    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+    CGContextSetFillColorWithColor(context, nodeColor());
     CGContextFillEllipseInRect(context, CGRectMake(x - diameter / 2, y - diameter / 2, diameter, diameter));
     CGContextSetStrokeColorWithColor(context, color);
     CGContextStrokeEllipseInRect(context, CGRectMake(x - diameter / 2, y - diameter / 2, diameter, diameter));
   } else if (onBranchMainLine) {
-    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+    CGContextSetFillColorWithColor(context, nodeColor());
     CGContextFillEllipseInRect(context, CGRectMake(x - kMainLineNodeSmallDiameter / 2, y - kMainLineNodeSmallDiameter / 2, kMainLineNodeSmallDiameter, kMainLineNodeSmallDiameter));
   } else {
     CGContextSetFillColorWithColor(context, node.primaryLine.color.CGColor);
@@ -568,7 +572,7 @@ static void _DrawTipNode(GINode* node, CGContextRef context, CGFloat x, CGFloat 
     CGContextFillPath(context);
   } else {
     diameter -= 1;  // TODO: Why is this needed?
-    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+    CGContextSetFillColorWithColor(context, nodeColor());
     CGContextFillEllipseInRect(context, CGRectMake(x - diameter / 2, y - diameter / 2, diameter, diameter));
     CGContextSetStrokeColorWithColor(context, color);
     CGContextStrokeEllipseInRect(context, CGRectMake(x - diameter / 2, y - diameter / 2, diameter, diameter));
@@ -580,7 +584,7 @@ static void _DrawRootNode(GINode* node, CGContextRef context, CGFloat x, CGFloat
   CGColorRef color = onBranchMainLine ? node.primaryLine.color.CGColor : [[NSColor darkGrayColor] CGColor];
   CGFloat diameter = onBranchMainLine ? kMainLineNodeLargeDiameter : kSubNodeDiameter;
   diameter -= 1;  // TODO: Why is this needed?
-  CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+  CGContextSetFillColorWithColor(context, nodeColor());
   CGContextFillEllipseInRect(context, CGRectMake(x - diameter / 2, y - diameter / 2, diameter, diameter));
   CGContextSetStrokeColorWithColor(context, color);
   CGContextStrokeEllipseInRect(context, CGRectMake(x - diameter / 2, y - diameter / 2, diameter, diameter));
@@ -878,7 +882,7 @@ static void _DrawBranchTitle(CGContextRef context, CGFloat x, CGFloat y, CGPoint
   if (boldFont == NULL) {
     boldFont = CTFontCreateUIFontForLanguage(kCTFontUIFontEmphasizedSystem, 13.0, CFSTR("en-US"));
   }
-  NSColor* darkColor = [NSColor colorWithDeviceWhite:0.2 alpha:1.0];
+  NSColor* darkColor = [NSColor textColor]; // this would ideally be a little bit lower contrast.
 
   // Start new attributed string for the branch title
   NSMutableAttributedString* multilineTitle = [[NSMutableAttributedString alloc] initWithString:@""];
@@ -1128,7 +1132,7 @@ static void _DrawNodeLabels(CGContextRef context, CGFloat x, CGFloat y, GINode* 
     // Draw label
 
     CGRect labelRect = CGRectInset(CGRectMake(textRect.origin.x, textRect.origin.y, MIN(textRect.size.width, kNodeLabelMaxWidth), textRect.size.height), -3.5, -2.5);
-    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 0.85);
+    CGContextSetFillColorWithColor(context, [NSColor.textBackgroundColor colorWithAlphaComponent:0.85].CGColor);
     GICGContextAddRoundedRect(context, labelRect, 4.0);
     CGContextFillPath(context);
     CGContextSetRGBStrokeColor(context, 0.4, 0.4, 0.4, 1.0);
@@ -1210,7 +1214,7 @@ static void _DrawHead(CGContextRef context, CGFloat x, CGFloat y, BOOL isDetache
 
   CFAttributedStringRef string = CFAttributedStringCreate(kCFAllocatorDefault, CFSTR("HEAD"), (CFDictionaryRef)attributes);
   CTLineRef line = CTLineCreateWithAttributedString(string);
-  CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+  CGContextSetFillColorWithColor(context, nodeColor());
   CGContextSetTextPosition(context, -15, -4);
   CTLineDraw(line, context);
   CFRelease(line);
@@ -1338,7 +1342,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
 
   // Draw node
 
-  CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+  CGContextSetFillColorWithColor(context, nodeColor());
   CGContextFillEllipseInRect(context, CGRectMake(-4, -4, 8, 8));
 
   // Draw text
@@ -1532,7 +1536,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
 
       if (node.dummy) {
 #if __DEBUG_DRAWING__
-        CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+        CGContextSetFillColorWithColor(context, nodeColor());
         CGContextFillRect(context, CGRectMake(x - 2, y - 2, 4, 4));
         CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
         CGContextFillRect(context, CGRectMake(x - 1, y - 1, 2, 2));
