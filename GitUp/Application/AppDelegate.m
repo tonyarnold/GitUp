@@ -27,7 +27,6 @@
 #import "Document.h"
 #import "Common.h"
 #import "ToolProtocol.h"
-#import "GARawTracker.h"
 
 #define OFFICIAL 0
 #define OFFICIAL_RELEASE !DEBUG && OFFICIAL
@@ -328,9 +327,6 @@
   [[BITHockeyManager sharedHockeyManager] setDisableMetricsManager:YES];
   [[BITHockeyManager sharedHockeyManager] setDisableFeedbackManager:YES];
   [[BITHockeyManager sharedHockeyManager] startManager];
-
-  // Initialize Google Analytics
-  [[GARawTracker sharedTracker] startWithTrackingID:@"UA-83409580-1"];
 #endif
 
   [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
@@ -441,14 +437,6 @@
     _allowWelcome = 1;
   }
   [self handleDocumentCountChanged];
-
-#if OFFICIAL_RELEASE
-  [[GARawTracker sharedTracker] sendEventWithCategory:@"application"
-                                               action:@"activate"
-                                                label:nil
-                                                value:nil
-                                      completionBlock:NULL];
-#endif
 }
 
 #if __ENABLE_SUDDEN_TERMINATION__
