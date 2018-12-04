@@ -216,6 +216,7 @@ static NSColor* _DimColor(NSColor* color) {
     return;
   }
 
+  // TODO: Change thse to colour in the bundle with dark variants.
   _conflictBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(255.0 / 255.0) green:(132.0 / 255.0) blue:(0.0 / 255.0) alpha:1.0]);
   _addedBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(75.0 / 255.0) green:(138.0 / 255.0) blue:(231.0 / 255.0) alpha:1.0]);
   _modifiedBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(119.0 / 255.0) green:(178.0 / 255.0) blue:(85.0 / 255.0) alpha:1.0]);
