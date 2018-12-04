@@ -1498,7 +1498,12 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
   // Draw lines
   if (lines.count) {
     CGContextSetLineJoin(context, kCGLineJoinMiter);
-    CGContextSetBlendMode(context, kCGBlendModeMultiply);
+
+    // This won’t handle high contrast settings. Not the right way to do this.
+    if ([self.effectiveAppearance.name isEqualToString:NSAppearanceNameAqua]) {
+      CGContextSetBlendMode(context, kCGBlendModeMultiply);
+    }
+
     for (NSInteger i = 0, count = lines.count; i < count; ++i) {
       GILine* line = lines[i];
       BOOL onBranchMainLine = line.branchMainLine;
