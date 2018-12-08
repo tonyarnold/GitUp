@@ -72,18 +72,6 @@ static NSColor* _separatorColor = nil;
 
 @implementation NSAlert (GIAppKit)
 
-+ (void)_alertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo {
-  void (^handler)(NSInteger) = contextInfo ? CFBridgingRelease(contextInfo) : NULL;
-  [alert.window orderOut:nil];  // Dismiss the alert window before the handler might chain another one
-  if (handler) {
-    handler(returnCode);
-  }
-}
-
-- (void)beginSheetModalForWindow:(NSWindow*)window withCompletionHandler:(void (^)(NSInteger returnCode))handler {
-  [self beginSheetModalForWindow:window modalDelegate:[NSAlert class] didEndSelector:@selector(_alertDidEnd:returnCode:contextInfo:) contextInfo:(handler ? (void*)CFBridgingRetain(handler) : NULL)];
-}
-
 - (void)setType:(GIAlertType)type {
   switch (type) {
     case kGIAlertType_Note:
@@ -230,7 +218,7 @@ static NSColor* _separatorColor = nil;
     NSRect bounds = self.bounds;
     CGFloat offset = self.textContainerOrigin.x + self.textContainerInset.width + self.textContainer.lineFragmentPadding;
     CGFloat charWidth = self.font.maximumAdvancement.width;  // TODO: Is this the most reliable way to get the character width of a fixed-width font?
-    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+    CGContextRef context = [[NSGraphicsContext currentContext] CGContext];
 
     CGContextSaveGState(context);
 
@@ -274,7 +262,7 @@ if ([keyPath isEqualToString:GICommitMessageViewUserDefaultsKey_##DEFAULTS_KEY])
   if ([keyPath isEqualToString:GICommitMessageViewUserDefaultKey_ShowInvisibleCharacters]) {
     NSRange range = NSMakeRange(0, self.textStorage.length);
     [self.layoutManager invalidateGlyphsForCharacterRange:range changeInLength:0 actualCharacterRange:NULL];
-    [self.layoutManager invalidateLayoutForCharacterRange:range isSoft:NO actualCharacterRange:NULL];
+    [self.layoutManager invalidateLayoutForCharacterRange:range actualCharacterRange:NULL];
     [self setNeedsDisplay:YES];
     return;
   }
@@ -372,7 +360,7 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
 
 - (void)drawRect:(NSRect)dirtyRect {
   NSRect bounds = self.bounds;
-  CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+  CGContextRef context = [[NSGraphicsContext currentContext] CGContext];
 
   [_separatorColor setStroke];
   CGContextMoveToPoint(context, 0, 0.5);
@@ -396,7 +384,7 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
 // NSTableView built-in fallback for tab key when not editable cell is around is to change the first responder to the next key view directly without using -selectNextKeyView:
 - (void)keyDown:(NSEvent*)event {
   if (event.keyCode == kGIKeyCode_Tab) {
-    if (event.modifierFlags & NSShiftKeyMask) {
+    if (event.modifierFlags & NSEventModifierFlagShift) {
       [self.window selectPreviousKeyView:nil];
     } else {
       [self.window selectNextKeyView:nil];
@@ -420,14 +408,20 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
         case ' ': {
           NSFont* font = [storage attribute:NSFontAttributeName atIndex:characterIndex effectiveRange:NULL];
           XLOG_DEBUG_CHECK([font.fontName isEqualToString:@"Menlo-Regular"]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
           [self replaceGlyphAtIndex:glyphIndex withGlyph:[font glyphWithName:@"periodcentered"]];
+#pragma clang diagnostic pop
           break;
         }
 
         case '\n': {
           NSFont* font = [storage attribute:NSFontAttributeName atIndex:characterIndex effectiveRange:NULL];
           XLOG_DEBUG_CHECK([font.fontName isEqualToString:@"Menlo-Regular"]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
           [self replaceGlyphAtIndex:glyphIndex withGlyph:[font glyphWithName:@"carriagereturn"]];
+#pragma clang diagnostic pop
           break;
         }
       }

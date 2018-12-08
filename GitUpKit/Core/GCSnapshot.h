@@ -26,6 +26,14 @@ typedef NS_OPTIONS(NSUInteger, GCSnapshotOptions) {
 
 @class GCCommit;
 
+/// Either a string or a date. We’re using specific types to work with NSSecureCoding.
+@protocol GCSnapshotInfoValue <NSObject>
+@end
+@interface NSString (GCSnapshotInfoValue) <GCSnapshotInfoValue>
+@end
+@interface NSDate (GCSnapshotInfoValue) <GCSnapshotInfoValue>
+@end
+
 @interface GCSnapshot : NSObject <NSSecureCoding>
 @end
 
@@ -33,8 +41,8 @@ typedef NS_OPTIONS(NSUInteger, GCSnapshotOptions) {
 @property(nonatomic, readonly, getter=isEmpty) BOOL empty;  // Snapshot has no references and HEAD is unborn
 @property(nonatomic, readonly) NSString* HEADBranchName;  // Nil if HEAD is detached
 
-- (id)objectForKeyedSubscript:(NSString*)key;  // To retrieve arbitrary user info
-- (void)setObject:(id)object forKeyedSubscript:(NSString*)key;  // To set arbitrary user info
+- (id<GCSnapshotInfoValue>)objectForKeyedSubscript:(NSString*)key;  // To retrieve arbitrary user info
+- (void)setObject:(id<GCSnapshotInfoValue>)object forKeyedSubscript:(NSString*)key;  // To set arbitrary user info
 
 - (BOOL)isEqualToSnapshot:(GCSnapshot*)snapshot usingOptions:(GCSnapshotOptions)options;
 @end

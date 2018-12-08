@@ -28,7 +28,7 @@
 #define kSnapshotsFileName @"snapshots.data"
 #define kSnapshotKey_Date @"date"  // NSDate
 #define kSnapshotKey_Reason @"reason"  // NSString
-#define kSnapshotKey_Argument @"argument"  // id<NSCoding>
+#define kSnapshotKey_Argument @"argument"  // id<GCSnapshotInfoValue>
 
 #define kAutomaticSnapshotDelay (5 - kFSLatency - kUpdateLatency)
 
@@ -84,18 +84,20 @@ static int32_t _allocatedCount = 0;
   if (repository) {
     repository->_gitDirectory = -1;  // Prevents calling close(0) in -dealloc in case super returns nil
 #if DEBUG
-    OSAtomicIncrement32(&_allocatedCount);
+    @synchronized (GCLiveRepository.class) {
+      ++_allocatedCount;
+    }
 #endif
   }
   return repository;
 }
 
 #if DEBUG
-
 + (NSUInteger)allocatedCount {
-  return _allocatedCount;
+  @synchronized (GCLiveRepository.class) {
+    return _allocatedCount;
+  }
 }
-
 #endif
 
 - (void)_timer:(CFRunLoopTimerRef)timer {
@@ -275,7 +277,9 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
     close(_gitDirectory);
   }
 #if DEBUG
-  OSAtomicDecrement32(&_allocatedCount);
+  @synchronized (GCLiveRepository.class) {
+    --_allocatedCount;
+  }
 #endif
 }
 
@@ -487,30 +491,50 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 
 - (void)_writeSnapshots {
   NSString* path = [self.privateAppDirectoryPath stringByAppendingPathComponent:kSnapshotsFileName];
-  if (!path || ![NSKeyedArchiver archiveRootObject:_snapshots toFile:path]) {
-    if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
-      [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewError(kGCErrorCode_Generic, @"Failed writing snapshots")];
+  NSError* underlyingError;
+  if (path) {
+    let data = [NSKeyedArchiver archivedDataWithRootObject:_snapshots requiringSecureCoding:YES error:&underlyingError];
+    if ([data writeToFile:path options:NSDataWritingAtomic error:&underlyingError]) {
+      return;
     }
+  }
+
+  if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
+    [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewErrorWithUnderlyingError(kGCErrorCode_Generic, @"Failed writing snapshots", underlyingError)];
   }
 }
 
 - (void)_readSnapshots {
   NSString* path = [self.privateAppDirectoryPath stringByAppendingPathComponent:kSnapshotsFileName];
-  if (path) {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path followLastSymlink:NO]) {
-      NSArray* array = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-      if (array) {
-        [_snapshots addObjectsFromArray:array];
-      } else if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
-        [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewError(kGCErrorCode_Generic, @"Failed reading snapshots")];
-      }
+  if (path == nil) {
+    if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
+      [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewError(kGCErrorCode_Generic, @"Failed accessing snapshots")];
     }
-  } else if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
-    [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewError(kGCErrorCode_Generic, @"Failed accessing snapshots")];
+    return;
   }
+
+  NSError* underlyingError;
+  let data = [NSData dataWithContentsOfFile:path options:0 error:&underlyingError];
+  if (data == nil) {
+    let isNoSuchFileError = [underlyingError.domain isEqualToString:NSCocoaErrorDomain] && underlyingError.code == NSFileReadNoSuchFileError;
+    if (isNoSuchFileError == NO && [self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
+      [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewErrorWithUnderlyingError(kGCErrorCode_Generic, @"Failed reading snapshots", underlyingError)];
+    }
+    return;
+  }
+
+  NSArray* array = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:NSArray.class, GCSnapshot.class, nil] fromData:data error:&underlyingError];
+  if (array == nil) {
+    if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
+      [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewErrorWithUnderlyingError(kGCErrorCode_Generic, @"Failed reading snapshots", underlyingError)];
+    }
+    return;
+  }
+
+  [_snapshots addObjectsFromArray:array];
 }
 
-- (BOOL)_saveSnapshot:(GCSnapshot*)snapshot withReason:(NSString*)reason argument:(id<NSCoding>)argument {
+- (BOOL)_saveSnapshot:(GCSnapshot*)snapshot withReason:(NSString*)reason argument:(id<GCSnapshotInfoValue>)argument {
   if ([_snapshots.firstObject isEqualToSnapshot:snapshot usingOptions:(kGCSnapshotOption_IncludeLocalBranches | kGCSnapshotOption_IncludeTags)]) {
     return NO;
   }
@@ -779,7 +803,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 }
 
 - (void)_registerUndoWithReason:(NSString*)reason
-                       argument:(id<NSCoding>)argument
+                       argument:(id<GCSnapshotInfoValue>)argument
                  beforeSnapshot:(GCSnapshot*)beforeSnapshot
                   afterSnapshot:(GCSnapshot*)afterSnapshot
                checkoutIfNeeded:(BOOL)checkoutIfNeeded {
@@ -799,7 +823,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 }
 
 - (BOOL)performOperationWithReason:(NSString*)reason
-                          argument:(id<NSCoding>)argument
+                          argument:(id<GCSnapshotInfoValue>)argument
                 skipCheckoutOnUndo:(BOOL)skipCheckout
                              error:(NSError**)error
                         usingBlock:(BOOL (^)(GCLiveRepository* repository, NSError** outError))block {
@@ -825,7 +849,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 
 // In practice this should only be used for remote operations
 - (void)performOperationInBackgroundWithReason:(NSString*)reason
-                                      argument:(id<NSCoding>)argument
+                                      argument:(id<GCSnapshotInfoValue>)argument
                            usingOperationBlock:(BOOL (^)(GCRepository* repository, NSError** outError))operationBlock
                                completionBlock:(void (^)(BOOL success, NSError* error))completionBlock {
   XLOG_DEBUG_CHECK(!_hasBackgroundOperationInProgress);
@@ -872,7 +896,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 @implementation GCLiveRepository (Extensions)
 
 - (BOOL)performReferenceTransformWithReason:(NSString*)reason
-                                   argument:(id<NSCoding>)argument
+                                   argument:(id<GCSnapshotInfoValue>)argument
                                       error:(NSError**)error
                                  usingBlock:(GCReferenceTransform* (^)(GCLiveRepository* repository, NSError** outError))block {
   return [self performOperationWithReason:reason
@@ -1041,14 +1065,14 @@ static BOOL _MatchReference(NSString* match, NSString* name) {
 @implementation GCSnapshot (GCLiveRepository)
 
 - (NSDate*)date {
-  return self[kSnapshotKey_Date];
+  return (NSDate*)self[kSnapshotKey_Date];
 }
 
 - (NSString*)reason {
-  return self[kSnapshotKey_Reason];
+  return (NSString*)self[kSnapshotKey_Reason];
 }
 
-- (id<NSCoding>)argument {
+- (id<GCSnapshotInfoValue>)argument {
   return self[kSnapshotKey_Argument];
 }
 

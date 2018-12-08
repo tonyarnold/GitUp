@@ -182,10 +182,6 @@
   return nil;
 }
 
-- (void)presentAlert:(NSAlert*)alert completionHandler:(void (^)(NSInteger returnCode))handler {
-  [alert beginSheetModalForWindow:self.view.window withCompletionHandler:handler];
-}
-
 #pragma mark - NSTextFieldDelegate
 
 - (BOOL)control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector {
@@ -232,23 +228,15 @@
 
 @implementation GIViewController (Extensions)
 
-- (void)presentAlertWithType:(GIAlertType)type title:(NSString*)title message:(NSString*)format, ... {
-  NSString* message = nil;
-  if (format) {
-    va_list arguments;
-    va_start(arguments, format);
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
-    message = [[NSString alloc] initWithFormat:format arguments:arguments];
-#pragma clang diagnostic pop
-    va_end(arguments);
+- (void)presentAlertWithType:(GIAlertType)type title:(NSString*)title message:(NSString*)message {
+  let alert = [[NSAlert alloc] init];
+  alert.messageText = title;
+  if (message) {
+    alert.informativeText = message;
   }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-security"
-  NSAlert* alert = [NSAlert alertWithMessageText:title defaultButton:NSLocalizedString(@"OK", nil) alternateButton:nil otherButton:nil informativeTextWithFormat:(message ? message : @"")];
-#pragma clang diagnostic pop
+  [alert addButtonWithTitle:NSLocalizedString(@"OK", nil)];
   alert.type = type;
-  [self presentAlert:alert completionHandler:NULL];
+  [alert beginSheetModalForWindow:self.view.window completionHandler:NULL];
 }
 
 - (void)confirmUserActionWithAlertType:(GIAlertType)type
@@ -270,15 +258,14 @@
       defaultButton.keyEquivalent = @"";
     }
     [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
-    [self presentAlert:alert
-        completionHandler:^(NSInteger returnCode) {
-          if (returnCode == NSAlertFirstButtonReturn) {
-            block();
-          }
-          if (alert.suppressionButton.state) {
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:key];
-          }
-        }];
+    [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
+      if (returnCode == NSAlertFirstButtonReturn) {
+        block();
+      }
+      if (alert.suppressionButton.state) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:key];
+      }
+    }];
   }
 }
 

@@ -32,6 +32,7 @@ extern "C" {
 #endif
 
 NSError* GCNewError(NSInteger code, NSString* message);
+NSError* GCNewErrorWithUnderlyingError(NSInteger code, NSString* message, NSError *underlyingError);
 
 const char* GCGitPathFromFileSystemPath(NSString* string);
 NSString* GCFileSystemPathFromGitPath(const char* string);

@@ -49,7 +49,6 @@ FOUNDATION_EXPORT CGFloat GIFontSize(void);  // Reads GIUserDefaultKey_FontSize,
 @end
 
 @interface NSAlert (GIAppKit)
-- (void)beginSheetModalForWindow:(NSWindow*)window withCompletionHandler:(void (^)(NSInteger returnCode))handler;  // AppKit version is 10.9+ only
 - (void)setType:(GIAlertType)type;  // Set the alert icon
 @end
 

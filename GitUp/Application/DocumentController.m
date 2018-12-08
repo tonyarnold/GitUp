@@ -31,7 +31,7 @@
 }
 
 - (void)openDocumentWithContentsOfURL:(NSURL *)url display:(BOOL)displayDocument completionHandler:(void (^)(NSDocument *_Nullable, BOOL, NSError *_Nullable))completionHandler {
-  NSError *error;
+  NSError* error;
   let repositoryURL = [GCRepository repositoryURLContainingURL:url error:&error];
 
   if (repositoryURL) {

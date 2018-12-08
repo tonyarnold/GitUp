@@ -277,43 +277,42 @@ static NSString* _StringFromActions(GCReflogActions actions) {
   alert.accessoryView = _restoreView;
   [alert addButtonWithTitle:NSLocalizedString(@"Create Branch", nil)];
   [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
-  [self presentAlert:alert
-      completionHandler:^(NSInteger returnCode) {
-        if (returnCode == NSAlertFirstButtonReturn) {
-          NSString* name = [_nameTextField.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-          if (name.length) {
-            BOOL success = NO;
-            NSError* error;
-            if ([self.repository checkClean:0 error:&error]) {
-              [self.repository setUndoActionName:NSLocalizedString(@"Restore Reflog Entry", nil)];
-              success = [self.repository performOperationWithReason:@"restore_reflog_entry"
-                                                           argument:entry.toCommit.SHA1
-                                                 skipCheckoutOnUndo:NO
-                                                              error:&error
-                                                         usingBlock:^BOOL(GCLiveRepository* repository, NSError** outError) {
-                                                           GCLocalBranch* branch = [repository createLocalBranchFromCommit:entry.toCommit withName:name force:NO error:outError];
-                                                           if (branch == nil) {
-                                                             return NO;
-                                                           }
-                                                           if (![repository checkoutLocalBranch:branch options:kGCCheckoutOption_UpdateSubmodulesRecursively error:outError]) {
-                                                             [repository deleteLocalBranch:branch error:NULL];  // Ignore errors
-                                                             return NO;
-                                                           }
-                                                           return YES;
-                                                         }];
-            }
-            if (success) {
-              if ([_delegate respondsToSelector:@selector(unifiedReflogViewController:didRestoreReflogEntry:)]) {
-                [_delegate unifiedReflogViewController:self didRestoreReflogEntry:entry];
-              }
-            } else {
-              [self presentError:error];
-            }
-          } else {
-            NSBeep();
-          }
+  [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
+    if (returnCode == NSAlertFirstButtonReturn) {
+      NSString* name = [_nameTextField.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+      if (name.length) {
+        BOOL success = NO;
+        NSError* error;
+        if ([self.repository checkClean:0 error:&error]) {
+          [self.repository setUndoActionName:NSLocalizedString(@"Restore Reflog Entry", nil)];
+          success = [self.repository performOperationWithReason:@"restore_reflog_entry"
+                                                       argument:entry.toCommit.SHA1
+                                             skipCheckoutOnUndo:NO
+                                                          error:&error
+                                                     usingBlock:^BOOL(GCLiveRepository* repository, NSError** outError) {
+                                                       GCLocalBranch* branch = [repository createLocalBranchFromCommit:entry.toCommit withName:name force:NO error:outError];
+                                                       if (branch == nil) {
+                                                         return NO;
+                                                       }
+                                                       if (![repository checkoutLocalBranch:branch options:kGCCheckoutOption_UpdateSubmodulesRecursively error:outError]) {
+                                                         [repository deleteLocalBranch:branch error:NULL];  // Ignore errors
+                                                         return NO;
+                                                       }
+                                                       return YES;
+                                                     }];
         }
-      }];
+        if (success) {
+          if ([_delegate respondsToSelector:@selector(unifiedReflogViewController:didRestoreReflogEntry:)]) {
+            [_delegate unifiedReflogViewController:self didRestoreReflogEntry:entry];
+          }
+        } else {
+          [self presentError:error];
+        }
+      } else {
+        NSBeep();
+      }
+    }
+  }];
 }
 
 @end

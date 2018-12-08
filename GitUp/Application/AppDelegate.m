@@ -27,7 +27,6 @@
 #import "Document.h"
 #import "Common.h"
 #import "ToolProtocol.h"
-#import "GARawTracker.h"
 
 #define OFFICIAL 0
 #define OFFICIAL_RELEASE !DEBUG && OFFICIAL
@@ -260,9 +259,9 @@
 
   _allowWelcome = -1;
 
-  _twitterButton.textAlignment = NSLeftTextAlignment;
+  _twitterButton.textAlignment = NSTextAlignmentLeft;;
   _twitterButton.textFont = [NSFont boldSystemFontOfSize:11];
-  _forumsButton.textAlignment = NSLeftTextAlignment;
+  _forumsButton.textAlignment = NSTextAlignmentLeft;
   _forumsButton.textFont = [NSFont boldSystemFontOfSize:11];
 
   _preferencesToolbar.selectedItemIdentifier = kPreferencePaneIdentifier_General;
@@ -288,17 +287,13 @@
   }
 }
 
-- (void)_showNotificationWithTitle:(NSString*)title action:(SEL)action message:(NSString*)format, ... NS_FORMAT_FUNCTION(3, 4) {
+- (void)_showNotificationWithTitle:(NSString*)title action:(SEL)action message:(NSString*)message {
   NSUserNotification* notification = [[NSUserNotification alloc] init];
   if (action) {
     notification.userInfo = @{kNotificationUserInfoKey_Action : NSStringFromSelector(action)};
   }
   notification.title = title;
-  va_list arguments;
-  va_start(arguments, format);
-  NSString* string = [[NSString alloc] initWithFormat:format arguments:arguments];
-  va_end(arguments);
-  notification.informativeText = string;
+  notification.informativeText = message;
 
   [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
@@ -328,9 +323,6 @@
   [[BITHockeyManager sharedHockeyManager] setDisableMetricsManager:YES];
   [[BITHockeyManager sharedHockeyManager] setDisableFeedbackManager:YES];
   [[BITHockeyManager sharedHockeyManager] startManager];
-
-  // Initialize Google Analytics
-  [[GARawTracker sharedTracker] startWithTrackingID:@"UA-83409580-1"];
 #endif
 
   [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
@@ -368,25 +360,6 @@
   }
   if ([currentVersion integerValue]) {
     [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:kUserDefaultsKey_LastVersion];
-  }
-
-  // Prompt to install command line tool if needed
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKey_FirstLaunch] && ![[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKey_SkipInstallCLT]) {
-    if (![[NSFileManager defaultManager] isExecutableFileAtPath:kToolInstallPath]) {
-      NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Install GitUp command line tool?", nil)
-                                       defaultButton:NSLocalizedString(@"Install", nil)
-                                     alternateButton:NSLocalizedString(@"Not Now", nil)
-                                         otherButton:nil
-                           informativeTextWithFormat:NSLocalizedString(@"GitUp can install a companion command line tool at “%@” which lets you control GitUp from the terminal.\n\nYou can install it at any time from the GitUp menu.", nil), kToolInstallPath];
-      alert.type = kGIAlertType_Note;
-      alert.showsSuppressionButton = YES;
-      if ([alert runModal] == NSAlertDefaultReturn) {
-        [self installTool:nil];
-      }
-      if (alert.suppressionButton.state) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKey_SkipInstallCLT];
-      }
-    }
   }
 
   // First launch has completed
@@ -441,14 +414,6 @@
     _allowWelcome = 1;
   }
   [self handleDocumentCountChanged];
-
-#if OFFICIAL_RELEASE
-  [[GARawTracker sharedTracker] sendEventWithCategory:@"application"
-                                               action:@"activate"
-                                                label:nil
-                                                value:nil
-                                      completionBlock:NULL];
-#endif
 }
 
 #if __ENABLE_SUDDEN_TERMINATION__
@@ -469,11 +434,14 @@
 #pragma mark - Tool
 
 static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDataRef data, void* info) {
-  NSDictionary* input = [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge NSData*)data];
+  NSError* error;
+  NSDictionary* input = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:NSDictionary.class, NSString.class, nil] fromData:(__bridge NSData*)data error:&error];
   XLOG_DEBUG_CHECK(input);
   NSDictionary* output = [(__bridge AppDelegate*)info _processToolCommand:input];
   XLOG_DEBUG_CHECK(output);
-  return CFBridgingRetain([NSKeyedArchiver archivedDataWithRootObject:output]);
+  let outputData = [NSKeyedArchiver archivedDataWithRootObject:output requiringSecureCoding:YES error:&error];
+  XLOG_DEBUG_CHECK(outputData);
+  return CFBridgingRetain(outputData);
 }
 
 - (NSDictionary*)_processToolCommand:(NSDictionary*)input {
@@ -578,7 +546,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   if ([savePanel respondsToSelector:@selector(setShowsTagField:)]) {
     [savePanel setShowsTagField:NO];
   }
-  if ([savePanel runModal] == NSFileHandlingPanelOKButton) {
+  if ([savePanel runModal] == NSModalResponseOK) {
     NSString* path = savePanel.URL.path;
     NSError* error;
     if (![[NSFileManager defaultManager] fileExistsAtPath:path followLastSymlink:NO] || [[NSFileManager defaultManager] moveItemAtPathToTrash:path error:&error]) {
@@ -596,7 +564,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
 
 - (void)_cloneRepositoryFromURLString:(NSString*)urlString {
   _cloneURLTextField.stringValue = urlString;
-  _cloneRecursiveButton.state = NSOnState;
+  _cloneRecursiveButton.state = NSControlStateValueOn;
   if ([NSApp runModalForWindow:_cloneWindow] && _cloneURLTextField.stringValue.length) {
     NSURL* url = GCURLFromGitURL(_cloneURLTextField.stringValue);
     if (url) {
@@ -609,7 +577,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
       if ([savePanel respondsToSelector:@selector(setShowsTagField:)]) {
         [savePanel setShowsTagField:NO];
       }
-      if ([savePanel runModal] == NSFileHandlingPanelOKButton) {
+      if ([savePanel runModal] == NSModalResponseOK) {
         NSString* path = savePanel.URL.path;
         NSError* error;
         if (![[NSFileManager defaultManager] fileExistsAtPath:path followLastSymlink:NO] || [[NSFileManager defaultManager] moveItemAtPathToTrash:path error:&error]) {
@@ -685,11 +653,10 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
           [data appendBytes:buffer length:count];
         }
         if ((data.length == 2) && (((const char*)data.bytes)[0] == 'O') && (((const char*)data.bytes)[1] == 'K')) {
-          NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"GitUp command line tool was successfully installed!", nil)
-                                           defaultButton:NSLocalizedString(@"OK", nil)
-                                         alternateButton:nil
-                                             otherButton:nil
-                               informativeTextWithFormat:NSLocalizedString(@"The tool has been installed at “%@”.\nRun “gitup help” in Terminal to learn more.", nil), kToolInstallPath];
+          let alert = [[NSAlert alloc] init];
+          alert.messageText = NSLocalizedString(@"GitUp command line tool was successfully installed!", nil);
+          [alert addButtonWithTitle:NSLocalizedString(@"OK", nil)];
+          alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString(@"The tool has been installed at “%@”.\nRun “gitup help” in Terminal to learn more.", nil), kToolInstallPath];
           alert.type = kGIAlertType_Note;
           [alert runModal];
         } else {
@@ -771,11 +738,10 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
   XLOG_INFO(@"Did find app update on channel '%@' for version %@", channel, item.versionString);
   if (_manualCheck) {
-    NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"A GitUp update is available!", nil)
-                                     defaultButton:NSLocalizedString(@"OK", nil)
-                                   alternateButton:nil
-                                       otherButton:nil
-                         informativeTextWithFormat:NSLocalizedString(@"The update will download automatically in the background and be installed when you quit GitUp.", nil)];
+    let alert = [[NSAlert alloc] init];
+    alert.messageText = NSLocalizedString(@"A GitUp update is available!", nil);
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", nil)];
+    alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString(@"The update will download automatically in the background and be installed when you quit GitUp.", nil)];
     alert.type = kGIAlertType_Note;
     [alert runModal];
   }
@@ -785,11 +751,9 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
   XLOG_VERBOSE(@"App is up-to-date at version %@ on channel '%@'", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"], channel);
   if (_manualCheck) {
-    NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"GitUp is already up-to-date!", nil)
-                                     defaultButton:NSLocalizedString(@"OK", nil)
-                                   alternateButton:nil
-                                       otherButton:nil
-                         informativeTextWithFormat:@""];
+    let alert = [[NSAlert alloc] init];
+    alert.messageText = NSLocalizedString(@"GitUp is already up-to-date!", nil);
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", nil)];
     alert.type = kGIAlertType_Note;
     [alert runModal];
   }
@@ -811,7 +775,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   _updatePending = YES;
   [self _showNotificationWithTitle:NSLocalizedString(@"Update Available", nil)
                             action:NULL
-                           message:NSLocalizedString(@"Relaunch GitUp to update to version %@ (%@).", nil), item.displayVersionString, item.versionString];
+                           message:[NSString localizedStringWithFormat:NSLocalizedString(@"Relaunch GitUp to update to version %@ (%@).", nil), item.displayVersionString, item.versionString]];
 }
 
 @end

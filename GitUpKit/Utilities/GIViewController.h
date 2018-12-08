@@ -28,11 +28,10 @@
 @property(nonatomic, readonly, getter=isLiveResizing) BOOL liveResizing;
 @property(nonatomic, readonly) GIWindowController* windowController;
 - (instancetype)initWithRepository:(GCLiveRepository*)repository;
-- (void)presentAlert:(NSAlert*)alert completionHandler:(void (^)(NSInteger returnCode))handler;
 @end
 
 @interface GIViewController (Extensions)
-- (void)presentAlertWithType:(GIAlertType)type title:(NSString*)title message:(NSString*)format, ... NS_FORMAT_FUNCTION(3, 4);
+- (void)presentAlertWithType:(GIAlertType)type title:(NSString*)title message:(NSString*)message;
 - (void)confirmUserActionWithAlertType:(GIAlertType)type
                                  title:(NSString*)title
                                message:(NSString*)message

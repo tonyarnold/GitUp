@@ -21,7 +21,6 @@
 		E21739FF1A51FA6200EC6777 /* GCSubmodule.m in Sources */ = {isa = PBXBuildFile; fileRef = E21739FD1A51FA6200EC6777 /* GCSubmodule.m */; };
 		E21752FF1B914F5E00BE234A /* libgit2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E21752F61B914EC000BE234A /* libgit2.a */; };
 		E21753091B91516600BE234A /* libgit2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E21752F61B914EC000BE234A /* libgit2.a */; };
-		E21753371B91623200BE234A /* XLASLLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2AD1B84F27800BAB377 /* XLASLLogger.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E21753381B91623200BE234A /* XLCallbackLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2AF1B84F27800BAB377 /* XLCallbackLogger.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E21753391B91623200BE234A /* XLFacility.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2B11B84F27800BAB377 /* XLFacility.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E217533A1B91623200BE234A /* XLFacilityCMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2B31B84F27800BAB377 /* XLFacilityCMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -98,7 +97,6 @@
 		E217538E1B9167C500BE234A /* libgit2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E21752F61B914EC000BE234A /* libgit2.a */; };
 		E217538F1B9167F500BE234A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C3394419F85D4B00063D95 /* libz.dylib */; };
 		E21753901B9167F500BE234A /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C3393E19F85D2A00063D95 /* libiconv.dylib */; };
-		E21753911B91684300BE234A /* XLASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E267E2AE1B84F27800BAB377 /* XLASLLogger.m */; };
 		E21753921B91684300BE234A /* XLCallbackLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E267E2B01B84F27800BAB377 /* XLCallbackLogger.m */; };
 		E21753931B91684300BE234A /* XLFacility.m in Sources */ = {isa = PBXBuildFile; fileRef = E267E2B21B84F27800BAB377 /* XLFacility.m */; };
 		E21753941B91684300BE234A /* XLFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E267E2B71B84F27800BAB377 /* XLFileLogger.m */; };
@@ -291,7 +289,6 @@
 		E267E2651B84DCA700BAB377 /* GIConfigViewController-Help.txt in Resources */ = {isa = PBXBuildFile; fileRef = E22941E91AC11F56000A83AF /* GIConfigViewController-Help.txt */; };
 		E267E2A61B84F02A00BAB377 /* GCError.h in Headers */ = {isa = PBXBuildFile; fileRef = E2146C901A58849F00F4550B /* GCError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E267E2A71B84F03600BAB377 /* GCMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = E244538F1A70CDA200E61DE7 /* GCMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E267E2CB1B84F29F00BAB377 /* XLASLLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2AD1B84F27800BAB377 /* XLASLLogger.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E267E2CC1B84F29F00BAB377 /* XLCallbackLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2AF1B84F27800BAB377 /* XLCallbackLogger.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E267E2CD1B84F29F00BAB377 /* XLFacility.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2B11B84F27800BAB377 /* XLFacility.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E267E2CE1B84F29F00BAB377 /* XLFacilityCMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2B31B84F27800BAB377 /* XLFacilityCMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -302,7 +299,6 @@
 		E267E2D31B84F29F00BAB377 /* XLLogRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2BC1B84F27800BAB377 /* XLLogRecord.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E267E2D41B84F29F00BAB377 /* XLStandardLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2BE1B84F27800BAB377 /* XLStandardLogger.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E267E2D51B84F29F00BAB377 /* XLDatabaseLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E267E2C11B84F27800BAB377 /* XLDatabaseLogger.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		E267E2D61B84F2BE00BAB377 /* XLASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E267E2AE1B84F27800BAB377 /* XLASLLogger.m */; };
 		E267E2D71B84F2BE00BAB377 /* XLCallbackLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E267E2B01B84F27800BAB377 /* XLCallbackLogger.m */; };
 		E267E2D81B84F2BE00BAB377 /* XLFacility.m in Sources */ = {isa = PBXBuildFile; fileRef = E267E2B21B84F27800BAB377 /* XLFacility.m */; };
 		E267E2D91B84F2BE00BAB377 /* XLFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E267E2B71B84F27800BAB377 /* XLFileLogger.m */; };
@@ -526,8 +522,6 @@
 		E267E1A81B84D6C500BAB377 /* GitUpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GitUpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E267E1AA1B84D6C500BAB377 /* GitUpKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GitUpKit.h; sourceTree = "<group>"; };
 		E267E1AC1B84D6C500BAB377 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E267E2AD1B84F27800BAB377 /* XLASLLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLASLLogger.h; sourceTree = "<group>"; };
-		E267E2AE1B84F27800BAB377 /* XLASLLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLASLLogger.m; sourceTree = "<group>"; };
 		E267E2AF1B84F27800BAB377 /* XLCallbackLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLCallbackLogger.h; sourceTree = "<group>"; };
 		E267E2B01B84F27800BAB377 /* XLCallbackLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLCallbackLogger.m; sourceTree = "<group>"; };
 		E267E2B11B84F27800BAB377 /* XLFacility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLFacility.h; sourceTree = "<group>"; };
@@ -809,8 +803,6 @@
 		E267E2AC1B84F27800BAB377 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				E267E2AD1B84F27800BAB377 /* XLASLLogger.h */,
-				E267E2AE1B84F27800BAB377 /* XLASLLogger.m */,
 				E267E2AF1B84F27800BAB377 /* XLCallbackLogger.h */,
 				E267E2B01B84F27800BAB377 /* XLCallbackLogger.m */,
 				E267E2B11B84F27800BAB377 /* XLFacility.h */,
@@ -1081,7 +1073,6 @@
 				E2B9879B1B9172470097629D /* GILayer.h in Headers */,
 				E2B9879C1B9172470097629D /* GILine.h in Headers */,
 				E2B9879D1B9172470097629D /* GINode.h in Headers */,
-				E21753371B91623200BE234A /* XLASLLogger.h in Headers */,
 				E21753381B91623200BE234A /* XLCallbackLogger.h in Headers */,
 				E21753391B91623200BE234A /* XLFacility.h in Headers */,
 				E217533A1B91623200BE234A /* XLFacilityCMacros.h in Headers */,
@@ -1170,7 +1161,6 @@
 				E267E2561B84DC7D00BAB377 /* GIQuickViewController.h in Headers */,
 				E267E2571B84DC7D00BAB377 /* GISimpleCommitViewController.h in Headers */,
 				E267E2581B84DC7D00BAB377 /* GIStashListViewController.h in Headers */,
-				E267E2CB1B84F29F00BAB377 /* XLASLLogger.h in Headers */,
 				E267E2CC1B84F29F00BAB377 /* XLCallbackLogger.h in Headers */,
 				E267E2CD1B84F29F00BAB377 /* XLFacility.h in Headers */,
 				E267E2CE1B84F29F00BAB377 /* XLFacilityCMacros.h in Headers */,
@@ -1414,7 +1404,6 @@
 				E2B987931B9171D20097629D /* GILine.m in Sources */,
 				E2B987941B9171D20097629D /* GINode.m in Sources */,
 				E2B987951B9171D20097629D /* GIPrivate.m in Sources */,
-				E21753911B91684300BE234A /* XLASLLogger.m in Sources */,
 				E21753921B91684300BE234A /* XLCallbackLogger.m in Sources */,
 				E21753931B91684300BE234A /* XLFacility.m in Sources */,
 				E21753941B91684300BE234A /* XLFileLogger.m in Sources */,
@@ -1496,7 +1485,6 @@
 				E267E2621B84DCA100BAB377 /* GIQuickViewController.m in Sources */,
 				E267E2631B84DCA100BAB377 /* GISimpleCommitViewController.m in Sources */,
 				E267E2641B84DCA100BAB377 /* GIStashListViewController.m in Sources */,
-				E267E2D61B84F2BE00BAB377 /* XLASLLogger.m in Sources */,
 				E267E2D71B84F2BE00BAB377 /* XLCallbackLogger.m in Sources */,
 				E267E2D81B84F2BE00BAB377 /* XLFacility.m in Sources */,
 				E267E2D91B84F2BE00BAB377 /* XLFileLogger.m in Sources */,

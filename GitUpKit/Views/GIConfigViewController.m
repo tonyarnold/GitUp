@@ -72,7 +72,7 @@ static NSMutableDictionary* _patternHelp = nil;
     NSString* title = [section substringToIndex:range.location];
     NSString* content = [section substringFromIndex:(range.location + range.length)];
 
-    if ([title rangeOfString:@"<"].location != NSNotFound) {
+    if ([title containsString:@"<"]) {
       NSMutableString* pattern = [[NSMutableString alloc] initWithString:title];
       [pattern replaceOccurrencesOfString:@"." withString:@"\\." options:0 range:NSMakeRange(0, pattern.length)];
       NSRange startRange = [pattern rangeOfString:@"<" options:0 range:NSMakeRange(0, pattern.length)];
