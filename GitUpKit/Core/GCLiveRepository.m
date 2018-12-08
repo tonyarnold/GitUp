@@ -84,18 +84,20 @@ static int32_t _allocatedCount = 0;
   if (repository) {
     repository->_gitDirectory = -1;  // Prevents calling close(0) in -dealloc in case super returns nil
 #if DEBUG
-    OSAtomicIncrement32(&_allocatedCount);
+    @synchronized (GCLiveRepository.class) {
+      ++_allocatedCount;
+    }
 #endif
   }
   return repository;
 }
 
 #if DEBUG
-
 + (NSUInteger)allocatedCount {
-  return _allocatedCount;
+  @synchronized (GCLiveRepository.class) {
+    return _allocatedCount;
+  }
 }
-
 #endif
 
 - (void)_timer:(CFRunLoopTimerRef)timer {
@@ -275,7 +277,9 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
     close(_gitDirectory);
   }
 #if DEBUG
-  OSAtomicDecrement32(&_allocatedCount);
+  @synchronized (GCLiveRepository.class) {
+    --_allocatedCount;
+  }
 #endif
 }
 
