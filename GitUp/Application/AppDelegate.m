@@ -366,25 +366,6 @@
     [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:kUserDefaultsKey_LastVersion];
   }
 
-  // Prompt to install command line tool if needed
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKey_FirstLaunch] && ![[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKey_SkipInstallCLT]) {
-    if (![[NSFileManager defaultManager] isExecutableFileAtPath:kToolInstallPath]) {
-      NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Install GitUp command line tool?", nil)
-                                       defaultButton:NSLocalizedString(@"Install", nil)
-                                     alternateButton:NSLocalizedString(@"Not Now", nil)
-                                         otherButton:nil
-                           informativeTextWithFormat:NSLocalizedString(@"GitUp can install a companion command line tool at “%@” which lets you control GitUp from the terminal.\n\nYou can install it at any time from the GitUp menu.", nil), kToolInstallPath];
-      alert.type = kGIAlertType_Note;
-      alert.showsSuppressionButton = YES;
-      if ([alert runModal] == NSAlertDefaultReturn) {
-        [self installTool:nil];
-      }
-      if (alert.suppressionButton.state) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKey_SkipInstallCLT];
-      }
-    }
-  }
-
   // First launch has completed
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKey_FirstLaunch];
 
