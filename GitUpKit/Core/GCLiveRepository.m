@@ -487,27 +487,47 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 
 - (void)_writeSnapshots {
   NSString* path = [self.privateAppDirectoryPath stringByAppendingPathComponent:kSnapshotsFileName];
-  if (!path || ![NSKeyedArchiver archiveRootObject:_snapshots toFile:path]) {
-    if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
-      [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewError(kGCErrorCode_Generic, @"Failed writing snapshots")];
+  NSError* underlyingError;
+  if (path) {
+    let data = [NSKeyedArchiver archivedDataWithRootObject:_snapshots requiringSecureCoding:YES error:&underlyingError];
+    if ([data writeToFile:path options:NSDataWritingAtomic error:&underlyingError]) {
+      return;
     }
+  }
+
+  if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
+    [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewErrorWithUnderlyingError(kGCErrorCode_Generic, @"Failed writing snapshots", underlyingError)];
   }
 }
 
 - (void)_readSnapshots {
   NSString* path = [self.privateAppDirectoryPath stringByAppendingPathComponent:kSnapshotsFileName];
-  if (path) {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path followLastSymlink:NO]) {
-      NSArray* array = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-      if (array) {
-        [_snapshots addObjectsFromArray:array];
-      } else if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
-        [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewError(kGCErrorCode_Generic, @"Failed reading snapshots")];
-      }
+  if (path == nil) {
+    if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
+      [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewError(kGCErrorCode_Generic, @"Failed accessing snapshots")];
     }
-  } else if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
-    [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewError(kGCErrorCode_Generic, @"Failed accessing snapshots")];
+    return;
   }
+
+  NSError* underlyingError;
+  let data = [NSData dataWithContentsOfFile:path options:0 error:&underlyingError];
+  if (data == nil) {
+    let isNoSuchFileError = [underlyingError.domain isEqualToString:NSCocoaErrorDomain] && underlyingError.code == NSFileReadNoSuchFileError;
+    if (isNoSuchFileError == NO && [self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
+      [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewErrorWithUnderlyingError(kGCErrorCode_Generic, @"Failed reading snapshots", underlyingError)];
+    }
+    return;
+  }
+
+  NSArray* array = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:NSArray.class, GCSnapshot.class, nil] fromData:data error:&underlyingError];
+  if (array == nil) {
+    if ([self.delegate respondsToSelector:@selector(repository:snapshotsUpdateDidFailWithError:)]) {
+      [self.delegate repository:self snapshotsUpdateDidFailWithError:GCNewErrorWithUnderlyingError(kGCErrorCode_Generic, @"Failed reading snapshots", underlyingError)];
+    }
+    return;
+  }
+
+  [_snapshots addObjectsFromArray:array];
 }
 
 - (BOOL)_saveSnapshot:(GCSnapshot*)snapshot withReason:(NSString*)reason argument:(id<NSCoding>)argument {

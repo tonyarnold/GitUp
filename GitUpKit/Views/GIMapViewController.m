@@ -357,7 +357,7 @@ static NSColor* _patternColor = nil;
           item = [[NSMenuItem alloc] initWithTitle:remoteBranch.name action:@selector(_configureUpstreamForLocalBranch:) keyEquivalent:@""];
           item.representedObject = @[ branch, remoteBranch ];
           if ([upstream isEqualToBranch:remoteBranch]) {
-            item.state = NSOnState;
+            item.state = NSControlStateValueOn;
           }
           [submenu addItem:item];
         }
@@ -372,7 +372,7 @@ static NSColor* _patternColor = nil;
             item = [[NSMenuItem alloc] initWithTitle:localBranch.name action:@selector(_configureUpstreamForLocalBranch:) keyEquivalent:@""];
             item.representedObject = @[ branch, localBranch ];
             if ([upstream isEqualToBranch:localBranch]) {
-              item.state = NSOnState;
+              item.state = NSControlStateValueOn;
             }
             [submenu addItem:item];
           }
@@ -566,7 +566,7 @@ static NSColor* _patternColor = nil;
         unichar character = 0x08;
         characters = [NSString stringWithCharacters:&character length:1];  // Backspace
       }
-      NSUInteger modifiers = event.modifierFlags & (NSCommandKeyMask | NSAlternateKeyMask | NSControlKeyMask);
+      NSUInteger modifiers = event.modifierFlags & (NSEventModifierFlagCommand | NSEventModifierFlagOption | NSEventModifierFlagControl);
       for (NSMenuItem* item in _contextualMenu.itemArray) {
         if ([item.keyEquivalent isEqualToString:characters] && (item.keyEquivalentModifierMask == modifiers) && [self validateUserInterfaceItem:item]) {
           if ([NSApp sendAction:item.action to:self from:item]) {
@@ -626,28 +626,28 @@ static NSColor* _patternColor = nil;
   }
 
   if (item.action == @selector(toggleVirtualTips:)) {
-    [(NSMenuItem*)item setState:(_showsVirtualTips ? NSOnState : NSOffState)];
+    [(NSMenuItem*)item setState:(_showsVirtualTips ? NSControlStateValueOn : NSControlStateValueOff)];
     return YES;
   }
   if (item.action == @selector(toggleTagTips:)) {
-    [(NSMenuItem*)item setState:(_showsTagTips || _forceShowAllTips ? NSOnState : NSOffState)];
+    [(NSMenuItem*)item setState:(_showsTagTips || _forceShowAllTips ? NSControlStateValueOn : NSControlStateValueOff)];
     return !_forceShowAllTips;
   }
   if (item.action == @selector(toggleRemoteBranchTips:)) {
-    [(NSMenuItem*)item setState:(_showsRemoteBranchTips || _forceShowAllTips ? NSOnState : NSOffState)];
+    [(NSMenuItem*)item setState:(_showsRemoteBranchTips || _forceShowAllTips ? NSControlStateValueOn : NSControlStateValueOff)];
     return !_forceShowAllTips;
   }
   if (item.action == @selector(toggleStaleBranchTips:)) {
-    [(NSMenuItem*)item setState:(_showsStaleBranchTips || _forceShowAllTips ? NSOnState : NSOffState)];
+    [(NSMenuItem*)item setState:(_showsStaleBranchTips || _forceShowAllTips ? NSControlStateValueOn : NSControlStateValueOff)];
     return !_forceShowAllTips;
   }
 
   if (item.action == @selector(toggleTagLabels:)) {
-    [(NSMenuItem*)item setState:(_graphView.showsTagLabels ? NSOnState : NSOffState)];
+    [(NSMenuItem*)item setState:(_graphView.showsTagLabels ? NSControlStateValueOn : NSControlStateValueOff)];
     return YES;
   }
   if (item.action == @selector(toggleBranchLabels:)) {
-    [(NSMenuItem*)item setState:(_graphView.showsBranchLabels ? NSOnState : NSOffState)];
+    [(NSMenuItem*)item setState:(_graphView.showsBranchLabels ? NSControlStateValueOn : NSControlStateValueOff)];
     return YES;
   }
 
@@ -885,20 +885,20 @@ static NSColor* _patternColor = nil;
   } else {
     GCHistoryRemoteBranch* branch = commit.remoteBranches.firstObject;
     if (branch && ![self.repository.history historyLocalBranchWithName:branch.branchName]) {
-      NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Do you want to just checkout the commit or also create a new local branch?", nil)
-                                       defaultButton:NSLocalizedString(@"Create Local Branch", nil)
-                                     alternateButton:NSLocalizedString(@"Cancel", nil)
-                                         otherButton:NSLocalizedString(@"Checkout Commit", nil)
-                           informativeTextWithFormat:NSLocalizedString(@"The selected commit is also the tip of the remote branch “%@”.", nil), branch.name];
+      let alert = [[NSAlert alloc] init];
+      alert.messageText = NSLocalizedString(@"Do you want to just checkout the commit or also create a new local branch?", nil);
+      alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString(@"The selected commit is also the tip of the remote branch “%@”.", nil), branch.name];
+      [alert addButtonWithTitle:NSLocalizedString(@"Create Local Branch", nil)];
+      [alert addButtonWithTitle:NSLocalizedString(@"Checkout Commit", nil)];
+      [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
       alert.type = kGIAlertType_Note;
-      [self presentAlert:alert
-          completionHandler:^(NSInteger returnCode) {
-            if (returnCode == NSAlertDefaultReturn) {
-              [self checkoutRemoteBranch:branch];
-            } else if (returnCode == NSAlertOtherReturn) {
-              [self checkoutCommit:target];
-            }
-          }];
+      [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSAlertFirstButtonReturn) {
+          [self checkoutRemoteBranch:branch];
+        } else if (returnCode == NSAlertSecondButtonReturn) {
+          [self checkoutCommit:target];
+        }
+      }];
     } else {
       [self checkoutCommit:target];
     }
@@ -954,20 +954,21 @@ static NSColor* _patternColor = nil;
   GCHistoryCommit* commit = _graphView.selectedCommit;
   GCHistoryLocalBranch* localBranch = commit.localBranches.firstObject;
   if (localBranch) {
-    NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Do you want to delete the commit or the local branch?", nil)
-                                     defaultButton:NSLocalizedString(@"Delete Local Branch", nil)
-                                   alternateButton:NSLocalizedString(@"Cancel", nil)
-                                       otherButton:NSLocalizedString(@"Delete Commit", nil)
-                         informativeTextWithFormat:NSLocalizedString(@"The selected commit is also the tip of the local branch “%@”.", nil), localBranch.name];
+    let alert = [[NSAlert alloc] init];
+    alert.messageText = NSLocalizedString(@"Do you want to delete the commit or the local branch?", nil);
+    alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString(@"The selected commit is also the tip of the local branch “%@”.", nil), localBranch.name];
+    [alert addButtonWithTitle:NSLocalizedString(@"Delete Local Branch", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Delete Commit", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
     alert.type = kGIAlertType_Note;
-    [self presentAlert:alert
-        completionHandler:^(NSInteger returnCode) {
-          if (returnCode == NSAlertDefaultReturn) {
-            [self deleteLocalBranch:localBranch];
-          } else if (returnCode == NSAlertOtherReturn) {
-            [self deleteCommit:commit];
-          }
-        }];
+
+    [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
+      if (returnCode == NSAlertFirstButtonReturn) {
+        [self deleteLocalBranch:localBranch];
+      } else if (returnCode == NSAlertSecondButtonReturn) {
+        [self deleteCommit:commit];
+      }
+    }];
   } else {
     GCHistoryRemoteBranch* remoteBranch = commit.remoteBranches.firstObject;
     if (remoteBranch && ![self.repository.history isCommitOnAnyLocalBranch:commit]) {
@@ -1030,7 +1031,7 @@ static NSColor* _patternColor = nil;
 - (IBAction)createBranchAtSelectedCommit:(id)sender {
   GCHistoryCommit* commit = self.graphView.selectedNode.commit;
   _createBranchTextField.stringValue = @"";
-  _createBranchButton.state = NSOnState;
+  _createBranchButton.state = NSControlStateValueOn;
   [self.windowController runModalView:_createBranchView
             withInitialFirstResponder:_createBranchTextField
                     completionHandler:^(BOOL success) {

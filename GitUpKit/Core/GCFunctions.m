@@ -27,6 +27,13 @@ NSError* GCNewError(NSInteger code, NSString* message) {
                          userInfo:@{NSLocalizedDescriptionKey : message}];
 }
 
+NSError* GCNewErrorWithUnderlyingError(NSInteger code, NSString* message, NSError *underlyingError) {
+  let userInfo = [NSMutableDictionary<NSErrorUserInfoKey, id> dictionaryWithCapacity:2];
+  userInfo[NSLocalizedDescriptionKey] = message;
+  userInfo[NSUnderlyingErrorKey] = underlyingError;
+  return [NSError errorWithDomain:GCErrorDomain code:code userInfo:userInfo];
+}
+
 NSError* GCNewPosixError(int code, NSString* message) {
   return [NSError errorWithDomain:NSPOSIXErrorDomain
                              code:code
