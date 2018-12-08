@@ -303,7 +303,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
 
   _tagsViewController = [[GICommitListViewController alloc] initWithRepository:_repository];
   _tagsViewController.delegate = self;
-  _tagsViewController.emptyLabel = NSLocalizedString(@"No Tags", nil);
+  _tagsViewController.emptyLabel = NSLocalizedString(@"No tags", nil);
   [_tagsControllerView replaceWithView:_tagsViewController.view];
 
   _snapshotListViewController = [[GISnapshotListViewController alloc] initWithRepository:_repository];
@@ -320,7 +320,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
 
   _searchResultsViewController = [[GICommitListViewController alloc] initWithRepository:_repository];
   _searchResultsViewController.delegate = self;
-  _searchResultsViewController.emptyLabel = NSLocalizedString(@"No Results", nil);
+  _searchResultsViewController.emptyLabel = NSLocalizedString(@"No results", nil);
   [_searchControllerView replaceWithView:_searchResultsViewController.view];
 
   _quickViewController = [[GIQuickViewController alloc] initWithRepository:_repository];
