@@ -408,14 +408,20 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
         case ' ': {
           NSFont* font = [storage attribute:NSFontAttributeName atIndex:characterIndex effectiveRange:NULL];
           XLOG_DEBUG_CHECK([font.fontName isEqualToString:@"Menlo-Regular"]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
           [self replaceGlyphAtIndex:glyphIndex withGlyph:[font glyphWithName:@"periodcentered"]];
+#pragma clang diagnostic pop
           break;
         }
 
         case '\n': {
           NSFont* font = [storage attribute:NSFontAttributeName atIndex:characterIndex effectiveRange:NULL];
           XLOG_DEBUG_CHECK([font.fontName isEqualToString:@"Menlo-Regular"]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
           [self replaceGlyphAtIndex:glyphIndex withGlyph:[font glyphWithName:@"carriagereturn"]];
+#pragma clang diagnostic pop
           break;
         }
       }
