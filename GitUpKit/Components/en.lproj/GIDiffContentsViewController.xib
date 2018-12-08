@@ -66,7 +66,7 @@
                                                     <button id="bOi-6n-v6r">
                                                         <rect key="frame" x="676" y="11" width="12" height="12"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="icon_gear" imagePosition="only" alignment="center" alternateImage="icon_gear_pressed" inset="2" id="m6t-8O-cFd">
+                                                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="icon_gear" imagePosition="only" alignment="center" inset="2" id="m6t-8O-cFd">
                                                             <behavior key="behavior" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -285,6 +285,5 @@
         <image name="NSApplicationIcon" width="128" height="128"/>
         <image name="icon_file_a" width="15" height="15"/>
         <image name="icon_gear" width="12" height="12"/>
-        <image name="icon_gear_pressed" width="12" height="12"/>
     </resources>
 </document>
