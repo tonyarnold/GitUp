@@ -94,7 +94,7 @@
   view.autoresizingMask = NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
   view.wantsLayer = YES;
   view.layer.borderWidth = 1.0;
-  view.layer.borderColor = [[NSColor colorWithDeviceRed:0.0 green:0.0 blue:0.0 alpha:0.2] CGColor];
+  view.layer.borderColor = NSColor.separatorColor.CGColor;
   view.layer.cornerRadius = 5.0;
 
 #if __ENABLE_BLUR__
