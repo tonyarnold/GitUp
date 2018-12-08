@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -611,7 +610,7 @@ Adjust settings in Show menu</string>
                 <button id="FEG-0e-0JW">
                     <rect key="frame" x="246" y="9" width="12" height="15"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="icon_nav_min" imagePosition="overlaps" alignment="center" alternateImage="icon_nav_min_pressed" inset="2" id="x0U-ct-UgO">
+                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="icon_nav_min" imagePosition="overlaps" alignment="center" inset="2" id="x0U-ct-UgO">
                         <behavior key="behavior" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -691,7 +690,6 @@ DQ
         <image name="icon_nav_down" width="16" height="16"/>
         <image name="icon_nav_map" width="15" height="15"/>
         <image name="icon_nav_min" width="12" height="12"/>
-        <image name="icon_nav_min_pressed" width="12" height="12"/>
         <image name="icon_nav_snapshot" width="15" height="15"/>
         <image name="icon_nav_snapshot_pressed" width="15" height="15"/>
         <image name="icon_nav_stash" width="15" height="15"/>
