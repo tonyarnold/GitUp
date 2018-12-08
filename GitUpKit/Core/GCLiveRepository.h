@@ -107,21 +107,21 @@ extern NSString* const GCLiveRepositoryAmendOperationReason;
 - (void)setUndoActionName:(NSString*)name;  // Wrapper for -[NSUndoManager setActionName:] that doesn't open an undo block
 
 - (BOOL)performOperationWithReason:(NSString*)reason  // Pass nil to disable automatic snapshots and undo
-                          argument:(id<NSCoding>)argument  // May be nil
+                          argument:(id<GCSnapshotInfoValue>)argument  // May be nil
                 skipCheckoutOnUndo:(BOOL)skipCheckout
                              error:(NSError**)error
                         usingBlock:(BOOL (^)(GCLiveRepository* repository, NSError** outError))block;  // Automatically updates snapshots and register undo action with NSUndoManager
 
 @property(nonatomic, readonly) BOOL hasBackgroundOperationInProgress;
 - (void)performOperationInBackgroundWithReason:(NSString*)reason  // Pass nil to disable automatic snapshots and undo
-                                      argument:(id<NSCoding>)argument  // May be nil
+                                      argument:(id<GCSnapshotInfoValue>)argument  // May be nil
                            usingOperationBlock:(BOOL (^)(GCRepository* repository, NSError** outError))operationBlock  // "repository" is a new instance
                                completionBlock:(void (^)(BOOL success, NSError* error))completionBlock;
 @end
 
 @interface GCLiveRepository (Extensions)
 - (BOOL)performReferenceTransformWithReason:(NSString*)reason
-                                   argument:(id<NSCoding>)argument
+                                   argument:(id<GCSnapshotInfoValue>)argument
                                       error:(NSError**)error
                                  usingBlock:(GCReferenceTransform* (^)(GCLiveRepository* repository, NSError** outError))block;  // Convenience method for transform operations
 
@@ -139,5 +139,5 @@ extern NSString* const GCLiveRepositoryAmendOperationReason;
 @interface GCSnapshot (GCLiveRepository)
 - (NSDate*)date;
 - (NSString*)reason;
-- (id<NSCoding>)argument;  // May be nil
+- (id<GCSnapshotInfoValue>)argument;  // May be nil
 @end

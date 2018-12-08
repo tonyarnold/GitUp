@@ -227,9 +227,9 @@ static BOOL _CompareSerializedReferences(GCSerializedReference* serializedRefere
 @end
 
 @implementation GCSnapshot {
-  NSMutableDictionary* _config;
-  NSMutableArray* _serializedReferences;
-  NSMutableDictionary* _info;
+  NSMutableDictionary<NSString*, NSString*>* _config;
+  NSMutableArray<GCSerializedReference*>* _serializedReferences;
+  NSMutableDictionary<NSString*, id<GCSnapshotInfoValue>>* _info;
 }
 
 + (BOOL)supportsSecureCoding {
@@ -237,8 +237,8 @@ static BOOL _CompareSerializedReferences(GCSerializedReference* serializedRefere
 }
 
 // TODO: Handle duplicate config entries for the same variable
-static NSMutableDictionary* _LoadRepositoryConfig(GCRepository* repository, NSError** error) {
-  NSMutableDictionary* dictionary = [NSMutableDictionary dictionary];
+static NSMutableDictionary<NSString*, NSString*>* _LoadRepositoryConfig(GCRepository* repository, NSError** error) {
+  let dictionary = [NSMutableDictionary<NSString *, NSString *> dictionary];
   BOOL success = NO;
   git_config* config1 = NULL;
   git_config* config2 = NULL;
@@ -324,11 +324,11 @@ cleanup:
 
 - (id)initWithCoder:(NSCoder*)decoder {
   if ((self = [super init])) {
-    _config = [[decoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"config"] retain];
+    _config = [[decoder decodeObjectOfClasses:[NSSet setWithObjects:NSMutableDictionary.class, NSString.class, nil] forKey:@"config"] retain];
     XLOG_DEBUG_CHECK(_config);
-    _serializedReferences = [[decoder decodeObjectOfClass:[NSMutableArray class] forKey:@"serialized_references"] retain];
+    _serializedReferences = [[decoder decodeObjectOfClasses:[NSSet setWithObjects:NSMutableArray.class, GCSerializedReference.class, nil] forKey:@"serialized_references"] retain];
     XLOG_DEBUG_CHECK(_serializedReferences);
-    _info = [[decoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"info"] retain];
+    _info = [[decoder decodeObjectOfClasses:[NSSet setWithObjects:NSMutableDictionary.class, NSString.class, NSDate.class, nil] forKey:@"info"] retain];
     XLOG_DEBUG_CHECK(_info);
 
     CFDictionaryKeyCallBacks callbacks = {0, NULL, NULL, NULL, GCCStringEqualCallBack, GCCStringHashCallBack};
@@ -394,11 +394,11 @@ cleanup:
   return nil;  // No HEAD
 }
 
-- (id)objectForKeyedSubscript:(NSString*)key {
+- (id<GCSnapshotInfoValue>)objectForKeyedSubscript:(NSString*)key {
   return [_info objectForKey:key];
 }
 
-- (void)setObject:(id)object forKeyedSubscript:(NSString*)key {
+- (void)setObject:(id<GCSnapshotInfoValue>)object forKeyedSubscript:(NSString*)key {
   [_info setValue:object forKey:key];
 }
 

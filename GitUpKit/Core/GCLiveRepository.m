@@ -28,7 +28,7 @@
 #define kSnapshotsFileName @"snapshots.data"
 #define kSnapshotKey_Date @"date"  // NSDate
 #define kSnapshotKey_Reason @"reason"  // NSString
-#define kSnapshotKey_Argument @"argument"  // id<NSCoding>
+#define kSnapshotKey_Argument @"argument"  // id<GCSnapshotInfoValue>
 
 #define kAutomaticSnapshotDelay (5 - kFSLatency - kUpdateLatency)
 
@@ -530,7 +530,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
   [_snapshots addObjectsFromArray:array];
 }
 
-- (BOOL)_saveSnapshot:(GCSnapshot*)snapshot withReason:(NSString*)reason argument:(id<NSCoding>)argument {
+- (BOOL)_saveSnapshot:(GCSnapshot*)snapshot withReason:(NSString*)reason argument:(id<GCSnapshotInfoValue>)argument {
   if ([_snapshots.firstObject isEqualToSnapshot:snapshot usingOptions:(kGCSnapshotOption_IncludeLocalBranches | kGCSnapshotOption_IncludeTags)]) {
     return NO;
   }
@@ -799,7 +799,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 }
 
 - (void)_registerUndoWithReason:(NSString*)reason
-                       argument:(id<NSCoding>)argument
+                       argument:(id<GCSnapshotInfoValue>)argument
                  beforeSnapshot:(GCSnapshot*)beforeSnapshot
                   afterSnapshot:(GCSnapshot*)afterSnapshot
                checkoutIfNeeded:(BOOL)checkoutIfNeeded {
@@ -819,7 +819,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 }
 
 - (BOOL)performOperationWithReason:(NSString*)reason
-                          argument:(id<NSCoding>)argument
+                          argument:(id<GCSnapshotInfoValue>)argument
                 skipCheckoutOnUndo:(BOOL)skipCheckout
                              error:(NSError**)error
                         usingBlock:(BOOL (^)(GCLiveRepository* repository, NSError** outError))block {
@@ -845,7 +845,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 
 // In practice this should only be used for remote operations
 - (void)performOperationInBackgroundWithReason:(NSString*)reason
-                                      argument:(id<NSCoding>)argument
+                                      argument:(id<GCSnapshotInfoValue>)argument
                            usingOperationBlock:(BOOL (^)(GCRepository* repository, NSError** outError))operationBlock
                                completionBlock:(void (^)(BOOL success, NSError* error))completionBlock {
   XLOG_DEBUG_CHECK(!_hasBackgroundOperationInProgress);
@@ -892,7 +892,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 @implementation GCLiveRepository (Extensions)
 
 - (BOOL)performReferenceTransformWithReason:(NSString*)reason
-                                   argument:(id<NSCoding>)argument
+                                   argument:(id<GCSnapshotInfoValue>)argument
                                       error:(NSError**)error
                                  usingBlock:(GCReferenceTransform* (^)(GCLiveRepository* repository, NSError** outError))block {
   return [self performOperationWithReason:reason
@@ -1061,14 +1061,14 @@ static BOOL _MatchReference(NSString* match, NSString* name) {
 @implementation GCSnapshot (GCLiveRepository)
 
 - (NSDate*)date {
-  return self[kSnapshotKey_Date];
+  return (NSDate*)self[kSnapshotKey_Date];
 }
 
 - (NSString*)reason {
-  return self[kSnapshotKey_Reason];
+  return (NSString*)self[kSnapshotKey_Reason];
 }
 
-- (id<NSCoding>)argument {
+- (id<GCSnapshotInfoValue>)argument {
   return self[kSnapshotKey_Argument];
 }
 
