@@ -738,6 +738,10 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
     _nextButton.hidden = YES;
 
     if ([_windowMode isEqualToString:kWindowModeString_Map]) {
+      // I’ve disable the snapshots button because it needs a bit more time to get it
+      // working in dark mode, and I never use this feature, and you can get it from
+      // the menu bar anyway. If re-enabling also unset hidden in Interface Builder.
+      /*
       _snapshotsButton.hidden = NO;
       if (![self validateUserInterfaceItem:(id)_snapshotsButton]) {
         _snapshotsButton.image = [NSImage imageNamed:@"icon_nav_snapshot_disable"];
@@ -752,6 +756,7 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
         _snapshotsButton.alternateImage = [NSImage imageNamed:@"icon_nav_snapshot_pressed"];
         _snapshotsButton.enabled = YES;
       }
+       */
       _searchField.hidden = NO;
       _searchField.enabled = [self validateUserInterfaceItem:(id)_searchField];
     } else {

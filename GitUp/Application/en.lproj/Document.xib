@@ -596,7 +596,7 @@ Adjust settings in Show menu</string>
                         <outlet property="delegate" destination="-2" id="aY0-ts-HbB"/>
                     </connections>
                 </searchField>
-                <button toolTip="Show or hide Snapshots" verticalHuggingPriority="750" id="yWu-L8-6Ms">
+                <button hidden="YES" toolTip="Show or hide Snapshots" verticalHuggingPriority="750" id="yWu-L8-6Ms">
                     <rect key="frame" x="43" y="3" width="25" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="icon_nav_snapshot" imagePosition="only" alignment="center" alternateImage="icon_nav_snapshot_pressed" borderStyle="border" inset="2" id="rrq-JQ-Zyn">
