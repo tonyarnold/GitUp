@@ -121,8 +121,7 @@ static NSMutableDictionary* _patternHelp = nil;
   CGFloat fontSize = _cachedCellView.optionTextField.font.pointSize;
   _optionAttributes = @{NSFontAttributeName : [NSFont boldSystemFontOfSize:fontSize]};
   _separatorAttributes = @{NSFontAttributeName : [NSFont systemFontOfSize:fontSize]};
-  // TODO: Stoping using hardcoded colour, although it kind of works okay in dark mode.
-  _valueAttributes = @{NSFontAttributeName : [NSFont systemFontOfSize:fontSize], NSBackgroundColorAttributeName : [NSColor colorWithDeviceRed:1.0 green:1.0 blue:0.0 alpha:0.5]};
+  _valueAttributes = @{NSFontAttributeName : [NSFont systemFontOfSize:fontSize], NSBackgroundColorAttributeName : [NSColor systemYellowColor]};
 }
 
 - (void)viewWillShow {
