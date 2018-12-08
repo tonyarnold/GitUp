@@ -277,9 +277,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
   }
   _mainWindow.backgroundColor = [NSColor whiteColor];
   [_mainWindow setToolbar:_toolbar];
-  if (@available(macOS 10.10, *)) {
-    [_mainWindow setTitleVisibility:NSWindowTitleHidden];
-  }
+  [_mainWindow setTitleVisibility:NSWindowTitleHidden];
   _contentView.wantsLayer = YES;
   _leftView.wantsLayer = YES;
   _titleView.wantsLayer = YES;
@@ -1155,10 +1153,7 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
 }
 
 - (NSArray*)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar {
-  if (@available(macOS 10.10, *)) {
-    return @[ kToolbarItem_Left, kToolbarItem_Title, kToolbarItem_Right ];
-  }
-  return @[ kToolbarItem_Left, NSToolbarFlexibleSpaceItemIdentifier, kToolbarItem_Right ];
+  return @[ kToolbarItem_Left, kToolbarItem_Title, kToolbarItem_Right ];
 }
 
 - (NSArray*)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar {
