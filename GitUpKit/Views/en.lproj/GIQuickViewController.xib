@@ -47,7 +47,7 @@
                                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" id="A0F-jI-s4n">
                                                     <rect key="frame" x="0.0" y="0.0" width="300" height="307"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <clipView key="contentView" id="4Rs-yN-ao7">
+                                                    <clipView key="contentView" copiesOnScroll="NO" id="4Rs-yN-ao7">
                                                         <rect key="frame" x="0.0" y="0.0" width="300" height="307"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>

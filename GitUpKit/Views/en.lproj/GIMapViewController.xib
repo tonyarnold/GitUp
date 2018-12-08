@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.15" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.15"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -41,7 +40,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" autoresizesSubviews="NO" id="MUH-N6-EF0">
                         <rect key="frame" x="0.0" y="0.0" width="700" height="467"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view autoresizesSubviews="NO" id="7uX-6u-ejZ" customClass="GIGraphView">
                                 <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
@@ -256,7 +255,7 @@ CA
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" drawsBackground="NO" id="K5e-oW-uzS">
                         <rect key="frame" x="1" y="1" width="278" height="58"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="panel" allowsUndo="YES" smartInsertDelete="YES" id="l0i-wG-st7" customClass="GICommitMessageView">
                                 <rect key="frame" x="0.0" y="75" width="278" height="58"/>
@@ -451,7 +450,7 @@ Gw
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" drawsBackground="NO" id="THQ-ht-MMy">
                         <rect key="frame" x="1" y="1" width="548" height="148"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="panel" allowsUndo="YES" smartInsertDelete="YES" id="leL-YY-uqs" customClass="GICommitMessageView">
                                 <rect key="frame" x="0.0" y="0.0" width="548" height="148"/>
@@ -527,7 +526,7 @@ Gw
             <point key="canvasLocation" x="472" y="1770.5"/>
         </customView>
         <customView id="ga8-vG-A68" userLabel="Create Branch View">
-            <rect key="frame" x="-5" y="0.0" width="414" height="125"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="125"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="CUj-FC-ARp">
