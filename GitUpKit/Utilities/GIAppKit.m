@@ -183,6 +183,8 @@ static NSColor* _separatorColor = nil;
   [super awakeFromNib];
 
   [self updateFont];
+  self.textColor = NSColor.textColor;
+  self.backgroundColor = NSColor.textBackgroundColor;
   [self.textContainer replaceLayoutManager:[[GILayoutManager alloc] init]];
 
   [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:GICommitMessageViewUserDefaultKey_ShowInvisibleCharacters options:0 context:(__bridge void*)[GICommitMessageView class]];
@@ -213,7 +215,7 @@ static NSColor* _separatorColor = nil;
 
 - (void)drawRect:(NSRect)dirtyRect {
   [super drawRect:dirtyRect];
-
+  
   if ([[NSUserDefaults standardUserDefaults] boolForKey:GICommitMessageViewUserDefaultKey_ShowMargins]) {
     NSRect bounds = self.bounds;
     CGFloat offset = self.textContainerOrigin.x + self.textContainerInset.width + self.textContainer.lineFragmentPadding;
@@ -327,7 +329,7 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
 @implementation GITableCellView
 
 + (void)initialize {
-  _separatorColor = [NSColor colorWithDeviceRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+  _separatorColor = [NSColor separatorColor];
 }
 
 - (void)saveTextFieldColors {
@@ -349,8 +351,8 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
 
   for (NSView* view in self.subviews) {
     if ([view isKindOfClass:[NSTextField class]]) {
-      if (backgroundStyle == NSBackgroundStyleDark) {
-        [(NSTextField*)view setTextColor:[NSColor whiteColor]];
+      if (backgroundStyle == NSBackgroundStyleEmphasized) {
+        [(NSTextField*)view setTextColor:[NSColor textBackgroundColor]];
       } else {
         [(NSTextField*)view setTextColor:objc_getAssociatedObject(view, _associatedObjectCommitKey)];
       }

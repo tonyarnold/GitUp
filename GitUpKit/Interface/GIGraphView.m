@@ -97,7 +97,7 @@ static const void* _associatedObjectDataKey = &_associatedObjectDataKey;
   _dateFormatter = [[NSDateFormatter alloc] init];
   _dateFormatter.dateStyle = NSDateFormatterShortStyle;
   _dateFormatter.timeStyle = NSDateFormatterShortStyle;
-  _backgroundColor = [[NSColor whiteColor] retain];
+  _backgroundColor = [[NSColor textBackgroundColor] retain];
 
   self.graph = nil;
 }
