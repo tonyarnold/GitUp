@@ -101,7 +101,7 @@ static NSColor* _reachableColor = nil;
         }
       }
     }
-    XLOG_VERBOSE(@"Reloaded unified reflog for \"%@\"", self.repository.repositoryPath);
+    XLOG_VERBOSE(@"Reloaded unified reflog for “%@”", self.repository.repositoryPath);
   } else {
     [self presentError:error];
     _entries = nil;

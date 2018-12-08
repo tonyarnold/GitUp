@@ -167,7 +167,7 @@ static NSColor* _patternColor = nil;
     _graphView.graph = [[GIGraph alloc] initWithHistory:self.repository.history options:options];
     [_delegate mapViewControllerDidReloadGraph:self];
   }
-  XLOG_VERBOSE(@"Graph regenerated for \"%@\" in %.3f seconds", self.repository.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
+  XLOG_VERBOSE(@"Graph regenerated for “%@” in %.3f seconds", self.repository.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
 
   if (selectedCommit) {
     if (_previewHistory) {
@@ -420,7 +420,7 @@ static NSColor* _patternColor = nil;
       }
       [menu addItem:item];
 
-      item = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Local Branch \"%@\"", nil), branch.name] action:NULL keyEquivalent:@""];
+      item = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Local Branch “%@”", nil), branch.name] action:NULL keyEquivalent:@""];
       item.submenu = menu;
       [_contextualMenu addItem:item];
     }
@@ -503,7 +503,7 @@ static NSColor* _patternColor = nil;
         [menu addItem:item];
       }
 
-      item = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Remote Branch \"%@\"", nil), branch.name] action:NULL keyEquivalent:@""];
+      item = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Remote Branch “%@”", nil), branch.name] action:NULL keyEquivalent:@""];
       item.submenu = menu;
       [_contextualMenu addItem:item];
     }
@@ -537,7 +537,7 @@ static NSColor* _patternColor = nil;
       item.representedObject = tag;
       [menu addItem:item];
 
-      item = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Tag \"%@\"", nil), tag.name] action:NULL keyEquivalent:@""];
+      item = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Tag “%@”", nil), tag.name] action:NULL keyEquivalent:@""];
       item.submenu = menu;
       [_contextualMenu addItem:item];
     }
@@ -695,7 +695,7 @@ static NSColor* _patternColor = nil;
   if (item.action == @selector(checkoutSelectedCommit:)) {
     id target = [self _smartCheckoutTarget:commit];
     if ([target isKindOfClass:[GCLocalBranch class]]) {
-      _checkoutMenuItem.title = [NSString stringWithFormat:NSLocalizedString(@"Checkout \"%@\" Branch", nil), [target name]];
+      _checkoutMenuItem.title = [NSString stringWithFormat:NSLocalizedString(@"Checkout “%@” Branch", nil), [target name]];
       return ![self.repository.history.HEADBranch isEqualToBranch:target];
     } else {
       _checkoutMenuItem.title = NSLocalizedString(@"Checkout Detached HEAD", nil);
@@ -889,7 +889,7 @@ static NSColor* _patternColor = nil;
                                        defaultButton:NSLocalizedString(@"Create Local Branch", nil)
                                      alternateButton:NSLocalizedString(@"Cancel", nil)
                                          otherButton:NSLocalizedString(@"Checkout Commit", nil)
-                           informativeTextWithFormat:NSLocalizedString(@"The selected commit is also the tip of the remote branch \"%@\".", nil), branch.name];
+                           informativeTextWithFormat:NSLocalizedString(@"The selected commit is also the tip of the remote branch “%@”.", nil), branch.name];
       alert.type = kGIAlertType_Note;
       [self presentAlert:alert
           completionHandler:^(NSInteger returnCode) {
@@ -958,7 +958,7 @@ static NSColor* _patternColor = nil;
                                      defaultButton:NSLocalizedString(@"Delete Local Branch", nil)
                                    alternateButton:NSLocalizedString(@"Cancel", nil)
                                        otherButton:NSLocalizedString(@"Delete Commit", nil)
-                         informativeTextWithFormat:NSLocalizedString(@"The selected commit is also the tip of the local branch \"%@\".", nil), localBranch.name];
+                         informativeTextWithFormat:NSLocalizedString(@"The selected commit is also the tip of the local branch “%@”.", nil), localBranch.name];
     alert.type = kGIAlertType_Note;
     [self presentAlert:alert
         completionHandler:^(NSInteger returnCode) {

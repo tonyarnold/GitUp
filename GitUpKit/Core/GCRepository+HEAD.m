@@ -201,7 +201,7 @@ cleanup:
   int status = git_checkout_tree(self.private, (git_object*)commit.private, &checkoutOptions);
   git_tree_free(tree);
   CHECK_LIBGIT2_FUNCTION_CALL(return NO, status, == GIT_OK);
-  XLOG_VERBOSE(@"Checked out %@ from \"%@\" in %.3f seconds", commit ? commit.shortSHA1 : @"HEAD", self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
+  XLOG_VERBOSE(@"Checked out %@ from “%@” in %.3f seconds", commit ? commit.shortSHA1 : @"HEAD", self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
   return YES;
 }
 

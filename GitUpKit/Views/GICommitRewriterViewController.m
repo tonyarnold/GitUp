@@ -159,7 +159,7 @@
   [self.repository notifyRepositoryChanged];
 
   _targetCommit = commit;
-  _titleTextField.stringValue = [NSString stringWithFormat:@"\"%@\" <%@>", _targetCommit.summary, _targetCommit.shortSHA1];
+  _titleTextField.stringValue = [NSString stringWithFormat:@"“%@” <%@>", _targetCommit.summary, _targetCommit.shortSHA1];
   return YES;
 }
 

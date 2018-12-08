@@ -173,7 +173,7 @@ cleanup:
   if (status != GIT_OK) {
     LOG_LIBGIT2_ERROR(status);
     if (error) {
-      *error = GCNewError(status, [NSString stringWithFormat:@"Failed connecting to \"%s\" remote: %@", git_remote_name(remote), GetLastGitErrorMessage()]);  // We can't use CALL_LIBGIT2_FUNCTION_GOTO() as we need to customize the error message
+      *error = GCNewError(status, [NSString stringWithFormat:@"Failed connecting to “%s” remote: %@", git_remote_name(remote), GetLastGitErrorMessage()]);  // We can't use CALL_LIBGIT2_FUNCTION_GOTO() as we need to customize the error message
     }
     goto cleanup;
   }
@@ -356,7 +356,7 @@ cleanup:
       goto cleanup;  // TODO: What if there is more than one match?
     }
   }
-  GC_SET_GENERIC_ERROR(@"No matching refspec for \"%@\"", branch.name);
+  GC_SET_GENERIC_ERROR(@"No matching refspec for “%@”", branch.name);
 
 cleanup:
   git_remote_free(remote);

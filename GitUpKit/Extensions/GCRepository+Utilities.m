@@ -148,7 +148,7 @@ NSString* GCNameFromHostingService(GCHostingService service) {
   }
 
   if (![[NSFileManager defaultManager] fileExistsAtPath:sourcePath isDirectory:&isDirectory] || isDirectory) {
-    GC_SET_GENERIC_ERROR(@"No file at \"%@\"", sourcePath);
+    GC_SET_GENERIC_ERROR(@"No file at “%@”", sourcePath);
     return NO;
   }
 
@@ -551,7 +551,7 @@ NSString* GCNameFromHostingService(GCHostingService service) {
         if (plist) {
           [dictionary addEntriesFromDictionary:plist];
         } else {
-          XLOG_ERROR(@"Failed reading user info for repository \"%@\": %@", self.repositoryPath, error);
+          XLOG_ERROR(@"Failed reading user info for repository “%@”: %@", self.repositoryPath, error);
         }
       }
     }
@@ -566,7 +566,7 @@ NSString* GCNameFromHostingService(GCHostingService service) {
     NSError* error;
     NSData* data = [NSPropertyListSerialization dataWithPropertyList:dictionary format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
     if (![data writeToFile:path options:NSDataWritingAtomic error:&error]) {
-      XLOG_ERROR(@"Failed writing user info for repository \"%@\": %@", self.repositoryPath, error);
+      XLOG_ERROR(@"Failed writing user info for repository “%@”: %@", self.repositoryPath, error);
     }
   }
 }

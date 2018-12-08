@@ -191,7 +191,7 @@ static NSMutableDictionary* _patternHelp = nil;
     [self presentError:error];
   }
   [_tableView reloadData];
-  XLOG_VERBOSE(@"Reloaded config for \"%@\"", self.repository.repositoryPath);
+  XLOG_VERBOSE(@"Reloaded config for “%@”", self.repository.repositoryPath);
 
   if (selectedOption && ![self _selectOptionWithLevel:selectedOption.level variable:selectedOption.variable]) {
     [_tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow] byExtendingSelection:NO];

@@ -569,7 +569,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
 
         // Bail if we still have more than a single candidate since it's not possible to guarantee the following commits won't be processed out-of-order
         if (GC_POINTER_LIST_COUNT(candidates) != 1) {
-          XLOG_ERROR(@"Unable to continue walking history in \"%@\" due to unsolvable deadlock", _history.repository.repositoryPath);
+          XLOG_ERROR(@"Unable to continue walking history in “%@” due to unsolvable deadlock", _history.repository.repositoryPath);
           _done = YES;
           return NO;
         }
@@ -833,7 +833,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
           referenceObject = [[GCHistoryRemoteBranch alloc] initWithRepository:self reference:reference];
           [remoteBranches addObject:referenceObject];
         } else {
-          XLOG_VERBOSE(@"Ignoring reference \"%s\" for history of \"%@\"", git_reference_name(reference), self.repositoryPath);
+          XLOG_VERBOSE(@"Ignoring reference “%s” for history of “%@”", git_reference_name(reference), self.repositoryPath);
         }
         if (referenceObject) {
           [tips addObject:referenceCommit];
@@ -855,7 +855,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
         }
         [referenceCommit release];
       } else {
-        XLOG_WARNING(@"Dangling direct reference \"%s\" without commit in \"%@\"", git_reference_name(reference), self.repositoryPath);
+        XLOG_WARNING(@"Dangling direct reference “%s” without commit in “%@”", git_reference_name(reference), self.repositoryPath);
       }
     }
     if (referenceObject) {
@@ -1060,7 +1060,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
       [commit addTag:tag];
       objc_setAssociatedObject(tag, _associatedObjectAnnotationKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     } else {
-      XLOG_WARNING(@"Missing commit for tag \"%@\" in \"%@\"", tag.name, self.repositoryPath);
+      XLOG_WARNING(@"Missing commit for tag “%@” in “%@”", tag.name, self.repositoryPath);
       [tags removeObjectAtIndex:i];
       --i;
       --count;
@@ -1077,7 +1077,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
       branch.tipCommit = commit;
       [commit addLocalBranch:branch];
     } else {
-      XLOG_WARNING(@"Missing commit for branch \"%@\" in \"%@\"", branch.name, self.repositoryPath);
+      XLOG_WARNING(@"Missing commit for branch “%@” in “%@”", branch.name, self.repositoryPath);
       if (branch == headBranch) {
         headBranch = nil;
       }
@@ -1097,7 +1097,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
       branch.tipCommit = commit;
       [commit addRemoteBranch:branch];
     } else {
-      XLOG_WARNING(@"Missing commit for branch \"%@\" in \"%@\"", branch.name, self.repositoryPath);
+      XLOG_WARNING(@"Missing commit for branch “%@” in “%@”", branch.name, self.repositoryPath);
       [remoteBranches removeObjectAtIndex:i];
       --i;
       --count;
@@ -1135,7 +1135,7 @@ static const void* _associatedObjectUpstreamNameKey = &_associatedObjectUpstream
   if (headTip) {
     history.HEADCommit = (GCHistoryCommit*)CFDictionaryGetValue(lookup, git_commit_id(headTip.private));
     if (history.HEADCommit == nil) {
-      XLOG_WARNING(@"Missing commit for HEAD in \"%@\"", self.repositoryPath);
+      XLOG_WARNING(@"Missing commit for HEAD in “%@”", self.repositoryPath);
     }
   } else {
     history.HEADCommit = nil;

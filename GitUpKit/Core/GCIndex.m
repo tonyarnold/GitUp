@@ -123,7 +123,7 @@ static inline BOOL _EqualConflicts(GCIndexConflict* conflict1, GCIndexConflict* 
 
 - (NSString*)description {
   const char* statuses[] = {"None", "Both Modified", "Both Added", "Deleted By Us", "Deleted By Them"};
-  return [NSString stringWithFormat:@"%@ %s \"%@\"\n  Ancestor: %@\n  Ours: %@\n  Theirs: %@", self.class, statuses[_status], _path, self.ancestorBlobSHA1, self.ourBlobSHA1, self.theirBlobSHA1];
+  return [NSString stringWithFormat:@"%@ %s “%@”\n  Ancestor: %@\n  Ours: %@\n  Theirs: %@", self.class, statuses[_status], _path, self.ancestorBlobSHA1, self.ourBlobSHA1, self.theirBlobSHA1];
 }
 
 @end

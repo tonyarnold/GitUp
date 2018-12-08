@@ -294,7 +294,7 @@ cleanup:
       newCommit = [self createCommitFromCommit:replayCommit.private withTree:mergeTree updatedMessage:message updatedParents:parents updateCommitter:updateCommitter error:error];
     } else {
       newCommit = ontoCommit;
-      XLOG_VERBOSE(@"Skipping replay of already applied commit \"%@\" (%@) onto commit \"%@\" (%@)", replayCommit.summary, replayCommit.shortSHA1, ontoCommit.summary, ontoCommit.shortSHA1);
+      XLOG_VERBOSE(@"Skipping replay of already applied commit “%@” (%@) onto commit “%@” (%@)", replayCommit.summary, replayCommit.shortSHA1, ontoCommit.summary, ontoCommit.shortSHA1);
     }
   }
 

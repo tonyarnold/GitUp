@@ -212,7 +212,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
 #if DEBUG
       if ([NSEvent modifierFlags] & NSAlternateKeyMask) {
         [[NSFileManager defaultManager] removeItemAtPath:_repository.privateAppDirectoryPath error:NULL];
-        XLOG_WARNING(@"Resetting private data for repository \"%@\"", _repository.repositoryPath);
+        XLOG_WARNING(@"Resetting private data for repository “%@”", _repository.repositoryPath);
       }
 #endif
       _repository.delegate = self;
@@ -858,7 +858,7 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
                                      defaultButton:NSLocalizedString(@"Close", nil)
                                    alternateButton:NSLocalizedString(@"Cancel", nil)
                                        otherButton:nil
-                         informativeTextWithFormat:NSLocalizedString(@"The repository \"%@\" is still being prepared for search. This can take up to a few minutes for large repositories.", nil), self.displayName];
+                         informativeTextWithFormat:NSLocalizedString(@"The repository “%@” is still being prepared for search. This can take up to a few minutes for large repositories.", nil), self.displayName];
     alert.type = kGIAlertType_Caution;
     if ([alert runModal] == NSAlertAlternateReturn) {
       return NO;
@@ -1385,7 +1385,7 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
   if (![_lastHEADBranch isEqual:headBranch]) {
     if (!_helpHEADDisabled) {
       if ([headBranch isKindOfClass:[GCHistoryLocalBranch class]]) {
-        [_windowController showOverlayWithStyle:kGIOverlayStyle_Informational format:NSLocalizedString(@"You are now on branch \"%@\"", nil), [headBranch name]];
+        [_windowController showOverlayWithStyle:kGIOverlayStyle_Informational format:NSLocalizedString(@"You are now on branch “%@”", nil), [headBranch name]];
       } else if (headBranch == [NSNull null]) {
         [_windowController showOverlayWithStyle:kGIOverlayStyle_Informational message:NSLocalizedString(@"You are not on any branch anymore", nil)];
       }
@@ -1832,7 +1832,7 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
   if (query.length) {
     CFAbsoluteTime time = CFAbsoluteTimeGetCurrent();
     NSArray* results = [_repository findCommitsMatching:query];
-    XLOG_VERBOSE(@"Searched %lu commits in \"%@\" for \"%@\" in %.3f seconds finding %lu matches", _repository.history.allCommits.count, _repository.repositoryPath, self.searchField.stringValue, CFAbsoluteTimeGetCurrent() - time, results.count);
+    XLOG_VERBOSE(@"Searched %lu commits in “%@” for “%@” in %.3f seconds finding %lu matches", _repository.history.allCommits.count, _repository.repositoryPath, self.searchField.stringValue, CFAbsoluteTimeGetCurrent() - time, results.count);
 
     _searchResultsViewController.results = results;
     if (_searchView.superview == nil) {

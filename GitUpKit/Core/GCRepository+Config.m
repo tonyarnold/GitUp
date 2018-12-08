@@ -76,7 +76,7 @@ static inline git_config_level_t _ConfigLevelToLevel(GCConfigLevel level) {
 
 - (NSString*)description {
   const char* levels[] = {"System", "XDG", "Global", "Local"};
-  return [NSString stringWithFormat:@"[%s] %@ = \"%@\"", levels[_level], _variable, _value];
+  return [NSString stringWithFormat:@"[%s] %@ = “%@”", levels[_level], _variable, _value];
 }
 
 @end

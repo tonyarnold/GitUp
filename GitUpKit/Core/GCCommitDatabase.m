@@ -388,7 +388,7 @@ static int _CaseInsensitiveUTF8Compare(void* context, int length1, const void* b
         }
         sqlite3_close(_database);
         _database = NULL;
-        XLOG_WARNING(@"Commit database for \"%@\" has an incompatible version (%li) and must be regenerated", _repository.repositoryPath, (long)currentVersion);
+        XLOG_WARNING(@"Commit database for “%@” has an incompatible version (%li) and must be regenerated", _repository.repositoryPath, (long)currentVersion);
         if (![[NSFileManager defaultManager] removeItemAtPath:path error:error] || ![self _initializeDatabase:path error:error] || ![self _initializeSchema:version error:error]) {
           [self release];
           return nil;
@@ -600,7 +600,7 @@ static BOOL _ProcessDiff(git_repository* repo, git_commit* commit, git_commit* p
   // Load tip commit and queue it
   status = git_commit_lookup(&commit, _repository.private, tipOID);
   if (status == GIT_ENOTFOUND) {
-    XLOG_WARNING(@"Missing tip commit %s from repository \"%@\"", git_oid_tostr_s(tipOID), _repository.repositoryPath);
+    XLOG_WARNING(@"Missing tip commit %s from repository “%@”", git_oid_tostr_s(tipOID), _repository.repositoryPath);
     success = YES;
     goto cleanup;
   }
@@ -776,7 +776,7 @@ static BOOL _ProcessDiff(git_repository* repo, git_commit* commit, git_commit* p
               XLOG_DEBUG_CHECK(sqlite3_changes(_database) == 1);
             }
           } else {
-            XLOG_WARNING(@"Unable to compute diff for commit %s from repository \"%@\"", git_oid_tostr_s(git_commit_id(itemPtr->commit)), _repository.repositoryPath);
+            XLOG_WARNING(@"Unable to compute diff for commit %s from repository “%@”", git_oid_tostr_s(git_commit_id(itemPtr->commit)), _repository.repositoryPath);
           }
         }
 
@@ -851,7 +851,7 @@ static BOOL _ProcessDiff(git_repository* repo, git_commit* commit, git_commit* p
             item.childID = commitID;
             GC_LIST_APPEND(newRow, &item);
           } else {
-            XLOG_WARNING(@"Missing commit %s from repository \"%@\"", git_oid_tostr_s(parentOID), _repository.repositoryPath);
+            XLOG_WARNING(@"Missing commit %s from repository “%@”", git_oid_tostr_s(parentOID), _repository.repositoryPath);
           }
 
         } else {
@@ -1131,12 +1131,12 @@ cleanup:
   // WAL manual checkpoint (ignore errors)
   result = sqlite3_wal_checkpoint_v2(_database, NULL, _ready ? SQLITE_CHECKPOINT_FULL : SQLITE_CHECKPOINT_TRUNCATE, NULL, NULL);
   if (result != SQLITE_OK) {
-    XLOG_ERROR(@"Failed checkpointing commit database at \"%@\" (%i): %s", _databasePath, result, sqlite3_errmsg(_database));
+    XLOG_ERROR(@"Failed checkpointing commit database at “%@” (%i): %s", _databasePath, result, sqlite3_errmsg(_database));
     XLOG_DEBUG_UNREACHABLE();
   }
 
   // We're done
-  XLOG_VERBOSE(@"Commit database for \"%@\" %s in %.3f seconds (%lu added, %lu removed)", _repository.repositoryPath, _ready ? "updated" : "initialized", CFAbsoluteTimeGetCurrent() - time, (unsigned long)addedCommits, (unsigned long)removedCommits);
+  XLOG_VERBOSE(@"Commit database for “%@” %s in %.3f seconds (%lu added, %lu removed)", _repository.repositoryPath, _ready ? "updated" : "initialized", CFAbsoluteTimeGetCurrent() - time, (unsigned long)addedCommits, (unsigned long)removedCommits);
   _ready = YES;
   success = YES;
 
@@ -1292,7 +1292,7 @@ cleanup:
 #endif
 
 - (NSString*)description {
-  return [NSString stringWithFormat:@"[%@] \"%@\"", self.class, _databasePath];
+  return [NSString stringWithFormat:@"[%@] “%@”", self.class, _databasePath];
 }
 
 @end

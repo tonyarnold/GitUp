@@ -32,7 +32,7 @@ static inline GCCommit* _LoadCommit(GCRepository* repository, const git_oid* oid
   git_commit* commit;
   int status = git_commit_lookup(&commit, repository.private, oid);
   if (status != GIT_OK) {
-    XLOG_WARNING(@"Unable to find commit %s in \"%@\" (%i): %@", git_oid_tostr_s(oid), repository.repositoryPath, status, GetLastGitErrorMessage());
+    XLOG_WARNING(@"Unable to find commit %s in “%@” (%i): %@", git_oid_tostr_s(oid), repository.repositoryPath, status, GetLastGitErrorMessage());
     return nil;
   }
   return [[GCCommit alloc] initWithRepository:repository commit:commit];

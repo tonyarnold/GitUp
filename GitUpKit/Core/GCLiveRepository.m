@@ -123,7 +123,7 @@ static void _TimerCallBack(CFRunLoopTimerRef timer, void* info) {
       XLOG_DEBUG_CHECK(stream == _gitDirectoryStream);
       char buffer[PATH_MAX];
       if (fcntl(_gitDirectory, F_GETPATH, buffer) >= 0) {
-        XLOG_VERBOSE(@"Repository \"%s\" has moved to \"%s\"", git_repository_path(self.private), buffer);
+        XLOG_VERBOSE(@"Repository “%s” has moved to “%s”", git_repository_path(self.private), buffer);
         git_repository* repository;
         int status = git_repository_open(&repository, buffer);
         if (status == GIT_OK) {
@@ -138,7 +138,7 @@ static void _TimerCallBack(CFRunLoopTimerRef timer, void* info) {
       }
 
     } else if (eventFlags[i] & kFSEventStreamEventFlagMustScanSubDirs) {
-      XLOG_WARNING(@"Ignoring event stream request to rescan \"%s\"", path);  // Note that this directory path can be missing the trailing slash
+      XLOG_WARNING(@"Ignoring event stream request to rescan “%s”", path);  // Note that this directory path can be missing the trailing slash
 
     } else {  // Documentation says "eventFlags" should be 0x0 for regular events but that's not the case on OS X 10.10 at least
 
@@ -201,10 +201,10 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
     if (_workingDirectoryStream) {
       FSEventStreamScheduleWithRunLoop(_workingDirectoryStream, CFRunLoopGetMain(), kCFRunLoopCommonModes);
       if (!FSEventStreamStart(_workingDirectoryStream)) {
-        XLOG_ERROR(@"Failed starting event stream at \"%@\"", path);
+        XLOG_ERROR(@"Failed starting event stream at “%@”", path);
       }
     } else {
-      XLOG_ERROR(@"Failed creating event stream at \"%@\"", path);
+      XLOG_ERROR(@"Failed creating event stream at “%@”", path);
     }
   }
 }
@@ -222,7 +222,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
     if (_history == nil) {
       return nil;
     }
-    XLOG_VERBOSE(@"History loaded for \"%@\" (%lu commits scanned in %.3f seconds)", self.repositoryPath, _history.allCommits.count, CFAbsoluteTimeGetCurrent() - time);
+    XLOG_VERBOSE(@"History loaded for “%@” (%lu commits scanned in %.3f seconds)", self.repositoryPath, _history.allCommits.count, CFAbsoluteTimeGetCurrent() - time);
 
     NSString* path = self.repositoryPath;
     _gitDirectory = open(path.fileSystemRepresentation, O_RDONLY);  // Don't use O_EVTONLY as we do want to prevent unmounting the volume that contains the directory
@@ -237,12 +237,12 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
                                               (__bridge CFArrayRef) @[ path ], kFSEventStreamEventIdSinceNow,
                                               kFSLatency, kFSEventStreamCreateFlagWatchRoot | kFSEventStreamCreateFlagIgnoreSelf);  // This opens the path
     if (_gitDirectoryStream == NULL) {
-      XLOG_ERROR(@"Failed creating event stream at \"%@\"", path);
+      XLOG_ERROR(@"Failed creating event stream at “%@”", path);
       return nil;
     }
     FSEventStreamScheduleWithRunLoop(_gitDirectoryStream, CFRunLoopGetMain(), kCFRunLoopCommonModes);
     if (!FSEventStreamStart(_gitDirectoryStream)) {
-      XLOG_ERROR(@"Failed starting event stream at \"%@\"", path);
+      XLOG_ERROR(@"Failed starting event stream at “%@”", path);
       return nil;
     }
 
@@ -411,7 +411,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
   CFAbsoluteTime time = CFAbsoluteTimeGetCurrent();
   if ([self reloadHistory:_history referencesDidChange:&referencesDidChange addedCommits:NULL removedCommits:NULL error:&error]) {
     if (referencesDidChange) {
-      XLOG_VERBOSE(@"History updated for \"%@\" (%lu commits scanned in %.3f seconds)", self.repositoryPath, _history.allCommits.count, CFAbsoluteTimeGetCurrent() - time);
+      XLOG_VERBOSE(@"History updated for “%@” (%lu commits scanned in %.3f seconds)", self.repositoryPath, _history.allCommits.count, CFAbsoluteTimeGetCurrent() - time);
 
       if (_snapshotsTimer) {
         CFRunLoopTimerSetNextFireDate(_snapshotsTimer, CFAbsoluteTimeGetCurrent() + kAutomaticSnapshotDelay);
@@ -523,7 +523,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
   if (_snapshots.count > kMaxSnapshots) {
     [_snapshots removeObjectsInRange:NSMakeRange(kMaxSnapshots, _snapshots.count - kMaxSnapshots)];
   }
-  XLOG_VERBOSE(@"Saved snapshot with reason '%@' for \"%@\"", reason, self.repositoryPath);
+  XLOG_VERBOSE(@"Saved snapshot with reason '%@' for “%@”", reason, self.repositoryPath);
   if ([self.delegate respondsToSelector:@selector(repositoryDidUpdateSnapshots:)]) {
     [self.delegate repositoryDidUpdateSnapshots:self];
   }
@@ -667,7 +667,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
 
   if (success) {
     if (((_statusMode == kGCLiveRepositoryStatusMode_Unified) && ![_unifiedStatus isEqualToDiff:unifiedDiff]) || ((_statusMode != kGCLiveRepositoryStatusMode_Unified) && (![_indexStatus isEqualToDiff:indexDiff] || ![_workingDirectoryStatus isEqualToDiff:workdirDiff])) || ![_indexConflicts isEqualToDictionary:conflicts]) {
-      XLOG_VERBOSE(@"Status updated for \"%@\" in %.3f seconds", self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
+      XLOG_VERBOSE(@"Status updated for “%@” in %.3f seconds", self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
       _unifiedStatus = unifiedDiff;
       _indexStatus = indexDiff;
       _indexConflicts = conflicts;
@@ -680,7 +680,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
         [[NSNotificationCenter defaultCenter] postNotificationName:GCLiveRepositoryStatusDidUpdateNotification object:self];
       }
     } else {
-      XLOG_VERBOSE(@"Status checked for \"%@\" in %.3f seconds", self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
+      XLOG_VERBOSE(@"Status checked for “%@” in %.3f seconds", self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
     }
   } else {
     _unifiedStatus = nil;
@@ -710,7 +710,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
   NSArray* stashes = [self listStashes:&error];
   if (stashes) {
     if (![_stashes isEqualToArray:stashes]) {
-      XLOG_VERBOSE(@"Stashes updated for \"%@\"", self.repositoryPath);
+      XLOG_VERBOSE(@"Stashes updated for “%@”", self.repositoryPath);
       _stashes = stashes;
 
       if (notify) {
@@ -809,7 +809,7 @@ static void _StreamCallback(ConstFSEventStreamRef streamRef, void* clientCallBac
   if (!reason || beforeSnapshot) {
     CFAbsoluteTime time = CFAbsoluteTimeGetCurrent();
     if (block(self, error)) {
-      XLOG_VERBOSE(@"Performed operation '%@' in \"%@\" in %.3f seconds", reason, self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
+      XLOG_VERBOSE(@"Performed operation '%@' in “%@” in %.3f seconds", reason, self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
       GCSnapshot* afterSnapshot = reason ? [self takeSnapshot:error] : nil;
       if (!reason || afterSnapshot) {
         if (reason) {

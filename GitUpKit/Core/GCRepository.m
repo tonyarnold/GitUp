@@ -181,7 +181,7 @@ static int _GitLFSApply(git_filter* self, void** payload, git_buf* to, const git
 }
 
 - (NSString*)description {
-  return [NSString stringWithFormat:@"%@ at path \"%@\"", self.class, _repositoryPath];
+  return [NSString stringWithFormat:@"%@ at path “%@”", self.class, _repositoryPath];
 }
 
 #pragma mark - Initialization
@@ -313,13 +313,13 @@ static int _ReferenceForEachCallback(const char* refname, void* payload) {
   } else {
     NSError* error;
     if (![[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
-      XLOG_ERROR(@"Failed creating private app directory at \"%@\"", path);
+      XLOG_ERROR(@"Failed creating private app directory at “%@”", path);
       return nil;
     }
   }
 
   if (!_IsDirectoryWritable(path.fileSystemRepresentation)) {
-    XLOG_ERROR(@"Private app directory at \"%@\" is not writable", path);
+    XLOG_ERROR(@"Private app directory at “%@” is not writable", path);
     return nil;
   }
   return path;
@@ -469,7 +469,7 @@ static int _CredentialsCallback(git_cred** cred, const char* url, const char* us
 
 #if !TARGET_OS_IPHONE
     if (repository->_privateKeyList == nil) {
-      XLOG_WARNING(@"SSH Agent did not find any key for \"%s\"", url);
+      XLOG_WARNING(@"SSH Agent did not find any key for “%s”", url);
       NSMutableArray* array = [[NSMutableArray alloc] init];
       NSString* basePath = [NSHomeDirectory() stringByAppendingPathComponent:@".ssh"];
       for (NSString* file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:basePath error:NULL]) {
@@ -491,7 +491,7 @@ static int _CredentialsCallback(git_cred** cred, const char* url, const char* us
     }
     if (repository->_privateKeyIndex < [repository->_privateKeyList count]) {
       const char* path = [[repository->_privateKeyList objectAtIndex:repository->_privateKeyIndex++] fileSystemRepresentation];
-      XLOG_VERBOSE(@"Trying SSH key \"%s\" for \"%s\"", path, url);
+      XLOG_VERBOSE(@"Trying SSH key “%s” for “%s”", path, url);
       return git_cred_ssh_key_new(cred, user, NULL, path, NULL);  // TODO: Handle passphrases
     }
 #endif
@@ -586,7 +586,7 @@ static int _FetchTransferProgressCallback(const git_transfer_progress* stats, vo
 static int _UpdateTipsCallback(const char* refname, const git_oid* a, const git_oid* b, void* data) {
   char bufferA[8];
   char bufferB[8];
-  XLOG_VERBOSE(@"Remote updated \"%s\" from %s to %s", refname, git_oid_tostr(bufferA, sizeof(bufferA), a), git_oid_tostr(bufferB, sizeof(bufferB), b));
+  XLOG_VERBOSE(@"Remote updated “%s” from %s to %s", refname, git_oid_tostr(bufferA, sizeof(bufferA), a), git_oid_tostr(bufferB, sizeof(bufferB), b));
   GCRepository* repository = (__bridge GCRepository*)data;
   repository->_lastUpdatedTips += 1;
   return GIT_OK;

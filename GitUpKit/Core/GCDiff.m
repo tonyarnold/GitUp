@@ -77,7 +77,7 @@ static inline GCFileDiffChange _FileDiffChangeFromStatus(git_delta_t status) {
 
 - (NSString*)description {
   static char modes[] = {' ', 'T', 'B', 'X', 'L', 'C'};
-  return [NSString stringWithFormat:@"%@ \"%@\" (%c) {%s}", self.class, _path, modes[_mode], git_oid_tostr_s(&_oid)];
+  return [NSString stringWithFormat:@"%@ “%@” (%c) {%s}", self.class, _path, modes[_mode], git_oid_tostr_s(&_oid)];
 }
 
 @end
@@ -222,7 +222,7 @@ static inline GCFileDiffChange _FileDiffChangeFromStatus(git_delta_t status) {
                           'A', 'D', 'M',
                           'R', 'C', 'T',
                           '!'};
-  return [NSString stringWithFormat:@"%c \"%s\" (%c) -> \"%s\" (%c)", status[_FileDiffChangeFromStatus(_private->status)],
+  return [NSString stringWithFormat:@"%c “%s” (%c) -> “%s” (%c)", status[_FileDiffChangeFromStatus(_private->status)],
                                     _private->old_file.path, modes[GCFileModeFromMode(_private->old_file.mode)],
                                     _private->new_file.path, modes[GCFileModeFromMode(_private->new_file.mode)]];
 }
@@ -350,7 +350,7 @@ static inline BOOL _EqualDeltas(const git_diff_delta* delta1, const git_diff_del
           }
         }
       } else {
-        XLOG_WARNING(@"Invalid delta generated for diff in repository \"%@\"", _repository.repositoryPath);
+        XLOG_WARNING(@"Invalid delta generated for diff in repository “%@”", _repository.repositoryPath);
         XLOG_DEBUG_UNREACHABLE();
       }
     }

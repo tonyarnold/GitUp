@@ -219,7 +219,7 @@ typedef NS_ENUM(NSUInteger, ReplayMode) {
                           [self _updateTransform:transform forNewCommit:newCommit withBaseCommit:commit];
                           CFDictionarySetValue(mapping, (__bridge const void*)commit, (__bridge const void*)newCommit);
                         } else {
-                          XLOG_DEBUG(@"Skipping replay of commit \"%@\" (%@) not on local branch", commit.summary, commit.shortSHA1);
+                          XLOG_DEBUG(@"Skipping replay of commit “%@” (%@) not on local branch", commit.summary, commit.shortSHA1);
                         }
                       }];
   CFRelease(mapping);

@@ -36,7 +36,7 @@
 #define kGCReflogMessageFormat_Git_Branch_Renamed @kGCReflogMessagePrefix_Git_Branch_Renamed "%@ to %@"
 
 #define kGCReflogMessagePrefix_Git_Revert "revert: "
-#define kGCReflogMessageFormat_Git_Revert @kGCReflogMessagePrefix_Git_Revert "Revert \"%@\""
+#define kGCReflogMessageFormat_Git_Revert @kGCReflogMessagePrefix_Git_Revert "Revert “%@”"
 
 #define kGCReflogMessagePrefix_Git_Merge "merge "
 #define kGCReflogMessageFormat_Git_Merge @kGCReflogMessagePrefix_Git_Merge "%@: Merge made by the 'recursive' strategy."

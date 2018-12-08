@@ -814,7 +814,7 @@ cleanup:
     GILayer* layer = CFArrayGetValueAtIndex(_layers, i);
     [description appendFormat:@"\nLayer %lu", (unsigned long)layer.index];
     for (GINode* node in layer.nodes) {
-      [description appendFormat:@"\n [%c] %@ \"%@\" (%@)", node.dummy ? ' ' : 'X', node.commit.shortSHA1, node.commit.summary, node.alternateCommit.shortSHA1];
+      [description appendFormat:@"\n [%c] %@ “%@” (%@)", node.dummy ? ' ' : 'X', node.commit.shortSHA1, node.commit.summary, node.alternateCommit.shortSHA1];
     }
   }
   return [description autorelease];

@@ -92,7 +92,7 @@ extern int git_path_make_relative(git_buf* path, const char* parent);  // SPI
 }
 
 - (NSString*)description {
-  return [NSString stringWithFormat:@"[%@] %@ = \"%@\" (%@)", self.class, _name, _path, GCGitURLFromURL(_URL)];
+  return [NSString stringWithFormat:@"[%@] %@ = “%@” (%@)", self.class, _name, _path, GCGitURLFromURL(_URL)];
 }
 
 @end
@@ -289,12 +289,12 @@ cleanup:
       CALL_LIBGIT2_FUNCTION_GOTO(cleanup, git_repository_set_head_detached, subRepository, &entry->id);
       CALL_LIBGIT2_FUNCTION_GOTO(cleanup, git_submodule_reload, submodule.private, false);  // "force" argument is unused anyway!
       success = YES;
-      XLOG_VERBOSE(@"Updated submodule \"%@\" in \"%@\" in %.3f seconds", submodule.name, self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
+      XLOG_VERBOSE(@"Updated submodule “%@” in “%@” in %.3f seconds", submodule.name, self.repositoryPath, CFAbsoluteTimeGetCurrent() - time);
       break;
     }
 
     default:
-      GC_SET_GENERIC_ERROR(@"Unsupported update mode for submodule \"%@\"", submodule.name);
+      GC_SET_GENERIC_ERROR(@"Unsupported update mode for submodule “%@”", submodule.name);
       break;
   }
 

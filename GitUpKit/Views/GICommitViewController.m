@@ -114,7 +114,7 @@
       if (mergeMessage) {
         message = mergeMessage;
       } else {
-        XLOG_ERROR(@"Failed reading MERGE_MSG from \"%@\":%@ ", self.repository.repositoryPath, error);
+        XLOG_ERROR(@"Failed reading MERGE_MSG from “%@”:%@ ", self.repository.repositoryPath, error);
       }
     }
 
