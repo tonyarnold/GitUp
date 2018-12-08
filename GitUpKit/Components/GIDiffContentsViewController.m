@@ -203,28 +203,20 @@ static NSImage* _untrackedImage = nil;
   CGFloat _binaryViewHeight;
 }
 
-static NSColor* _DimColor(NSColor* color) {
-  CGFloat hue;
-  CGFloat saturation;
-  CGFloat brightness;
-  [color getHue:&hue saturation:&saturation brightness:&brightness alpha:NULL];
-  return [NSColor colorWithDeviceHue:hue saturation:(saturation - 0.15) brightness:(brightness + 0.1) alpha:1.0];
-}
-
 + (void)initialize {
   if (self != [GIDiffContentsViewController class]) {
     return;
   }
 
-  // TODO: Change thse to colour in the bundle with dark variants.
-  _conflictBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(255.0 / 255.0) green:(132.0 / 255.0) blue:(0.0 / 255.0) alpha:1.0]);
-  _addedBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(75.0 / 255.0) green:(138.0 / 255.0) blue:(231.0 / 255.0) alpha:1.0]);
-  _modifiedBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(119.0 / 255.0) green:(178.0 / 255.0) blue:(85.0 / 255.0) alpha:1.0]);
-  _deletedBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(241.0 / 255.0) green:(115.0 / 255.0) blue:(116.0 / 255.0) alpha:1.0]);
-  _renamedBackgroundColor = _DimColor([NSColor colorWithDeviceRed:(133.0 / 255.0) green:(96.0 / 255.0) blue:(168.0 / 255.0) alpha:1.0]);
-  _untrackedBackgroundColor = [NSColor colorWithDeviceRed:0.75 green:0.75 blue:0.75 alpha:1.0];
+  let bundle = GitUpKitBundle();
 
-  NSBundle* bundle = GitUpKitBundle();
+  _conflictBackgroundColor = [NSColor colorNamed:@"color_conflict" bundle:bundle];
+  _addedBackgroundColor = [NSColor colorNamed:@"color_added" bundle:bundle];
+  _modifiedBackgroundColor = [NSColor colorNamed:@"color_modified" bundle:bundle];
+  _deletedBackgroundColor = [NSColor colorNamed:@"color_deleted" bundle:bundle];
+  _renamedBackgroundColor = [NSColor colorNamed:@"color_renamed" bundle:bundle];
+  _untrackedBackgroundColor = [NSColor colorNamed:@"color_untracked" bundle:bundle];
+
   _conflictImage = [bundle imageForResource:@"icon_file_conflict"];
   _addedImage = [bundle imageForResource:@"icon_file_a"];
   _modifiedImage = [bundle imageForResource:@"icon_file_m"];
