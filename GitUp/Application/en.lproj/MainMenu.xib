@@ -1298,7 +1298,7 @@ This fork by Douglas Hill</string>
                     <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" title="Box" titlePosition="noTitle" id="UoN-n1-xSr">
                         <rect key="frame" x="0.0" y="0.0" width="280" height="349"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <view key="contentView" appearanceType="aqua" id="UVs-2r-EAT">
+                        <view key="contentView" id="UVs-2r-EAT">
                             <rect key="frame" x="0.0" y="0.0" width="280" height="349"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -1342,13 +1342,13 @@ This fork by Douglas Hill</string>
                                                 <rect key="frame" x="50" y="7" width="180" height="20"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="link" value="Open a Git Repository…"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="linkColor">
-                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="value" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="alternateLinkColor">
-                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                        <color key="value" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="link" value="Open a Git Repository…"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="openDocument:" target="-1" id="PnG-74-JXS"/>
@@ -1356,7 +1356,7 @@ This fork by Douglas Hill</string>
                                             </customView>
                                         </subviews>
                                     </view>
-                                    <color key="fillColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </box>
                                 <box verticalHuggingPriority="750" boxType="separator" id="FXE-km-lcD">
                                     <rect key="frame" x="0.0" y="85" width="280" height="5"/>
@@ -1385,7 +1385,7 @@ This fork by Douglas Hill</string>
                                             </popUpButton>
                                         </subviews>
                                     </view>
-                                    <color key="fillColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </box>
                                 <box verticalHuggingPriority="750" boxType="separator" id="3Ya-QW-NlZ">
                                     <rect key="frame" x="0.0" y="49" width="280" height="5"/>
@@ -1395,17 +1395,18 @@ This fork by Douglas Hill</string>
                                     <rect key="frame" x="45" y="20" width="12" height="12"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon_twitter" id="4p0-VD-kVJ"/>
+                                    <color key="contentTintColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 </imageView>
                                 <customView id="5ht-7L-7AO" customClass="GILinkButton">
                                     <rect key="frame" x="60" y="13" width="75" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="alternateLinkColor">
-                                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
-                                        </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="string" keyPath="link" value="@gitupapp"/>
                                         <userDefinedRuntimeAttribute type="color" keyPath="linkColor">
                                             <color key="value" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="alternateLinkColor">
+                                            <color key="value" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
@@ -1416,18 +1417,19 @@ This fork by Douglas Hill</string>
                                     <rect key="frame" x="154" y="20" width="12" height="12"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon_forum" id="3Om-2j-ETN"/>
+                                    <color key="contentTintColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 </imageView>
                                 <customView id="ozw-os-Nc4" customClass="GILinkButton">
                                     <rect key="frame" x="169" y="13" width="75" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="link" value="Feedback"/>
                                         <userDefinedRuntimeAttribute type="color" keyPath="linkColor">
-                                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="value" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="color" keyPath="alternateLinkColor">
-                                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                            <color key="value" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                         </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="string" keyPath="link" value="Feedback"/>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="viewIssues:" target="Voe-Tx-rLC" id="C7T-gw-NmH"/>
@@ -1435,7 +1437,7 @@ This fork by Douglas Hill</string>
                                 </customView>
                             </subviews>
                         </view>
-                        <color key="fillColor" red="0.90000000000000002" green="0.90000000000000002" blue="0.90000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="fillColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </box>
                 </subviews>
             </view>
