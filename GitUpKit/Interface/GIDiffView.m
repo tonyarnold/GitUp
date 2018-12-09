@@ -56,11 +56,11 @@ const char* GIDiffViewMissingNewlinePlaceholder = "🚫\n";
   GIDiffViewAddedBackgroundColor = [NSColor colorNamed:@"GIDiffViewAddedBackgroundColor" bundle:bundle];
   GIDiffViewAddedHighlightColor = [NSColor colorNamed:@"GIDiffViewAddedHighlightColor" bundle:bundle];
   GIDiffViewSeparatorBackgroundColor = [NSColor colorNamed:@"GIDiffViewSeparatorBackgroundColor" bundle:bundle];
-  GIDiffViewSeparatorLineColor = [NSColor separatorColor];
-  GIDiffViewSeparatorTextColor = [NSColor colorWithDeviceRed:0.65 green:0.65 blue:0.65 alpha:1.0];
-  GIDiffViewVerticalLineColor = [NSColor colorWithDeviceRed:0.85 green:0.85 blue:0.85 alpha:0.6];
-  GIDiffViewLineNumberColor = [NSColor colorWithDeviceRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-  GIDiffViewPlainTextColor = [NSColor textColor];
+  GIDiffViewSeparatorLineColor = NSColor.separatorColor;
+  GIDiffViewVerticalLineColor = NSColor.separatorColor;
+  GIDiffViewSeparatorTextColor = NSColor.tertiaryLabelColor;
+  GIDiffViewLineNumberColor = NSColor.tertiaryLabelColor;
+  GIDiffViewPlainTextColor = NSColor.textColor;
 }
 
 - (void)updateMetricsFromCurrentFontSize {

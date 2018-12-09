@@ -360,6 +360,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
   NSTabViewItem* configItem = [_mainTabView tabViewItemAtIndex:[_mainTabView indexOfTabViewItemWithIdentifier:kWindowModeString_Map_Config]];
   configItem.view = _configViewController.view;
 
+  // This always uses a dark appearance.
   _hiddenWarningView.layer.backgroundColor = [[NSColor colorWithDeviceRed:0.0 green:0.0 blue:0.0 alpha:0.5] CGColor];
   _hiddenWarningView.layer.cornerRadius = 10.0;
 
