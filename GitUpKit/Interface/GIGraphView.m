@@ -986,7 +986,7 @@ static void _DrawBranchTitle(CGContextRef context, CGFloat x, CGFloat y, CGPoint
 
 #if __DEBUG_BOXES__
     CGRect labelRect = CGRectMake(origin.x, origin.y - descent, lineWidth, ascent + descent);
-    CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 0.333);
+    CGContextSetFillColorWithColor(context, [NSColor.systemRedColor colorWithAlphaComponent:0.333].CGColor);
     CGContextFillRect(context, labelRect);
 #endif
 
@@ -1006,7 +1006,7 @@ static void _DrawBranchTitle(CGContextRef context, CGFloat x, CGFloat y, CGPoint
 #if __DEBUG_TITLE_CORNERS__
         // Draw a red point where the tail would be
         CGRect dotRect = CGRectMake(currentBranchCorner.x - 1.0, currentBranchCorner.y - 1.0, 2.0, 2.0);
-        CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 1.0);
+        CGContextSetFillColorWithColor(context, NSColor.systemRedColor.CGColor);
         CGContextFillRect(context, dotRect);
 #endif
       }
@@ -1033,7 +1033,7 @@ static void _DrawBranchTitle(CGContextRef context, CGFloat x, CGFloat y, CGPoint
 #if __DEBUG_TITLE_CORNERS__
     // Draw previous corner using semi-transparent red dot for debugging needs
     CGRect dotRect = CGRectMake(previousBranchCorner->x - 1.0, previousBranchCorner->y - 1.0, 2.0, 2.0);
-    CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 0.333);
+    CGContextSetFillColorWithColor(context, [NSColor.systemRedColor colorWithAlphaComponent:0.333].CGColor);
     CGContextFillRect(context, dotRect);
 #endif
 
@@ -1136,7 +1136,7 @@ static void _DrawNodeLabels(CGContextRef context, CGFloat x, CGFloat y, GINode* 
     CGContextSetFillColorWithColor(context, [NSColor.textBackgroundColor colorWithAlphaComponent:0.85].CGColor);
     GICGContextAddRoundedRect(context, labelRect, 4.0);
     CGContextFillPath(context);
-    CGContextSetRGBStrokeColor(context, 0.4, 0.4, 0.4, 1.0);
+    CGContextSetStrokeColorWithColor(context, NSColor.secondaryLabelColor.CGColor);
     GICGContextAddRoundedRect(context, labelRect, 4.0);
     CGContextStrokePath(context);
 
@@ -1144,12 +1144,12 @@ static void _DrawNodeLabels(CGContextRef context, CGFloat x, CGFloat y, GINode* 
     CGContextAddLineToPoint(context, labelRect.origin.x + 1, labelRect.origin.y + 1);
     CGContextStrokePath(context);
 
-    CGContextSetRGBFillColor(context, 0.4, 0.4, 0.4, 1.0);
+    CGContextSetFillColorWithColor(context, NSColor.secondaryLabelColor.CGColor);
     CGContextFillEllipseInRect(context, CGRectMake(-2, -2, 4, 4));
 
     // Draw text
 
-    CGContextSetRGBFillColor(context, 0.4, 0.4, 0.4, 1.0);
+    CGContextSetFillColorWithColor(context, NSColor.secondaryLabelColor.CGColor);
     CFArrayRef lines = CTFrameGetLines(frame);
     for (CFIndex i = 0, count = CFArrayGetCount(lines); i < count; ++i) {
       CTLineRef line = CFArrayGetValueAtIndex(lines, i);
@@ -1197,7 +1197,7 @@ static void _DrawHead(CGContextRef context, CGFloat x, CGFloat y, BOOL isDetache
   // Draw label
 
   if (isDetached) {
-    CGContextSetRGBFillColor(context, 0.4, 0.4, 0.4, 1.0);
+    CGContextSetFillColorWithColor(context, NSColor.secondaryLabelColor.CGColor);
   } else {
     CGContextSetFillColorWithColor(context, color);
   }
@@ -1205,6 +1205,7 @@ static void _DrawHead(CGContextRef context, CGFloat x, CGFloat y, BOOL isDetache
   CGContextFillPath(context);
 
   if (!isDetached) {
+    // This looks bad if transparent (e.g. secondary label colour). Looks a bit odd if light in dark mode too, so just use fixed colour for now.
     CGContextSetRGBStrokeColor(context, 0.4, 0.4, 0.4, 1.0);
     CGContextSetLineWidth(context, 2);
     GICGContextAddRoundedRect(context, rect, 4.0);
@@ -1336,7 +1337,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
   CGContextAddPath(context, labelPath);
   CGContextFillPath(context);
 
-  CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0);
+  CGContextSetStrokeColorWithColor(context, NSColor.textBackgroundColor.CGColor);
   CGContextSetLineWidth(context, 2);
   CGContextAddPath(context, labelPath);
   CGContextStrokePath(context);
@@ -1351,7 +1352,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
   if (isFirstResponder) {
     CGContextSetFillColorWithColor(context, [[NSColor alternateSelectedControlTextColor] CGColor]);
   } else {
-    CGContextSetRGBFillColor(context, 0.4, 0.4, 0.4, 1.0);  // [[NSColor controlTextColor] CGColor] is too dark
+    CGContextSetFillColorWithColor(context, NSColor.secondaryLabelColor.CGColor);
   }
   CFArrayRef lines = CTFrameGetLines(frame);
   for (CFIndex i = 0, count = CFArrayGetCount(lines); i < count; ++i) {
@@ -1470,7 +1471,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
 #if __DEBUG_DRAWING__
   // Draw grid
   CGContextSetLineWidth(context, 1);
-  CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 0.25);
+  CGContextSetStrokeColorWithColor(context, NSColor.tertiaryLabelColor.CGColor);
   for (NSUInteger index = startIndex; index <= endIndex; ++index) {
     GILayer* layer = layers[index];
     CGFloat y = CONVERT_Y(offset - layer.y);
@@ -1544,7 +1545,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
 #if __DEBUG_DRAWING__
         CGContextSetFillColorWithColor(context, nodeColor());
         CGContextFillRect(context, CGRectMake(x - 2, y - 2, 4, 4));
-        CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
+        CGContextSetFillColorWithColor(context, NSColor.textBackgroundColor.CGColor);
         CGContextFillRect(context, CGRectMake(x - 1, y - 1, 2, 2));
 #endif
         continue;
@@ -1563,7 +1564,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
   // Draw highlighted debug nodes
   if (_selectedNode) {
     CGContextSetLineWidth(context, 3);
-    CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
+    CGContextSetStrokeColorWithColor(context, NSColor.textBackgroundColor.CGColor);
 #if __DEBUG_MAIN_LINE__
     [_graph walkMainLineForAncestorsOfNode:_selectedNode
                                 usingBlock:^(GINode* node, BOOL* stop) {
@@ -1621,7 +1622,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
       CGFloat y = CONVERT_Y(offset - node.layer.y);
       if (NSIntersectsRect(NODE_LABEL_BOUNDS(x, y), dirtyRect)) {
 #if __DEBUG_BOXES__
-        CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 0.666);
+        CGContextSetFillColorWithColor(context, [NSColor.systemRedColor colorWithAlphaComponent:0.666].CGColor);
         CGContextFillRect(context, NODE_LABEL_BOUNDS(x, y));
 #endif
         _DrawNodeLabels(context, x, y, node,
@@ -1650,7 +1651,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
       CGFloat y = CONVERT_Y(offset - headNode.layer.y);
       if (NSIntersectsRect(HEAD_BOUNDS(x, y), dirtyRect)) {
 #if __DEBUG_BOXES__
-        CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 0.666);
+        CGContextSetFillColorWithColor(context, [NSColor.systemRedColor colorWithAlphaComponent:0.666].CGColor);
         CGContextFillRect(context, HEAD_BOUNDS(x, y));
 #endif
         _DrawHead(context, x, y, !_graph.history.HEADBranch, headNode.primaryLine.color.CGColor, tagAttributes);
@@ -1676,7 +1677,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
     CGFloat y = CONVERT_Y(offset - _selectedNode.layer.y);
     if (NSIntersectsRect(SELECTED_NODE_BOUNDS(x, y), dirtyRect)) {
 #if __DEBUG_BOXES__
-      CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 0.666);
+      CGContextSetFillColorWithColor(context, [NSColor.systemRedColor colorWithAlphaComponent:0.666].CGColor);
       CGContextFillRect(context, SELECTED_NODE_BOUNDS(x, y));
 #endif
       _DrawSelectedNode(context, x, y, _selectedNode, selectedAttributes1, selectedAttributes2, _dateFormatter, self.window.keyWindow && (self.window.firstResponder == self));
