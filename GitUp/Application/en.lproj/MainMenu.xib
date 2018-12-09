@@ -1401,7 +1401,7 @@ This fork by Douglas Hill</string>
                                     <rect key="frame" x="60" y="13" width="75" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="string" keyPath="link" value="@gitupapp"/>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="link" value="@qdoug"/>
                                         <userDefinedRuntimeAttribute type="color" keyPath="linkColor">
                                             <color key="value" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         </userDefinedRuntimeAttribute>
