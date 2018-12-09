@@ -1501,8 +1501,9 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
   if (lines.count) {
     CGContextSetLineJoin(context, kCGLineJoinMiter);
 
-    // This won’t handle high contrast settings. Not the right way to do this.
-    if ([self.effectiveAppearance.name isEqualToString:NSAppearanceNameAqua]) {
+    // Can’t multiply against a dark background.
+    let isLight = [self.effectiveAppearance bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]] == NSAppearanceNameAqua;
+    if (isLight) {
       CGContextSetBlendMode(context, kCGBlendModeMultiply);
     }
 

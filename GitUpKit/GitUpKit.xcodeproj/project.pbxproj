@@ -17,6 +17,7 @@
 		A52D6A1D21B430AD0083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
 		A52D6A1E21B430AD0083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
 		A52D6A1F21B431450083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
+		A5B6E38621BD534B00AF4808 /* Graph.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5B6E38521BD534B00AF4808 /* Graph.xcassets */; };
 		E200A3BA1B02DDA100C4E39D /* GCPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = E200A3B81B02DDA100C4E39D /* GCPrivate.m */; };
 		E20EB08C19FC75CA0031A075 /* GCRepository+Reset.m in Sources */ = {isa = PBXBuildFile; fileRef = E20EB08A19FC75CA0031A075 /* GCRepository+Reset.m */; };
 		E20EB09019FC76160031A075 /* GCRepository+Status.m in Sources */ = {isa = PBXBuildFile; fileRef = E20EB08E19FC76160031A075 /* GCRepository+Status.m */; };
@@ -422,6 +423,7 @@
 		74EDB5D51B84E06500F00E79 /* GCOrderedSet-Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GCOrderedSet-Tests.m"; sourceTree = "<group>"; };
 		A52D6A1921B430AD0083CBC3 /* GitUpKitBundle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GitUpKitBundle.h; sourceTree = "<group>"; };
 		A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GitUpKitBundle.m; sourceTree = "<group>"; };
+		A5B6E38521BD534B00AF4808 /* Graph.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Graph.xcassets; sourceTree = "<group>"; };
 		E200A3B81B02DDA100C4E39D /* GCPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCPrivate.m; sourceTree = "<group>"; };
 		E20EB08919FC75CA0031A075 /* GCRepository+Reset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GCRepository+Reset.h"; sourceTree = "<group>"; };
 		E20EB08A19FC75CA0031A075 /* GCRepository+Reset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GCRepository+Reset.m"; sourceTree = "<group>"; };
@@ -1015,6 +1017,7 @@
 				E27E43011A74A94700D04ED1 /* GIGraph-Tests.m */,
 				E2D4DEA01A4D562300B6AF66 /* GIGraph.h */,
 				E2D4DEA11A4D562300B6AF66 /* GIGraph.m */,
+				A5B6E38521BD534B00AF4808 /* Graph.xcassets */,
 				E2D4DEA21A4D562300B6AF66 /* GIGraphView.h */,
 				E2D4DEA31A4D562300B6AF66 /* GIGraphView.m */,
 				E2D4DEB31A4D5AC600B6AF66 /* GIInterface.h */,
@@ -1325,6 +1328,7 @@
 				E267E2401B84DC4B00BAB377 /* GISnapshotListViewController.xib in Resources */,
 				E267E2411B84DC4B00BAB377 /* GIUnifiedReflogViewController.xib in Resources */,
 				E267E2421B84DC6300BAB377 /* Views.xcassets in Resources */,
+				A5B6E38621BD534B00AF4808 /* Graph.xcassets in Resources */,
 				E267E2431B84DC6300BAB377 /* GIAdvancedCommitViewController.xib in Resources */,
 				E267E2441B84DC6400BAB377 /* GICommitRewriterViewController.xib in Resources */,
 				E267E2451B84DC6400BAB377 /* GICommitSplitterViewController.xib in Resources */,

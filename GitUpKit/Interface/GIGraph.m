@@ -18,6 +18,7 @@
 #endif
 
 #import "GIPrivate.h"
+#import "GitUpKitBundle.h"
 
 #if __GI_HAS_APPKIT__
 #define __COLORIZE_BRANCHES__ 0
@@ -587,19 +588,16 @@ cleanup:
 #if __GI_HAS_APPKIT__
 
 - (void)_computeNodeAndLineColors {
-  let luminance = 0.7; // probably should be different for light and dark
-  let saturation = 0.35; // Maybe 0.45 for light and 0.75 for dark.
-  let brightness = 0.99; // not sure. Was 0.9 before.
-  let alpha = 1;
+  let bundle = GitUpKitBundle();
   let colors = @[
-    colorWithYHSBA(luminance, (0.0 / 8.0), saturation, brightness, alpha),
-    colorWithYHSBA(luminance, (0.6 / 8.0), saturation, brightness, alpha),
-    colorWithYHSBA(luminance, (1.3 / 8.0), saturation, brightness, alpha),
-    colorWithYHSBA(luminance, (2.5 / 8.0), saturation, brightness, alpha),
-    colorWithYHSBA(luminance, (3.9 / 8.0), saturation, brightness, alpha),
-    colorWithYHSBA(luminance, (4.9 / 8.0), saturation, brightness, alpha),
-    colorWithYHSBA(luminance, (6.0 / 8.0), saturation, brightness, alpha),
-    colorWithYHSBA(luminance, (7.0 / 8.0), saturation, brightness, alpha),
+    [NSColor colorNamed:@"graph_0" bundle:bundle],
+    [NSColor colorNamed:@"graph_1" bundle:bundle],
+    [NSColor colorNamed:@"graph_2" bundle:bundle],
+    [NSColor colorNamed:@"graph_3" bundle:bundle],
+    [NSColor colorNamed:@"graph_4" bundle:bundle],
+    [NSColor colorNamed:@"graph_5" bundle:bundle],
+    [NSColor colorNamed:@"graph_6" bundle:bundle],
+    [NSColor colorNamed:@"graph_7" bundle:bundle],
   ];
   NSUInteger numColors = colors.count;
 
