@@ -29,64 +29,6 @@
 #define COMMIT_SKIPPED(c) skipped[c.autoIncrementID]
 #define MAP_COMMIT_TO_NODE(c) _mapping[c.autoIncrementID]
 
-#if __GI_HAS_APPKIT__
-
-#import <simd/simd.h>
-
-#pragma mark - YUV
-
-#if CGFLOAT_IS_DOUBLE
-typedef vector_double3 gi_vector_cgfloat3;
-typedef matrix_double3x3 gi_matrix_cgfloat3x3;
-#else
-typedef vector_float3 gi_vector_cgfloat3;
-typedef matrix_float3x3 gi_matrix_cgfloat3x3;
-#endif
-
-static const CGFloat GIRedLuminanceFraction = (CGFloat)0.299;
-static const CGFloat GIGreenLuminanceFraction = (CGFloat)0.587;
-static const CGFloat GIBlueLuminanceFraction = 1 - GIRedLuminanceFraction - GIGreenLuminanceFraction;
-static const CGFloat GIUWeighting = 0.5;
-static const CGFloat GIVWeighting = 0.625;
-
-// Express the color space conversion as a transformation matrix so the reverse calculation is trivial.
-// simd matrices are arrays of column vectors, so this appears to be the transpose.
-static gi_matrix_cgfloat3x3 const GIRGBToYUVTransform = {.columns = {
-  {GIRedLuminanceFraction,   GIUWeighting * -GIRedLuminanceFraction,       GIVWeighting * (1 - GIRedLuminanceFraction)},
-  {GIGreenLuminanceFraction, GIUWeighting * -GIGreenLuminanceFraction,     GIVWeighting * -GIGreenLuminanceFraction},
-  {GIBlueLuminanceFraction,  GIUWeighting * (1 - GIBlueLuminanceFraction), GIVWeighting * -GIBlueLuminanceFraction}
-}};
-
-static inline gi_vector_cgfloat3 GIYUVFromRGB(gi_vector_cgfloat3 RGB) { return matrix_multiply(GIRGBToYUVTransform, RGB); }
-
-static inline gi_vector_cgfloat3 GIRGBFromYUV(gi_vector_cgfloat3 YUV) { return matrix_multiply(matrix_invert(GIRGBToYUVTransform), YUV); }
-
-static NSColor* colorWithYUVA(CGFloat Y, CGFloat U, CGFloat V, CGFloat alpha) {
-  gi_vector_cgfloat3 const RGB = GIRGBFromYUV((gi_vector_cgfloat3){Y, U, V});
-  return [NSColor colorWithRed:RGB[0] green:RGB[1] blue:RGB[2] alpha:alpha];
-}
-
-static void getYUVA(NSColor* color, CGFloat *Y, CGFloat *U, CGFloat *V, CGFloat *alpha) {
-  CGFloat red, green, blue;
-  [color getRed:&red green:&green blue:&blue alpha:alpha];
-
-  gi_vector_cgfloat3 const YUV = GIYUVFromRGB((gi_vector_cgfloat3){red, green, blue});
-  if (Y) *Y = YUV[0];
-  if (U) *U = YUV[1];
-  if (V) *V = YUV[2];
-}
-
-static NSColor* colorWithYHSBA(CGFloat luminance, CGFloat hue, CGFloat saturation, CGFloat brightness, CGFloat alpha) {
-  NSColor* colorWithoutLuminance = [NSColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
-  CGFloat U, V;
-  getYUVA(colorWithoutLuminance, NULL, &U, &V, NULL);
-  return colorWithYUVA(luminance, U, V, alpha);
-}
-
-#pragma mark -
-
-#endif
-
 @implementation GIGraph {
   GINode** _mapping;
   CFMutableArrayRef _branches;
