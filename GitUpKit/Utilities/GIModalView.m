@@ -24,66 +24,7 @@
 
 #import "XLFacilityMacros.h"
 
-#define __ENABLE_BLUR__ 0
-
-#if __ENABLE_BLUR__
-#ifndef kCFCoreFoundationVersionNumber10_10
-#define kCFCoreFoundationVersionNumber10_10 1152
-#endif
-#endif
-
-#if __ENABLE_BLUR__
-#define kBlurRadius 20.0
-#define kAnimationDuration 0.2
-#define kBlurName @"blur"
-#define kBlurKeyPath @"backgroundFilters." kBlurName ".inputRadius"
-#endif
-
-@implementation GIModalView {
-  BOOL _useBackgroundFilters;
-}
-
-// See https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html
-- (void)_initialize {
-  self.wantsLayer = YES;
-
-#if __ENABLE_BLUR__
-  if (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber10_10) {  // Background filters don't seem to work on 10.8 and 10.9
-    size_t size;
-    if (sysctlbyname("hw.model", NULL, &size, NULL, 0) == 0) {
-      char* machine = malloc(size);
-      if (sysctlbyname("hw.model", machine, &size, NULL, 0) == 0) {
-        if (strncmp(machine, "MacBookAir", 10)) {  // MBA 2013 hangs for 1-2 seconds the first time the blur effect is used in the app
-          _useBackgroundFilters = YES;
-        }
-      }
-      free(machine);
-    }
-  }
-
-  if (_useBackgroundFilters) {
-    CIFilter* blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
-    blurFilter.name = kBlurName;
-    [blurFilter setDefaults];
-    [blurFilter setValue:@(0.0) forKey:@"inputRadius"];
-    self.backgroundFilters = @[ blurFilter ];
-  }
-#endif
-}
-
-- (instancetype)initWithFrame:(NSRect)frameRect {
-  if ((self = [super initWithFrame:frameRect])) {
-    [self _initialize];
-  }
-  return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder*)coder {
-  if ((self = [super initWithCoder:coder])) {
-    [self _initialize];
-  }
-  return self;
-}
+@implementation GIModalView
 
 - (void)presentContentView:(NSView*)view withCompletionHandler:(dispatch_block_t)handler {
   XLOG_DEBUG_CHECK(self.subviews.count == 0);
@@ -97,37 +38,12 @@
   view.layer.borderColor = NSColor.separatorColor.CGColor;
   view.layer.cornerRadius = 5.0;
 
-#if __ENABLE_BLUR__
-  if (_useBackgroundFilters) {
-    [self.layer setValue:@(kBlurRadius) forKeyPath:kBlurKeyPath];
-    CABasicAnimation* animation = [CABasicAnimation animation];
-    animation.keyPath = kBlurKeyPath;
-    animation.fromValue = @(0.0);
-    animation.toValue = nil;
-    animation.duration = kAnimationDuration;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    [self.layer addAnimation:animation forKey:nil];
-
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:kAnimationDuration];
-    [[NSAnimationContext currentContext] setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-    [[NSAnimationContext currentContext] setCompletionHandler:^{
-      if (handler) {
-        handler();
-      }
-    }];
-    [self.animator addSubview:view];
-    [NSAnimationContext endGrouping];
-  } else
-#endif
-  {
-    view.layer.backgroundColor = NSColor.windowBackgroundColor.CGColor;
-    // This is for dimming so deliberately does not adapt for dark mode.
-    self.layer.backgroundColor = [[NSColor colorWithDeviceRed:0.0 green:0.0 blue:0.0 alpha:0.4] CGColor];
-    [self addSubview:view];
-    if (handler) {
-      dispatch_async(dispatch_get_main_queue(), handler);
-    }
+  view.layer.backgroundColor = NSColor.windowBackgroundColor.CGColor;
+  // This is for dimming so deliberately does not adapt for dark mode.
+  self.layer.backgroundColor = [[NSColor colorWithDeviceRed:0.0 green:0.0 blue:0.0 alpha:0.4] CGColor];
+  [self addSubview:view];
+  if (handler) {
+    dispatch_async(dispatch_get_main_queue(), handler);
   }
 }
 
@@ -135,37 +51,11 @@
   XLOG_DEBUG_CHECK(self.subviews.count == 1);
 
   NSView* view = self.subviews.firstObject;
-#if __ENABLE_BLUR__
-  if (_useBackgroundFilters) {
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:kAnimationDuration];
-    [[NSAnimationContext currentContext] setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-    [[NSAnimationContext currentContext] setCompletionHandler:^{
-      view.wantsLayer = NO;
-      if (handler) {
-        handler();
-      }
-    }];
-    [view.animator removeFromSuperviewWithoutNeedingDisplay];
-    [NSAnimationContext endGrouping];
-
-    [self.layer setValue:@(0.0) forKeyPath:kBlurKeyPath];
-    CABasicAnimation* animation = [CABasicAnimation animation];
-    animation.keyPath = kBlurKeyPath;
-    animation.fromValue = @(kBlurRadius);
-    animation.toValue = nil;
-    animation.duration = kAnimationDuration;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-    [self.layer addAnimation:animation forKey:nil];
-  } else
-#endif
-  {
-    [view removeFromSuperviewWithoutNeedingDisplay];
-    view.wantsLayer = NO;
-    self.layer.backgroundColor = nil;
-    if (handler) {
-      dispatch_async(dispatch_get_main_queue(), handler);
-    }
+  [view removeFromSuperviewWithoutNeedingDisplay];
+  view.wantsLayer = NO;
+  self.layer.backgroundColor = nil;
+  if (handler) {
+    dispatch_async(dispatch_get_main_queue(), handler);
   }
 }
 
