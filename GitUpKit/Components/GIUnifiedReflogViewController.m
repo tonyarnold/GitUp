@@ -56,8 +56,8 @@ static NSColor* _reachableColor = nil;
   }
 
   _missingColor = NSColor.systemRedColor;
-  _unreachableColor = NSColor.tertiaryLabelColor;
-  _reachableColor = NSColor.secondaryLabelColor;
+  _unreachableColor = NSColor.secondaryLabelColor;
+  _reachableColor = NSColor.labelColor;
 }
 
 - (instancetype)initWithRepository:(GCLiveRepository*)repository {
