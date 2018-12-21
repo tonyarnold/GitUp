@@ -20,28 +20,54 @@
 #import <QuartzCore/QuartzCore.h>
 #import <sys/sysctl.h>
 
+#import "GCMacros.h"
 #import "GIModalView.h"
 
 #import "XLFacilityMacros.h"
 
+@interface GIModalView ()
+
+@property (nonatomic, readonly) NSBox *box;
+
+@end
+
 @implementation GIModalView
+
+@synthesize box = _box;
+- (NSBox *)box {
+  if (_box == nil) {
+    _box = [[NSBox alloc] init];
+
+    _box.boxType = NSBoxCustom;
+    _box.autoresizingMask = NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
+    _box.contentViewMargins = NSZeroSize;
+    _box.borderWidth = 1.0;
+    _box.cornerRadius = 5.0;
+    _box.borderColor = NSColor.separatorColor;
+    _box.fillColor = NSColor.windowBackgroundColor;
+  }
+
+  return _box;
+}
 
 - (void)presentContentView:(NSView*)view withCompletionHandler:(dispatch_block_t)handler {
   XLOG_DEBUG_CHECK(self.subviews.count == 0);
 
-  NSRect bounds = self.bounds;
-  NSRect frame = view.frame;
-  view.frame = NSMakeRect(round((bounds.size.width - frame.size.width) / 2), round((bounds.size.height - frame.size.height) / 2), frame.size.width, frame.size.height);
-  view.autoresizingMask = NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
-  view.wantsLayer = YES;
-  view.layer.borderWidth = 1.0;
-  view.layer.borderColor = NSColor.separatorColor.CGColor;
-  view.layer.cornerRadius = 5.0;
+  let bounds = self.bounds;
+  let modalSize = view.bounds.size;
+  // The box always positions the content view inset by 1 point on each side, presumably for the border because contentViewMargins is defined as being to the border, not the edge of the box.
+  // Therefore take this padding into account so the size of the content view does not drift each time it is shown.
+  self.box.frame = NSInsetRect(NSMakeRect(round((bounds.size.width - modalSize.width) / 2), round((bounds.size.height - modalSize.height) / 2), modalSize.width, modalSize.height), -1, -1);
+  self.box.contentView = view;
 
-  view.layer.backgroundColor = NSColor.windowBackgroundColor.CGColor;
+  // If this fails it means the border is not being considered correctly and the content view size will drift each time it is shown.
+  XLOG_DEBUG_CHECK(NSEqualSizes(view.bounds.size, modalSize));
+
   // This is for dimming so deliberately does not adapt for dark mode.
   self.layer.backgroundColor = [[NSColor colorWithDeviceRed:0.0 green:0.0 blue:0.0 alpha:0.4] CGColor];
-  [self addSubview:view];
+
+  [self addSubview:self.box];
+
   if (handler) {
     dispatch_async(dispatch_get_main_queue(), handler);
   }
@@ -50,10 +76,11 @@
 - (void)dismissContentViewWithCompletionHandler:(dispatch_block_t)handler {
   XLOG_DEBUG_CHECK(self.subviews.count == 1);
 
-  NSView* view = self.subviews.firstObject;
-  [view removeFromSuperviewWithoutNeedingDisplay];
-  view.wantsLayer = NO;
+  [self.box removeFromSuperviewWithoutNeedingDisplay];
+  self.box.contentView = nil;
+
   self.layer.backgroundColor = nil;
+
   if (handler) {
     dispatch_async(dispatch_get_main_queue(), handler);
   }
