@@ -354,7 +354,7 @@ static NSString* _diffTemporaryDirectoryPath = nil;
   if ([[NSFileManager defaultManager] isExecutableFileAtPath:kOpenDiffPath]) {
     [self _runTaskWithPath:kOpenDiffPath arguments:arguments variables:nil waitUntilExit:NO reportErrors:NO];  // opendiff hangs for a couple seconds before exiting
   } else {
-    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"FileMerge is not available!", nil) message:NSLocalizedString(@"FileMerge tool doesn't appear to be installed.", nil)];
+    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"FileMerge is not available!", nil) message:NSLocalizedString(@"FileMerge tool doesn’t appear to be installed.", nil)];
   }
 }
 
@@ -362,7 +362,7 @@ static NSString* _diffTemporaryDirectoryPath = nil;
   if (([[NSFileManager defaultManager] isExecutableFileAtPath:kKSDiffPath])) {
     [self _runTaskWithPath:kKSDiffPath arguments:arguments variables:nil waitUntilExit:YES reportErrors:NO];
   } else {
-    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"Kaleidoscope is not available!", nil) message:NSLocalizedString(@"Kaleidoscope tool doesn't appear to be installed.", nil)];
+    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"Kaleidoscope is not available!", nil) message:NSLocalizedString(@"Kaleidoscope tool doesn’t appear to be installed.", nil)];
   }
 }
 
@@ -370,7 +370,7 @@ static NSString* _diffTemporaryDirectoryPath = nil;
   if (([[NSFileManager defaultManager] isExecutableFileAtPath:kBComparePath])) {
     [self _runTaskWithPath:kBComparePath arguments:arguments variables:nil waitUntilExit:YES reportErrors:NO];
   } else {
-    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"Beyond Compare is not available!", nil) message:NSLocalizedString(@"Beyond Compare tool doesn't appear to be installed.", nil)];
+    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"Beyond Compare is not available!", nil) message:NSLocalizedString(@"Beyond Compare tool doesn’t appear to be installed.", nil)];
   }
 }
 
@@ -378,7 +378,7 @@ static NSString* _diffTemporaryDirectoryPath = nil;
   if (([[NSFileManager defaultManager] isExecutableFileAtPath:kP4MergePath])) {
     [self _runTaskWithPath:kP4MergePath arguments:arguments variables:nil waitUntilExit:NO reportErrors:NO];  // launchp4merge is blocking
   } else {
-    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"P4Merge is not available!", nil) message:NSLocalizedString(@"P4Merge app doesn't appear to be installed.", nil)];
+    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"P4Merge is not available!", nil) message:NSLocalizedString(@"P4Merge app doesn’t appear to be installed.", nil)];
   }
 }
 
@@ -395,7 +395,7 @@ static NSString* _diffTemporaryDirectoryPath = nil;
     [variables setValue:newPath forKey:@"REMOTE"];
     [self _runTaskWithPath:@"/bin/bash" arguments:@[ @"-l", @"-c", cmd ] variables:variables waitUntilExit:YES reportErrors:YES];
   } else {
-    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"Git custom diff tool not available!", nil) message:NSLocalizedString(@"Git diff tool requires both 'diff.tool' (or 'diff.guitool') and 'difftool.<tool>.cmd' to be defined in your Git configuration.", nil)];
+    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"Git custom diff tool not available!", nil) message:NSLocalizedString(@"Git diff tool requires both “diff.tool” (or “diff.guitool”) and “difftool.<tool>.cmd” to be defined in your Git configuration.", nil)];
   }
 }
 
@@ -410,7 +410,7 @@ static NSString* _diffTemporaryDirectoryPath = nil;
     [variables setValue:newPath forKey:@"REMOTE"];
     [self _runTaskWithPath:@"/bin/bash" arguments:@[ @"-l", @"-c", cmd ] variables:variables waitUntilExit:YES reportErrors:YES];
   } else {
-    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"Git custom merge tool not available!", nil) message:NSLocalizedString(@"Git merge tool requires both 'merge.tool' and 'mergetool.<tool>.cmd' to be defined in your Git configuration.", nil)];
+    [self presentAlertWithType:kGIAlertType_Stop title:NSLocalizedString(@"Git custom merge tool not available!", nil) message:NSLocalizedString(@"Git merge tool requires both “merge.tool” and “mergetool.<tool>.cmd” to be defined in your Git configuration.", nil)];
   }
 }
 

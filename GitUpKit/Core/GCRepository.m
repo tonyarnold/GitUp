@@ -375,7 +375,7 @@ static int _ReferenceForEachCallback(const char* refname, void* payload) {
         NSString* string = [[[NSString alloc] initWithData:(stderrData.length ? stderrData : stdoutData)encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         XLOG_DEBUG_CHECK(string);
         NSDictionary* info = @{
-          NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Hook '%@' exited with non-zero status (%i)", name, status],
+          NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Hook “%@” exited with non-zero status (%i)", name, status],
           NSLocalizedRecoverySuggestionErrorKey : (string ? string : @"")
         };
         *error = [NSError errorWithDomain:GCErrorDomain code:status userInfo:info];

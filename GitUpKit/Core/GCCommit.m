@@ -110,7 +110,7 @@ static inline NSString* _ConvertMessage(GCCommit* commit, const char* message, s
 
 - (NSString*)description {
   NSString* summary = self.summary;
-  return [NSString stringWithFormat:@"[%@] %@ '%@' %@ '%@%@'", self.class,
+  return [NSString stringWithFormat:@"[%@] %@ “%@” %@ “%@%@”", self.class,
                                     self.shortSHA1,
                                     self.date,
                                     [[self.author componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] firstObject],

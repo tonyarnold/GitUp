@@ -107,7 +107,7 @@
     view.branchTextField.stringValue = NSLocalizedString(@"Empty Repository", nil);
   } else {
     NSString* name = snapshot.HEADBranchName;
-    view.branchTextField.stringValue = name ? [NSString stringWithFormat:NSLocalizedString(@"On '%@'", nil), name] : NSLocalizedString(@"HEAD Detached", nil);
+    view.branchTextField.stringValue = name ? [NSString stringWithFormat:NSLocalizedString(@"On “%@”", nil), name] : NSLocalizedString(@"HEAD Detached", nil);
   }
   view.reasonTextField.stringValue = [NSString stringWithFormat:NSLocalizedStringFromTable(snapshot.reason, @"Reasons", nil), snapshot.argument];
   view.restoreButton.hidden = ![_tableView isRowSelected:row];

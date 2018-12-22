@@ -463,7 +463,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   } else if ([command isEqualToString:@kToolCommand_Stash]) {
     [self _openRepositoryWithURL:[NSURL fileURLWithPath:repository] withCloneMode:kCloneMode_None windowModeID:kWindowModeID_Stashes];
   } else {
-    return @{kToolDictionaryKey_Error : [NSString stringWithFormat:@"Unknown command '%@'", command]};
+    return @{kToolDictionaryKey_Error : [NSString stringWithFormat:@"Unknown command “%@”", command]};
   }
   return @{};
 }
@@ -740,7 +740,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
 
 - (void)updater:(SUUpdater*)updater didFindValidUpdate:(SUAppcastItem*)item {
   NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
-  XLOG_INFO(@"Did find app update on channel '%@' for version %@", channel, item.versionString);
+  XLOG_INFO(@"Did find app update on channel “%@” for version %@", channel, item.versionString);
   if (_manualCheck) {
     let alert = [[NSAlert alloc] init];
     alert.messageText = NSLocalizedString(@"A GitUp update is available!", nil);
@@ -766,7 +766,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
 - (void)updater:(SUUpdater*)updater didAbortWithError:(NSError*)error {
   NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
   if (![error.domain isEqualToString:SUSparkleErrorDomain] || (error.code != SUNoUpdateError)) {
-    XLOG_ERROR(@"App update on channel '%@' aborted: %@", channel, error);
+    XLOG_ERROR(@"App update on channel “%@” aborted: %@", channel, error);
   }
 }
 

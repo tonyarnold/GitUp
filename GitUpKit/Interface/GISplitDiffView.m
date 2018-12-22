@@ -96,9 +96,9 @@ typedef NS_ENUM(NSUInteger, SelectionMode) {
     case kDiffLineType_Separator:
       return _leftString;
     case kDiffLineType_Context:
-      return [NSString stringWithFormat:@"[%lu] '%@' | [%lu] '%@'", _leftNumber, _leftString, _rightNumber, _rightString];
+      return [NSString stringWithFormat:@"[%lu] “%@” | [%lu] “%@”", _leftNumber, _leftString, _rightNumber, _rightString];
     case kDiffLineType_Change:
-      return [NSString stringWithFormat:@"[%lu] '%@' | [%lu] '%@'", _leftNumber, _leftString, _rightNumber, _rightString];
+      return [NSString stringWithFormat:@"[%lu] “%@” | [%lu] “%@”", _leftNumber, _leftString, _rightNumber, _rightString];
   }
   return nil;
 }
