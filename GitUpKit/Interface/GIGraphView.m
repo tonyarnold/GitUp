@@ -19,6 +19,7 @@
 
 #import <objc/runtime.h>
 
+#import "GIAppKit.h"
 #import "GIPrivate.h"
 
 #define __SHIFT_CORNERS__ 0
@@ -545,7 +546,7 @@ static void _DrawNode(GINode* node, CGContextRef context, CGFloat x, CGFloat y) 
   NSUInteger childrenCount = node.commit.children.count;
   NSUInteger parentCount = node.commit.parents.count;
   if ((childrenCount > 1) || (parentCount > 1)) {
-    CGColorRef color = onBranchMainLine ? node.primaryLine.color.CGColor : [[NSColor darkGrayColor] CGColor];
+    CGColorRef color = onBranchMainLine ? node.primaryLine.color.currentCGColor : [[NSColor darkGrayColor] CGColor];
     CGFloat diameter = onBranchMainLine ? kMainLineNodeLargeDiameter : kSubNodeDiameter;
     diameter -= 1;  // TODO: Why is this needed?
     CGContextSetFillColorWithColor(context, nodeColor());
@@ -556,7 +557,7 @@ static void _DrawNode(GINode* node, CGContextRef context, CGFloat x, CGFloat y) 
     CGContextSetFillColorWithColor(context, nodeColor());
     CGContextFillEllipseInRect(context, CGRectMake(x - kMainLineNodeSmallDiameter / 2, y - kMainLineNodeSmallDiameter / 2, kMainLineNodeSmallDiameter, kMainLineNodeSmallDiameter));
   } else {
-    CGContextSetFillColorWithColor(context, node.primaryLine.color.CGColor);
+    CGContextSetFillColorWithColor(context, node.primaryLine.color.currentCGColor);
     CGContextFillEllipseInRect(context, CGRectMake(x - kSubNodeDiameter / 2, y - kSubNodeDiameter / 2, kSubNodeDiameter, kSubNodeDiameter));
   }
 }
@@ -564,7 +565,7 @@ static void _DrawNode(GINode* node, CGContextRef context, CGFloat x, CGFloat y) 
 static void _DrawTipNode(GINode* node, CGContextRef context, CGFloat x, CGFloat y) {
   BOOL onBranchMainLine = node.primaryLine.branchMainLine;
   XLOG_DEBUG_CHECK(onBranchMainLine);
-  CGColorRef color = onBranchMainLine ? node.primaryLine.color.CGColor : [[NSColor darkGrayColor] CGColor];
+  CGColorRef color = onBranchMainLine ? node.primaryLine.color.currentCGColor : [[NSColor darkGrayColor] CGColor];
   CGFloat diameter = onBranchMainLine ? kMainLineNodeLargeDiameter : kSubNodeDiameter;
   if (node.dummy) {
     diameter -= 4;
@@ -582,7 +583,7 @@ static void _DrawTipNode(GINode* node, CGContextRef context, CGFloat x, CGFloat 
 
 static void _DrawRootNode(GINode* node, CGContextRef context, CGFloat x, CGFloat y) {
   BOOL onBranchMainLine = node.primaryLine.branchMainLine;
-  CGColorRef color = onBranchMainLine ? node.primaryLine.color.CGColor : [[NSColor darkGrayColor] CGColor];
+  CGColorRef color = onBranchMainLine ? node.primaryLine.color.currentCGColor : [[NSColor darkGrayColor] CGColor];
   CGFloat diameter = onBranchMainLine ? kMainLineNodeLargeDiameter : kSubNodeDiameter;
   diameter -= 1;  // TODO: Why is this needed?
   CGContextSetFillColorWithColor(context, nodeColor());
@@ -1501,8 +1502,8 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
   if (lines.count) {
     CGContextSetLineJoin(context, kCGLineJoinMiter);
 
-    // This won’t handle high contrast settings. Not the right way to do this.
-    if ([self.effectiveAppearance.name isEqualToString:NSAppearanceNameAqua]) {
+    // Can’t multiply against a dark background.
+    if (self.effectiveAppearance.gi_isLight) {
       CGContextSetBlendMode(context, kCGBlendModeMultiply);
     }
 
@@ -1515,7 +1516,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
         onBranchMainLine = NO;
       }
       CGContextSetLineWidth(context, onBranchMainLine ? kMainLineWidth : kSubLineWidth);
-      CGContextSetStrokeColorWithColor(context, line.color.CGColor);
+      CGContextSetStrokeColorWithColor(context, line.color.currentCGColor);
       if (virtualLine) {
         const CGFloat pattern[] = {4, 2};
         CGContextSetLineDash(context, 0, pattern, 2);
@@ -1654,7 +1655,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
         CGContextSetFillColorWithColor(context, [NSColor.systemRedColor colorWithAlphaComponent:0.666].CGColor);
         CGContextFillRect(context, HEAD_BOUNDS(x, y));
 #endif
-        _DrawHead(context, x, y, !_graph.history.HEADBranch, headNode.primaryLine.color.CGColor, tagAttributes);
+        _DrawHead(context, x, y, !_graph.history.HEADBranch, headNode.primaryLine.color.currentCGColor, tagAttributes);
       }
     }
   }
@@ -1667,7 +1668,7 @@ static void _DrawSelectedNode(CGContextRef context, CGFloat x, CGFloat y, GINode
       GINode* node = branch.tipNode;
       CGFloat x = CONVERT_X(node.x);
       CGFloat y = CONVERT_Y(offset - node.layer.y);
-      _DrawBranchTitle(context, x, y, &previousBranchCorner, branch, node.primaryLine.color, graphOptions);
+      _DrawBranchTitle(context, x, y, &previousBranchCorner, branch, node.primaryLine.color.currentColour, graphOptions);
     }
   }
 

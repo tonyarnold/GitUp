@@ -17,6 +17,7 @@
 		A52D6A1D21B430AD0083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
 		A52D6A1E21B430AD0083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
 		A52D6A1F21B431450083CBC3 /* GitUpKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */; };
+		A55D651A21CDDCF5007E59DD /* GIAdaptiveColour.m in Sources */ = {isa = PBXBuildFile; fileRef = A55D651821CDDCF5007E59DD /* GIAdaptiveColour.m */; };
 		E200A3BA1B02DDA100C4E39D /* GCPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = E200A3B81B02DDA100C4E39D /* GCPrivate.m */; };
 		E20EB08C19FC75CA0031A075 /* GCRepository+Reset.m in Sources */ = {isa = PBXBuildFile; fileRef = E20EB08A19FC75CA0031A075 /* GCRepository+Reset.m */; };
 		E20EB09019FC76160031A075 /* GCRepository+Status.m in Sources */ = {isa = PBXBuildFile; fileRef = E20EB08E19FC76160031A075 /* GCRepository+Status.m */; };
@@ -422,6 +423,8 @@
 		74EDB5D51B84E06500F00E79 /* GCOrderedSet-Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GCOrderedSet-Tests.m"; sourceTree = "<group>"; };
 		A52D6A1921B430AD0083CBC3 /* GitUpKitBundle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GitUpKitBundle.h; sourceTree = "<group>"; };
 		A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GitUpKitBundle.m; sourceTree = "<group>"; };
+		A55D651721CDDCF5007E59DD /* GIAdaptiveColour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GIAdaptiveColour.h; sourceTree = "<group>"; };
+		A55D651821CDDCF5007E59DD /* GIAdaptiveColour.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GIAdaptiveColour.m; sourceTree = "<group>"; };
 		E200A3B81B02DDA100C4E39D /* GCPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCPrivate.m; sourceTree = "<group>"; };
 		E20EB08919FC75CA0031A075 /* GCRepository+Reset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GCRepository+Reset.h"; sourceTree = "<group>"; };
 		E20EB08A19FC75CA0031A075 /* GCRepository+Reset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GCRepository+Reset.m"; sourceTree = "<group>"; };
@@ -749,6 +752,8 @@
 				A52D6A1A21B430AD0083CBC3 /* GitUpKitBundle.m */,
 				E22941D31AC11E31000A83AF /* GIAppKit.h */,
 				E22941D41AC11E31000A83AF /* GIAppKit.m */,
+				A55D651721CDDCF5007E59DD /* GIAdaptiveColour.h */,
+				A55D651821CDDCF5007E59DD /* GIAdaptiveColour.m */,
 				E22942251AC12E5C000A83AF /* GIColorView.h */,
 				E22942261AC12E5C000A83AF /* GIColorView.m */,
 				E22941E31AC11EBB000A83AF /* GILinkButton.h */,
@@ -1495,6 +1500,7 @@
 				E267E25E1B84DCA100BAB377 /* GIConflictResolverViewController.m in Sources */,
 				E267E25F1B84DCA100BAB377 /* GIDiffViewController.m in Sources */,
 				E267E2601B84DCA100BAB377 /* GIMapViewController.m in Sources */,
+				A55D651A21CDDCF5007E59DD /* GIAdaptiveColour.m in Sources */,
 				E267E2611B84DCA100BAB377 /* GIMapViewController+Operations.m in Sources */,
 				E267E2621B84DCA100BAB377 /* GIQuickViewController.m in Sources */,
 				E267E2631B84DCA100BAB377 /* GISimpleCommitViewController.m in Sources */,

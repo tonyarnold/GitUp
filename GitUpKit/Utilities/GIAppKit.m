@@ -134,6 +134,14 @@ static const void* _associatedObjectCommitKey = &_associatedObjectCommitKey;
 
 @end
 
+@implementation NSAppearance (GIAppKit)
+
+- (BOOL)gi_isLight {
+  return [[self bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]] isEqualToString:NSAppearanceNameAqua];
+}
+
+@end
+
 @implementation GIFlippedView
 
 - (BOOL)isFlipped {
