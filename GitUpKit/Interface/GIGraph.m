@@ -529,33 +529,39 @@ cleanup:
 #if __GI_HAS_APPKIT__
 
 - (void)_computeNodeAndLineColors {
-  NSMutableArray* colors = [[NSMutableArray alloc] init];
-#if 1  // Pol set
-  [colors addObject:[NSColor colorWithDeviceHue:(0.0 / 8.0) saturation:0.45 brightness:0.90 alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceHue:(1.0 / 8.0) saturation:0.45 brightness:0.90 alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceHue:(2.0 / 8.0) saturation:0.45 brightness:0.90 alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceHue:(3.0 / 8.0) saturation:0.45 brightness:0.90 alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceHue:(4.0 / 8.0) saturation:0.45 brightness:0.90 alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceHue:(5.0 / 8.0) saturation:0.45 brightness:0.90 alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceHue:(6.0 / 8.0) saturation:0.45 brightness:0.90 alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceHue:(7.0 / 8.0) saturation:0.45 brightness:0.90 alpha:1.0]];
-#else  // Wayne set
-  [colors addObject:[NSColor colorWithDeviceRed:(75.0 / 255.0) green:(138.0 / 255.0) blue:(231.0 / 255.0) alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceRed:(179.0 / 255.0) green:(143.0 / 255.0) blue:(177.0 / 255.0) alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceRed:(240.0 / 255.0) green:(115.0 / 255.0) blue:(116.0 / 255.0) alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceRed:(140.0 / 255.0) green:(194.0 / 255.0) blue:(200.0 / 255.0) alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceRed:(100.0 / 255.0) green:(170.0 / 255.0) blue:(130.0 / 255.0) alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceRed:(250.0 / 255.0) green:(173.0 / 255.0) blue:(72.0 / 255.0) alpha:1.0]];
-  [colors addObject:[NSColor colorWithDeviceRed:(134.0 / 255.0) green:(126 / 255.0) blue:(124.0 / 255.0) alpha:1.0]];
-#endif
-  NSUInteger numColors = colors.count;
+  NSArray<NSColor*>* lightColours = @[
+    [NSColor colorWithHue:0.00 saturation:0.45 * 0.9  brightness:0.9  alpha:1],
+    [NSColor colorWithHue:0.09 saturation:0.45        brightness:0.9  alpha:1],
+    [NSColor colorWithHue:0.13 saturation:0.50        brightness:0.9  alpha:1],
+    [NSColor colorWithHue:0.32 saturation:0.45 * 0.9  brightness:0.81 alpha:1],
+    [NSColor colorWithHue:0.48 saturation:0.45        brightness:0.9  alpha:1],
+    [NSColor colorWithHue:0.59 saturation:0.45        brightness:0.9  alpha:1],
+    [NSColor colorWithHue:0.78 saturation:0.45 * 0.8  brightness:0.85 alpha:1],
+    [NSColor colorWithHue:0.91 saturation:0.45 * 0.85 brightness:0.9  alpha:1],
+  ];
+  NSArray<NSColor*>* darkColours = @[
+    [NSColor colorWithHue:0.00 saturation:0.77 * 0.7  brightness:1    alpha:1],
+    [NSColor colorWithHue:0.09 saturation:0.96 * 0.7  brightness:1    alpha:1],
+    [NSColor colorWithHue:0.14 saturation:0.96 * 0.7  brightness:0.9  alpha:1],
+    [NSColor colorWithHue:0.32 saturation:0.77 * 0.7  brightness:0.84 alpha:1],
+    [NSColor colorWithHue:0.50 saturation:0.82 * 0.7  brightness:0.82 alpha:1],
+    [NSColor colorWithHue:0.58 saturation:0.96 * 0.7  brightness:1    alpha:1],
+    [NSColor colorWithHue:0.78 saturation:0.63 * 0.7  brightness:0.95 alpha:1],
+    [NSColor colorWithHue:0.91 saturation:0.78 * 0.7  brightness:1    alpha:1],
+  ];
+  XLOG_DEBUG_CHECK(lightColours.count == darkColours.count);
+  let numColors = lightColours.count;
+  let colors = [NSMutableArray<GIAdaptiveColour*> arrayWithCapacity:numColors];
+  for (NSUInteger idx = 0; idx < numColors; ++idx) {
+    [colors addObject:[[GIAdaptiveColour alloc] initWithLightColour:lightColours[idx] darkColour:darkColours[idx]]];
+  }
 
 #if __COLORIZE_BRANCHES__
   CFMutableDictionaryRef dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, NULL, NULL);
   NSUInteger index = 0;
   for (CFIndex i = 0, count = CFArrayGetCount(_branches); i < count; ++i) {
     GIBranch* branch = CFArrayGetValueAtIndex(_branches, i);
-    NSColor* color = colors[index];
+    GIAdaptiveColour* color = colors[index];
     index = (index + 1) % numColors;
     CFDictionarySetValue(dictionary, branch, color);
   }
@@ -568,7 +574,7 @@ cleanup:
   NSUInteger index = 0;
   for (CFIndex i = 0, count = CFArrayGetCount(_lines); i < count; ++i) {
     GILine* line = CFArrayGetValueAtIndex(_lines, i);
-    NSColor* color;
+    GIAdaptiveColour* color;
     do {
       color = colors[index];
       index = (index + 1) % numColors;
@@ -576,8 +582,6 @@ cleanup:
     line.color = color;
   }
 #endif
-
-  [colors release];
 }
 
 #endif

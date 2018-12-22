@@ -62,6 +62,10 @@ FOUNDATION_EXPORT CGFloat GIFontSize(void);  // Reads GIUserDefaultKey_FontSize,
 - (NSMenuItem*)addItemWithTitle:(NSString*)title keyEquivalent:(unichar)code modifierMask:(NSUInteger)mask block:(dispatch_block_t)block;  // Pass a NULL block to add a disabled item
 @end
 
+@interface NSAppearance (GIAppKit)
+@property (nonatomic, readonly) BOOL gi_isLight;
+@end
+
 @interface GIFlippedView : NSView
 @end
 

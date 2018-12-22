@@ -23,7 +23,7 @@
 #import "GIModalView.h"
 #import "GIColorView.h"
 #import "GIConstants.h"
-
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 #import "GIGraphView.h"
 
@@ -163,6 +163,10 @@ static NSColor* _warningColor = nil;
 @dynamic window;  // Prevent synthetizing a property overriding the superclass methods
 
 + (void)initialize {
+  if (self != [GIWindowController class]) {
+    return;
+  }
+
   _helpColor = [NSColor colorWithDeviceRed:(0.0 / 255.0) green:(104.0 / 255.0) blue:(217.0 / 255.0) alpha:0.9];
   _informationalColor = [NSColor colorWithDeviceRed:(75.0 / 255.0) green:(75.0 / 255.0) blue:(75.0 / 255.0) alpha:0.9];
   _warningColor = [NSColor colorWithDeviceRed:(204.0 / 255.0) green:(82.0 / 255.0) blue:(82.0 / 255.0) alpha:0.9];
@@ -176,7 +180,7 @@ static void _TimerCallBack(CFRunLoopTimerRef timer, void* info) {
 
 - (instancetype)initWithWindow:(NSWindow*)window {
   if ((self = [super initWithWindow:window])) {
-    [[NSBundle bundleForClass:[GIWindowController class]] loadNibNamed:@"GIWindowController" owner:self topLevelObjects:NULL];
+    [GitUpKitBundle() loadNibNamed:@"GIWindowController" owner:self topLevelObjects:NULL];
     XLOG_DEBUG_CHECK(_overlayView);
 
     _area = [[NSTrackingArea alloc] initWithRect:NSZeroRect options:(NSTrackingInVisibleRect | NSTrackingActiveAlways | NSTrackingMouseEnteredAndExited) owner:self userInfo:nil];

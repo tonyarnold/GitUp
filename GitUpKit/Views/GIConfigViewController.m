@@ -19,6 +19,7 @@
 
 #import "GIConfigViewController.h"
 #import "GIWindowController.h"
+#import "GitUpKitBundle.h"
 
 #import "GIInterface.h"
 #import "XLFacilityMacros.h"
@@ -56,6 +57,10 @@ static NSMutableDictionary* _patternHelp = nil;
 }
 
 + (void)initialize {
+  if (self != [GIConfigViewController class]) {
+    return;
+  }
+
 #if DEBUG
   NSMutableCharacterSet* set = [NSMutableCharacterSet alphanumericCharacterSet];
   [set addCharactersInString:@"._-"];
@@ -63,7 +68,7 @@ static NSMutableDictionary* _patternHelp = nil;
 #endif
   _directHelp = [[NSMutableDictionary alloc] init];
   _patternHelp = [[NSMutableDictionary alloc] init];
-  NSString* string = [[NSString alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[GIConfigViewController class]] pathForResource:@"GIConfigViewController-Help" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
+  NSString* string = [[NSString alloc] initWithContentsOfFile:[GitUpKitBundle() pathForResource:@"GIConfigViewController-Help" ofType:@"txt"] encoding:NSUTF8StringEncoding error:NULL];
   XLOG_DEBUG_CHECK(string);
   string = [string stringByReplacingOccurrencesOfString:@"linkgit:" withString:@""];  // TODO: Handle links
   for (NSString* section in [string componentsSeparatedByString:@"\n\n\n"]) {
@@ -116,7 +121,7 @@ static NSMutableDictionary* _patternHelp = nil;
   CGFloat fontSize = _cachedCellView.optionTextField.font.pointSize;
   _optionAttributes = @{NSFontAttributeName : [NSFont boldSystemFontOfSize:fontSize]};
   _separatorAttributes = @{NSFontAttributeName : [NSFont systemFontOfSize:fontSize]};
-  _valueAttributes = @{NSFontAttributeName : [NSFont systemFontOfSize:fontSize], NSBackgroundColorAttributeName : [NSColor colorWithDeviceRed:1.0 green:1.0 blue:0.0 alpha:0.5]};
+  _valueAttributes = @{NSFontAttributeName : [NSFont systemFontOfSize:fontSize], NSBackgroundColorAttributeName : [NSColor systemYellowColor]};
 }
 
 - (void)viewWillShow {
@@ -208,12 +213,13 @@ static NSMutableDictionary* _patternHelp = nil;
 
 - (void)tableView:(NSTableView*)tableView didAddRowView:(NSTableRowView*)rowView forRow:(NSInteger)row {
   GCConfigOption* option = _config[row];
+  NSBundle *bundle = GitUpKitBundle();
   if ([_set countForObject:option.variable] > 1) {
-    rowView.backgroundColor = [NSColor colorWithDeviceRed:1.0 green:0.95 blue:0.95 alpha:1.0];
+    rowView.backgroundColor = [NSColor colorNamed:@"GIConfigViewConflictColor" bundle:bundle];
   } else if (option.level != kGCConfigLevel_Local) {
-    rowView.backgroundColor = [NSColor colorWithDeviceRed:0.95 green:1.0 blue:0.95 alpha:1.0];
+    rowView.backgroundColor = [NSColor colorNamed:@"GIConfigViewGlobalColor" bundle:bundle];
   } else {
-    rowView.backgroundColor = [NSColor whiteColor];
+    rowView.backgroundColor = [NSColor textBackgroundColor];
   }
 }
 

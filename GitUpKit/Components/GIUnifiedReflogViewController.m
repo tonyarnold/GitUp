@@ -51,9 +51,13 @@ static NSColor* _reachableColor = nil;
 }
 
 + (void)initialize {
-  _missingColor = [NSColor colorWithDeviceRed:1.0 green:0.0 blue:0.0 alpha:1.0];
-  _unreachableColor = [NSColor colorWithDeviceRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-  _reachableColor = [NSColor colorWithDeviceRed:0.7 green:0.7 blue:0.7 alpha:1.0];
+  if (self != [GIUnifiedReflogViewController class]) {
+    return;
+  }
+
+  _missingColor = NSColor.systemRedColor;
+  _unreachableColor = NSColor.secondaryLabelColor;
+  _reachableColor = NSColor.labelColor;
 }
 
 - (instancetype)initWithRepository:(GCLiveRepository*)repository {

@@ -14,7 +14,9 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "GIInterface.h"
-
+#if __GI_HAS_APPKIT__
+#import "GIAdaptiveColour.h"
+#endif
 #import "XLFacilityMacros.h"
 
 #if __GI_HAS_APPKIT__
@@ -45,7 +47,7 @@ extern void GIComputeHighlightRanges(const char* deletedBytes, NSUInteger delete
 
 @interface GILine ()
 #if __GI_HAS_APPKIT__
-@property(nonatomic, strong) NSColor* color;
+@property(nonatomic, strong) GIAdaptiveColour* color;
 #endif
 @property(nonatomic) CGFloat x;
 @property(nonatomic, readonly) GILine* childLine;  // Computed

@@ -137,6 +137,10 @@ static void _SQLiteLog(void* unused, int error, const char* message) {
 }
 
 + (void)initialize {
+  if (self != [GCCommitDatabase class]) {
+    return;
+  }
+
   XLOG_CHECK(sqlite3_compileoption_used("THREADSAFE=2"));
   XLOG_CHECK(sqlite3_compileoption_used("ENABLE_FTS3"));
   XLOG_CHECK(sqlite3_compileoption_used("ENABLE_FTS3_PARENTHESIS"));

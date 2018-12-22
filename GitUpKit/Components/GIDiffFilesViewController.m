@@ -20,6 +20,7 @@
 #import "GIDiffFilesViewController.h"
 
 #import "GIInterface.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 
 #define kPasteboardType @"GIDiffDelta"  // Raw unretained pointer which is OK since pasteboard is use within process only
@@ -136,12 +137,17 @@ static NSImage* _untrackedImage = nil;
 }
 
 + (void)initialize {
-  _conflictImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_conflict"];
-  _addedImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_a"];
-  _modifiedImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_m"];
-  _deletedImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_d"];
-  _renamedImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_r"];
-  _untrackedImage = [[NSBundle bundleForClass:[GIDiffFilesViewController class]] imageForResource:@"icon_file_u"];
+  if (self != [GIDiffFilesViewController class]) {
+    return;
+  }
+
+  let bundle = GitUpKitBundle();
+  _conflictImage = [bundle imageForResource:@"icon_file_conflict"];
+  _addedImage = [bundle imageForResource:@"icon_file_a"];
+  _modifiedImage = [bundle imageForResource:@"icon_file_m"];
+  _deletedImage = [bundle imageForResource:@"icon_file_d"];
+  _renamedImage = [bundle imageForResource:@"icon_file_r"];
+  _untrackedImage = [bundle imageForResource:@"icon_file_u"];
 }
 
 - (void)loadView {

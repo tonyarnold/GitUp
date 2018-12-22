@@ -21,8 +21,9 @@
 
 #import "GIAppKit.h"
 #import "GIConstants.h"
-
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
+#import "GCMacros.h"
 
 #define kSummaryMaxWidth 50
 #define kBodyMaxWidth 72
@@ -54,7 +55,6 @@ CGFloat GIFontSize(void) {
 }
 
 static const void* _associatedObjectCommitKey = &_associatedObjectCommitKey;
-static NSColor* _separatorColor = nil;
 
 @implementation NSMutableAttributedString (GIAppKit)
 
@@ -73,16 +73,17 @@ static NSColor* _separatorColor = nil;
 @implementation NSAlert (GIAppKit)
 
 - (void)setType:(GIAlertType)type {
+  let bundle = GitUpKitBundle();
   switch (type) {
     case kGIAlertType_Note:
-      self.icon = [[NSBundle bundleForClass:[GILayoutManager class]] imageForResource:@"icon_alert_note"];
+      self.icon = [bundle imageForResource:@"icon_alert_note"];
       break;  // TODO: Image is not cached
     case kGIAlertType_Caution:
-      self.icon = [[NSBundle bundleForClass:[GILayoutManager class]] imageForResource:@"icon_alert_caution"];
+      self.icon = [bundle imageForResource:@"icon_alert_caution"];
       break;  // TODO: Image is not cached
     case kGIAlertType_Stop:
     case kGIAlertType_Danger:
-      self.icon = [[NSBundle bundleForClass:[GILayoutManager class]] imageForResource:@"icon_alert_stop"];
+      self.icon = [bundle imageForResource:@"icon_alert_stop"];
       break;  // TODO: Image is not cached
   }
 }
@@ -129,6 +130,14 @@ static NSColor* _separatorColor = nil;
   item.keyEquivalentModifierMask = mask;
   [self addItem:item];
   return item;
+}
+
+@end
+
+@implementation NSAppearance (GIAppKit)
+
+- (BOOL)gi_isLight {
+  return [[self bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]] isEqualToString:NSAppearanceNameAqua];
 }
 
 @end
@@ -183,6 +192,8 @@ static NSColor* _separatorColor = nil;
   [super awakeFromNib];
 
   [self updateFont];
+  self.textColor = NSColor.textColor;
+  self.backgroundColor = NSColor.textBackgroundColor;
   [self.textContainer replaceLayoutManager:[[GILayoutManager alloc] init]];
 
   [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:GICommitMessageViewUserDefaultKey_ShowInvisibleCharacters options:0 context:(__bridge void*)[GICommitMessageView class]];
@@ -213,7 +224,7 @@ static NSColor* _separatorColor = nil;
 
 - (void)drawRect:(NSRect)dirtyRect {
   [super drawRect:dirtyRect];
-
+  
   if ([[NSUserDefaults standardUserDefaults] boolForKey:GICommitMessageViewUserDefaultKey_ShowMargins]) {
     NSRect bounds = self.bounds;
     CGFloat offset = self.textContainerOrigin.x + self.textContainerInset.width + self.textContainer.lineFragmentPadding;
@@ -225,7 +236,7 @@ static NSColor* _separatorColor = nil;
     CGFloat x1 = floor(offset + kSummaryMaxWidth * charWidth) + 0.5;
     const CGFloat pattern1[] = {2, 4};
     CGContextSetLineDash(context, 0, pattern1, 2);
-    CGContextSetRGBStrokeColor(context, 0.33, 0.33, 0.33, 0.2);
+    CGContextSetStrokeColorWithColor(context, NSColor.tertiaryLabelColor.CGColor);
     CGContextMoveToPoint(context, x1, 0);
     CGContextAddLineToPoint(context, x1, bounds.size.height);
     CGContextStrokePath(context);
@@ -233,7 +244,7 @@ static NSColor* _separatorColor = nil;
     CGFloat x2 = floor(offset + kBodyMaxWidth * charWidth) + 0.5;
     const CGFloat pattern2[] = {4, 2};
     CGContextSetLineDash(context, 0, pattern2, 2);
-    CGContextSetRGBStrokeColor(context, 0.33, 0.33, 0.33, 0.2);
+    CGContextSetStrokeColorWithColor(context, NSColor.tertiaryLabelColor.CGColor);
     CGContextMoveToPoint(context, x2, 0);
     CGContextAddLineToPoint(context, x2, bounds.size.height);
     CGContextStrokePath(context);
@@ -326,10 +337,6 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
 
 @implementation GITableCellView
 
-+ (void)initialize {
-  _separatorColor = [NSColor colorWithDeviceRed:0.9 green:0.9 blue:0.9 alpha:1.0];
-}
-
 - (void)saveTextFieldColors {
   for (NSView* view in self.subviews) {
     if ([view isKindOfClass:[NSTextField class]]) {
@@ -349,8 +356,8 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
 
   for (NSView* view in self.subviews) {
     if ([view isKindOfClass:[NSTextField class]]) {
-      if (backgroundStyle == NSBackgroundStyleDark) {
-        [(NSTextField*)view setTextColor:[NSColor whiteColor]];
+      if (backgroundStyle == NSBackgroundStyleEmphasized) {
+        [(NSTextField*)view setTextColor:[NSColor textBackgroundColor]];
       } else {
         [(NSTextField*)view setTextColor:objc_getAssociatedObject(view, _associatedObjectCommitKey)];
       }
@@ -362,7 +369,7 @@ OVERRIDE_SETTER_AND_UPDATE_DEFAULTS(AutomaticTextReplacementEnabled, TextReplace
   NSRect bounds = self.bounds;
   CGContextRef context = [[NSGraphicsContext currentContext] CGContext];
 
-  [_separatorColor setStroke];
+  [[NSColor separatorColor] setStroke];
   CGContextMoveToPoint(context, 0, 0.5);
   CGContextAddLineToPoint(context, bounds.size.width, 0.5);
   CGContextStrokePath(context);

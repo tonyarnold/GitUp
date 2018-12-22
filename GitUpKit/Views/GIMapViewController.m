@@ -23,6 +23,7 @@
 #import "GIInterface.h"
 #import "GCRepository+Utilities.h"
 #import "GCHistory+Rewrite.h"
+#import "GitUpKitBundle.h"
 #import "XLFacilityMacros.h"
 
 #define kPersistentViewStateKeyNamespace @"GIMapViewController_"
@@ -74,7 +75,11 @@ static NSColor* _patternColor = nil;
 }
 
 + (void)initialize {
-  _patternColor = [NSColor colorWithPatternImage:[[NSBundle bundleForClass:[GIMapViewController class]] imageForResource:@"background_pattern"]];
+  if (self != [GIMapViewController class]) {
+    return;
+  }
+
+  _patternColor = [NSColor colorWithPatternImage:[GitUpKitBundle() imageForResource:@"background_pattern"]];
 }
 
 - (instancetype)initWithRepository:(GCLiveRepository*)repository {
@@ -104,7 +109,7 @@ static NSColor* _patternColor = nil;
   if (previewMode) {
     _graphView.backgroundColor = _patternColor;
   } else {
-    _graphView.backgroundColor = [NSColor whiteColor];
+    _graphView.backgroundColor = [NSColor textBackgroundColor];
   }
   _graphScrollView.backgroundColor = _graphView.backgroundColor;  // Required for exposed areas through elasticity
 }

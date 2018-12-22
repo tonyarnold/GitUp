@@ -21,6 +21,10 @@ static NSArray* sizes;
 @implementation FontSizeTransformer
 
 + (void)initialize {
+  if (self != [FontSizeTransformer class]) {
+    return;
+  }
+
   // Match the system font picker
   sizes = @[ @9, @10, @11, @12, @13, @14, @18, @24 ];
 }

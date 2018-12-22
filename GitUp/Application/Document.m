@@ -131,6 +131,10 @@ static inline WindowModeID _WindowModeIDFromString(NSString* mode) {
 }
 
 + (void)initialize {
+  if (self != [Document class]) {
+    return;
+  }
+
   [[NSImage imageNamed:@"icon_nav_map"] setTemplate:YES];
   [[NSImage imageNamed:@"icon_nav_commit"] setTemplate:YES];
   [[NSImage imageNamed:@"icon_nav_stash"] setTemplate:YES];
@@ -269,25 +273,19 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
   CGFloat fontSize = _infoTextField2.font.pointSize;
   NSMutableParagraphStyle* style = [[NSMutableParagraphStyle alloc] init];
   style.alignment = NSTextAlignmentCenter;
-  _stateAttributes = @{NSParagraphStyleAttributeName : style, NSForegroundColorAttributeName : [NSColor redColor], NSFontAttributeName : [NSFont boldSystemFontOfSize:fontSize]};
+  _stateAttributes = @{NSParagraphStyleAttributeName : style, NSForegroundColorAttributeName : [NSColor systemRedColor], NSFontAttributeName : [NSFont boldSystemFontOfSize:fontSize]};
 
   NSString* frameString = [_repository userInfoForKey:kRepositoryUserInfoKey_MainWindowFrame];
   if (frameString) {
     [_mainWindow setFrameFromString:frameString];
   }
-  _mainWindow.backgroundColor = [NSColor whiteColor];
+  _mainWindow.backgroundColor = [NSColor textBackgroundColor];
   [_mainWindow setToolbar:_toolbar];
   [_mainWindow setTitleVisibility:NSWindowTitleHidden];
   _contentView.wantsLayer = YES;
   _leftView.wantsLayer = YES;
   _titleView.wantsLayer = YES;
   _rightView.wantsLayer = YES;
-
-  // Text fields must be drawn on an opaque background to avoid subpixel antialiasing issues during animation.
-  for (NSTextField* field in @[ _infoTextField1, _infoTextField2, _progressTextField ]) {
-    field.drawsBackground = YES;
-    field.backgroundColor = _mainWindow.backgroundColor;
-  }
 
   _mapViewController = [[GIMapViewController alloc] initWithRepository:_repository];
   _mapViewController.delegate = self;
@@ -299,7 +297,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
 
   _tagsViewController = [[GICommitListViewController alloc] initWithRepository:_repository];
   _tagsViewController.delegate = self;
-  _tagsViewController.emptyLabel = NSLocalizedString(@"No Tags", nil);
+  _tagsViewController.emptyLabel = NSLocalizedString(@"No tags", nil);
   [_tagsControllerView replaceWithView:_tagsViewController.view];
 
   _snapshotListViewController = [[GISnapshotListViewController alloc] initWithRepository:_repository];
@@ -316,7 +314,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
 
   _searchResultsViewController = [[GICommitListViewController alloc] initWithRepository:_repository];
   _searchResultsViewController.delegate = self;
-  _searchResultsViewController.emptyLabel = NSLocalizedString(@"No Results", nil);
+  _searchResultsViewController.emptyLabel = NSLocalizedString(@"No results", nil);
   [_searchControllerView replaceWithView:_searchResultsViewController.view];
 
   _quickViewController = [[GIQuickViewController alloc] initWithRepository:_repository];
@@ -362,6 +360,7 @@ static void _CheckTimerCallBack(CFRunLoopTimerRef timer, void* info) {
   NSTabViewItem* configItem = [_mainTabView tabViewItemAtIndex:[_mainTabView indexOfTabViewItemWithIdentifier:kWindowModeString_Map_Config]];
   configItem.view = _configViewController.view;
 
+  // This always uses a dark appearance.
   _hiddenWarningView.layer.backgroundColor = [[NSColor colorWithDeviceRed:0.0 green:0.0 blue:0.0 alpha:0.5] CGColor];
   _hiddenWarningView.layer.cornerRadius = 10.0;
 
@@ -734,6 +733,10 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
     _nextButton.hidden = YES;
 
     if ([_windowMode isEqualToString:kWindowModeString_Map]) {
+      // I’ve disable the snapshots button because it needs a bit more time to get it
+      // working in dark mode, and I never use this feature, and you can get it from
+      // the menu bar anyway. If re-enabling also unset hidden in Interface Builder.
+      /*
       _snapshotsButton.hidden = NO;
       if (![self validateUserInterfaceItem:(id)_snapshotsButton]) {
         _snapshotsButton.image = [NSImage imageNamed:@"icon_nav_snapshot_disable"];
@@ -748,6 +751,7 @@ static NSString* _StringFromRepositoryState(GCRepositoryState state) {
         _snapshotsButton.alternateImage = [NSImage imageNamed:@"icon_nav_snapshot_pressed"];
         _snapshotsButton.enabled = YES;
       }
+       */
       _searchField.hidden = NO;
       _searchField.enabled = [self validateUserInterfaceItem:(id)_searchField];
     } else {
