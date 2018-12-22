@@ -15,13 +15,9 @@
 
 #define MAKE_ERROR(message) [NSError errorWithDomain:@"App" code:-1 userInfo:@{NSLocalizedDescriptionKey : message}]
 
-#define kReleaseChannel_Stable @"stable"
-#define kReleaseChannel_Continuous @"continuous"
-
 #define kUserDefaultsKey_FirstLaunch @"FirstLaunch"  // BOOL
 #define kUserDefaultsKey_SkipInstallCLT @"SkipInstallCLT"  // BOOL
 #define kUserDefaultsKey_LastVersion @"LastVersion"  // NSUInteger
-#define kUserDefaultsKey_ReleaseChannel @"ReleaseChannel"  // NSString
 #define kUserDefaultsKey_CheckInterval @"CheckInterval"  // NSInteger
 #define kUserDefaultsKey_SimpleCommit @"SimpleCommit"  // BOOL
 #define kUserDefaultsKey_DisableSparkle @"DisableSparkle"  // BOOL
@@ -32,7 +28,7 @@
 #define kRepositoryUserInfoKey_MainWindowFrame @"MainWindowFrame"  // NSString
 #define kRepositoryUserInfoKey_IndexDiffs @"IndexDiffs"  // BOOL
 
-#define kURL_AppCast @"https://s3-us-west-2.amazonaws.com/gitup-builds/%@/appcast.xml"
+#define kURL_AppCast @"https://douglashill.s3.amazonaws.com/GitUp-appcast.xml"
 
 #define kURL_Issues @"https://github.com/douglashill/GitUp/issues"
 #define kURL_Wiki @"https://github.com/git-up/GitUp/wiki"

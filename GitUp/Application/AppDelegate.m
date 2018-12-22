@@ -14,10 +14,6 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <Security/Security.h>
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-interface-ivars"
-#import <HockeySDK/HockeySDK.h>
-#pragma clang diagnostic pop
 #import <Sparkle/Sparkle.h>
 
 #import <GitUpKit/XLFacilityMacros.h>
@@ -27,9 +23,6 @@
 #import "Document.h"
 #import "Common.h"
 #import "ToolProtocol.h"
-
-#define OFFICIAL 0
-#define OFFICIAL_RELEASE !DEBUG && OFFICIAL
 
 #define __ENABLE_SUDDEN_TERMINATION__ 1
 
@@ -102,7 +95,6 @@
     GICommitMessageViewUserDefaultsKey_ContinuousSpellChecking : @(YES),
     GICommitMessageViewUserDefaultsKey_SmartInsertDelete : @(YES),
     GIUserDefaultKey_FontSize : @(GIDefaultFontSize),
-    kUserDefaultsKey_ReleaseChannel : kReleaseChannel_Stable,
     kUserDefaultsKey_CheckInterval : @(15 * 60),
     kUserDefaultsKey_FirstLaunch : @(YES),
     kUserDefaultsKey_DiffWhitespaceMode : @(kGCLiveRepositoryDiffWhitespaceMode_Normal),
@@ -271,24 +263,7 @@
   _preferencesToolbar.selectedItemIdentifier = kPreferencePaneIdentifier_General;
   [self selectPreferencePane:nil];
 
-  [_channelPopUpButton.menu removeAllItems];
-  for (NSString* string in @[ kReleaseChannel_Stable, kReleaseChannel_Continuous ]) {
-    NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(string, nil) action:NULL keyEquivalent:@""];
-    item.representedObject = string;
-    [_channelPopUpButton.menu addItem:item];
-  }
-
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_willShowRecentPopUpMenu:) name:NSPopUpButtonWillPopUpNotification object:_recentPopUpButton];
-}
-
-- (void)_updatePreferencePanel {
-  NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
-  for (NSMenuItem* item in _channelPopUpButton.menu.itemArray) {
-    if ([item.representedObject isEqualToString:channel]) {
-      [_channelPopUpButton selectItem:item];
-      break;
-    }
-  }
 }
 
 - (void)_showNotificationWithTitle:(NSString*)title action:(SEL)action message:(NSString*)message {
@@ -321,14 +296,6 @@
   // Initialize custom subclass of NSDocumentController
   [DocumentController sharedDocumentController];
 
-#if OFFICIAL_RELEASE
-  // Initialize HockeyApp
-  [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"65233b0e034e4fcbaf6754afba3b2b23"];
-  [[BITHockeyManager sharedHockeyManager] setDisableMetricsManager:YES];
-  [[BITHockeyManager sharedHockeyManager] setDisableFeedbackManager:YES];
-  [[BITHockeyManager sharedHockeyManager] startManager];
-#endif
-
   [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
                                                      andSelector:@selector(_getUrl:withReplyEvent:)
                                                    forEventClass:kInternetEventClass
@@ -336,7 +303,7 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification*)notification {
-#if OFFICIAL_RELEASE
+#if !DEBUG
   // Initialize Sparkle and check for update immediately
   if (![[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKey_DisableSparkle]) {
     _updater = [SUUpdater sharedUpdater];
@@ -481,17 +448,6 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
   [[NSDocumentController sharedDocumentController] openDocument:sender];
 }
 
-- (IBAction)changeReleaseChannel:(id)sender {
-  NSString* oldChannel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
-  NSString* newChannel = _channelPopUpButton.selectedItem.representedObject;
-  if (![newChannel isEqualToString:oldChannel]) {
-    [[NSUserDefaults standardUserDefaults] setObject:newChannel forKey:kUserDefaultsKey_ReleaseChannel];
-
-    _manualCheck = NO;
-    [_updater checkForUpdatesInBackground];
-  }
-}
-
 - (IBAction)viewWiki:(id)sender {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kURL_Wiki]];
 }
@@ -519,7 +475,6 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
 }
 
 - (IBAction)showPreferences:(id)sender {
-  [self _updatePreferencePanel];
   [_preferencesWindow makeKeyAndOrderFront:nil];
 }
 
@@ -734,13 +689,11 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
 #pragma mark - SUUpdaterDelegate
 
 - (NSString*)feedURLStringForUpdater:(SUUpdater*)updater {
-  NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
-  return [NSString stringWithFormat:kURL_AppCast, channel];
+  return kURL_AppCast;
 }
 
 - (void)updater:(SUUpdater*)updater didFindValidUpdate:(SUAppcastItem*)item {
-  NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
-  XLOG_INFO(@"Did find app update on channel “%@” for version %@", channel, item.versionString);
+  XLOG_INFO(@"Did find app update for version %@", item.versionString);
   if (_manualCheck) {
     let alert = [[NSAlert alloc] init];
     alert.messageText = NSLocalizedString(@"A GitUp update is available!", nil);
@@ -752,8 +705,7 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
 }
 
 - (void)updaterDidNotFindUpdate:(SUUpdater*)updater {
-  NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
-  XLOG_VERBOSE(@"App is up-to-date at version %@ on channel '%@'", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"], channel);
+  XLOG_VERBOSE(@"App is up-to-date at version %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
   if (_manualCheck) {
     let alert = [[NSAlert alloc] init];
     alert.messageText = NSLocalizedString(@"GitUp is already up-to-date!", nil);
@@ -764,9 +716,8 @@ static CFDataRef _MessagePortCallBack(CFMessagePortRef local, SInt32 msgid, CFDa
 }
 
 - (void)updater:(SUUpdater*)updater didAbortWithError:(NSError*)error {
-  NSString* channel = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDefaultsKey_ReleaseChannel];
   if (![error.domain isEqualToString:SUSparkleErrorDomain] || (error.code != SUNoUpdateError)) {
-    XLOG_ERROR(@"App update on channel “%@” aborted: %@", channel, error);
+    XLOG_ERROR(@"App update aborted: %@", error);
   }
 }
 
