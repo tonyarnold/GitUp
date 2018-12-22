@@ -46,4 +46,3 @@ aws s3 cp "$EDITED_APPCAST_PATH" "s3://douglashill/$APPCAST_NAME" --acl public-r
 ##### Tag build
 
 git tag -f "dh$VERSION"
-git push -f origin "dh$VERSION"
