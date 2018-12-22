@@ -532,6 +532,7 @@ static const void* _associatedObjectDataKey = &_associatedObjectDataKey;
 #pragma mark - Drawing
 
 static CGColorRef nodeColor(void) {
+  // Looks better not black in dark mode. Might look good using a more saturated version of the line colour.
   return NSColor.whiteColor.CGColor;
 }
 
