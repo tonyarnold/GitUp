@@ -1,8 +1,12 @@
 This is my (Douglas Hill’s) fork of GitUp, where I’ll make changes to suit my own use. I use a build from here as my primary interface to Git. If you find this useful too that’s awesome.
 
-- Uses the same bundle identifier as the official GitUp. I’m not sure if this is good or bad.
-- The official GitUp’s analytics are disabled.
-- There is no automatic update system.
+The main features my fork adds over the official GitUp are a text size setting and support for dark mode. There are also several smaller enhancements, which you can see in the [release notes](https://github.com/douglashill/GitUp/releases).
+
+Notes:
+
+- This uses the same bundle identifier as the official GitUp, so will use the same settings. I’m not sure if this is good or bad.
+- Analytics have been removed.
+- It will automatically update to future releases published by me.
 
 GitUp
 =====
